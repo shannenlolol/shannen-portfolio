@@ -205,8 +205,19 @@ img {
 }
 
 .ri-github-line {
-  font-size: 60px;
-  
+  font-size: 40px;
+}
+
+.ri-telegram-line {
+  font-size: 40px;
+}
+
+.ri-linkedin-box-line {
+  font-size: 40px;
+}
+
+.nav-item{
+  margin-right: 10px;
 }
 
 .social-icon {
@@ -278,6 +289,10 @@ img {
 .shopcaption{
   vertical-align: middle;
   margin-top: 150px;
+}
+
+.emailme{
+  vertical-align: middle;
 }
 
 .custom-link {
