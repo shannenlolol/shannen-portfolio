@@ -787,12 +787,15 @@ color: #FFFFFF;
 
 
 .planets-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleX(5);
   margin-top: 100px;
-  margin-left: 650px;
+  /* margin-left: 650px; */
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  transform: scaleX(5);
+  /* transform: scaleX(5); */
 }
 
 .sun {
