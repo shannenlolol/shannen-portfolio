@@ -13,6 +13,29 @@ body {
     overflow-x: initial !important;
 }
 
+@media only screen and (max-width: 1026px) {
+  .special-container {
+      display: none;
+  }
+}
+
+ @media only screen and (min-width: 1026px) {
+  .phone-container {
+      display: none;
+  }
+} 
+
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-30px);
+  }
+}
+
+
 #stars {
   width: 1px;
   height: 1px;
@@ -278,12 +301,12 @@ img {
 .shopig{
 
   margin-top: 60px;
-  margin-left: 160px;
+  margin-left: 16%;
 }
 
 .service{
   vertical-align: middle;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 
 .shopcaption{
@@ -621,9 +644,9 @@ footer ul li {
 }
 
 .portfoliopic{
-    margin-left: 50px;
+    margin-left: 13%;
     /* margin-top: 30px; */
-    max-width: 70%;
+    /* max-width: 70%; */
     z-index: 3;
     display: inline-block;
   vertical-align: middle;
@@ -660,7 +683,7 @@ footer ul li {
   font-weight: 500;
   font-size: 5rem;
   letter-spacing: 2px;
-  margin-top: 80px;
+  padding: 30px;
   /* margin-bottom: 400px; */
 }
 
@@ -826,6 +849,7 @@ color: #FFFFFF;
   height: 100%;
   animation: rotate 12s infinite linear;
   position: absolute;
+  /* overflow: hidden; */
 }
 
 .planet-container {
