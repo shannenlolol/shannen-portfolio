@@ -674,6 +674,13 @@ footer ul li {
   color: #FFFFFF;
 }
 
+.experience {
+  color: white;
+  font-size: 16px;
+  font-weight: 60;
+  font-family: 'Tahoma', sans-serif;
+}
+
 .title {
   color: #FFF;
   text-align: center;
@@ -707,19 +714,6 @@ footer ul li {
   margin-top: 20px;
   margin-right: 30px;
 }
-
-/* .section-connector {
-  position: relative;} */
-
-/* .section-connector::after {
-  content: '';
-  width: 2px;
-  height: 100px;
-  background-color: var( --c-dark);
-  position: absolute;
-  top: -50px;
-  left: 50%;
-} */
 
 .section-padding {
   padding-top: 120px;
