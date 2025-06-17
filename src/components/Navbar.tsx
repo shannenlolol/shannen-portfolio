@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import Collapse from 'bootstrap/js/dist/collapse';
 
 const Navbar = () => {
   // Collapse navbar manually when a link is clicked
@@ -10,7 +11,7 @@ const Navbar = () => {
       link.addEventListener('click', () => {
         // If the navbar is expanded, collapse it
         if (navbarCollapse?.classList.contains('show')) {
-          new bootstrap.Collapse(navbarCollapse).hide();
+          new Collapse(navbarCollapse).hide();
         }
       });
     });
@@ -19,7 +20,7 @@ const Navbar = () => {
       navLinks.forEach(link => {
         link.removeEventListener('click', () => {
           if (navbarCollapse?.classList.contains('show')) {
-            new bootstrap.Collapse(navbarCollapse).hide();
+          new Collapse(navbarCollapse).hide();
           }
         });
       });

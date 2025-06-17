@@ -1,5 +1,5 @@
 // src/components/Education.tsx
-import React from 'react';
+;
 
 const Education = () => {
   return (

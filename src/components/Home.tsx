@@ -1,6 +1,4 @@
 // src/components/Home.tsx
-import React from "react";
-
 const Home = () => {
   return (
     <section id='home' className='section-padding section-connector' style={{ marginTop: '10%' }}>

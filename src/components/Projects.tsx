@@ -1,5 +1,5 @@
 // src/components/Projects.tsx
-import React from 'react';
+;
 
 const Projects = () => {
   return (

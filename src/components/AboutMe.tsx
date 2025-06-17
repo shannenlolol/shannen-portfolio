@@ -1,5 +1,5 @@
 // src/components/AboutMe.tsx
-import React from 'react';
+;
 import { useEffect } from 'react';
 
 function ElfsightWidget() {
