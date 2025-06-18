@@ -810,7 +810,7 @@ p {
 .project {
   position: relative;
   overflow: hidden;
-  margin: 5rem auto;
+  margin: 2rem auto;
   width: 80%;
 }
 
@@ -1314,7 +1314,6 @@ p {
   height: auto;
 }
 
-
 /* Scale elfsight widget to full width of container */
 .elfsight-app-7363d9f9-611d-4270-bd29-de32e5d216bf {
   width: 100% !important;
@@ -1327,7 +1326,9 @@ p {
   width: 100% !important;
   max-width: 100% !important;
 }
-body, html, * {
+body,
+html,
+* {
   -webkit-user-modify: read-only !important;
   user-select: text !important;
   caret-color: transparent !important; /* hides the blinking cursor */
@@ -1343,4 +1344,12 @@ footer a {
 
 footer a:hover {
   color: #ddd;
+}
+form input,
+form textarea,
+form select {
+  -webkit-user-modify: read-write !important;
+  user-select: auto !important;
+  caret-color: auto !important;
+  color: #000 !important; /* Optional: ensure text is visible */
 }

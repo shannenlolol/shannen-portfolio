@@ -1,10 +1,14 @@
 // src/components/Home.tsx
 const Home = () => {
   return (
-    <section id='home' className='section-padding section-connector' style={{ marginTop: '10%' }}>
-        <div id='stars' />
-        <div id='stars2' />
-        <div id='stars3' />
+    <section
+      id='home'
+      className='section-padding section-connector'
+      style={{ marginTop: "10%" }}
+    >
+      <div id='stars' />
+      <div id='stars2' />
+      <div id='stars3' />
       <div className='title' data-aos='fade-up'>
         <span>Hello, I'm Shannen.</span>
       </div>
@@ -29,10 +33,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <div
-        className='phone-container'
-
-      >
+      <div className='phone-container'>
         <img
           style={{
             width: "80%",
