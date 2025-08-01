@@ -65,7 +65,7 @@ const AboutMe = () => {
                 }}
               >
                 <img
-                  src='/assets/images/profilepic.png'
+                  src='/assets/images/profilepic.jpeg'
                   alt='Profile'
                   className='img-fluid rounded-circle'
                 />

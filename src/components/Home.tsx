@@ -4,12 +4,11 @@ const Home = () => {
     <section
       id='home'
       className='section-padding section-connector'
-      style={{ marginTop: "10%" }}
     >
       <div id='stars' />
       <div id='stars2' />
       <div id='stars3' />
-      <div className='title' data-aos='fade-up'>
+      <div className='title' data-aos='fade-up' style={{ marginTop: "10%" }}>
         <span>Hello, I'm Shannen.</span>
       </div>
       <div className='special-container'>

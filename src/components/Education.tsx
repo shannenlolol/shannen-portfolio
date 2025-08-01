@@ -65,7 +65,7 @@ const Education = () => {
             {/* AWS Badge */}
             <div
               className='service border-hover shadow rounded-5 bg-dark'
-              style={{ padding: "8%" }}
+              style={{ padding: "8%", zIndex: 9999  }}
             >
               <div className='d-flex align-items-center mb-3 gap-3'>
                 <img
