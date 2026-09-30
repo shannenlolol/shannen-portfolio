@@ -4,7 +4,7 @@ export const experiences = [
     logo: "/assets/logos/st-engineering.png",
     company: "ST Engineering",
     role: "Software Engineer",
-    period: "Sep 2025 — Present",
+    period: "Sep 2025 - Present",
     field: "Platforms & infrastructure",
     summary:
       "Making complex applications easier to build, integrate, and deploy.",
@@ -45,7 +45,7 @@ export const experiences = [
     logo: "/assets/logos/dso.png",
     company: "DSO National Laboratories",
     role: "Machine Learning Engineer Intern",
-    period: "Jul 2024 — Dec 2024",
+    period: "Jul 2024 - Dec 2024",
     field: "Applied machine learning",
     summary:
       "Teaching a team of agents to work together through reinforcement learning.",
@@ -80,7 +80,7 @@ export const experiences = [
     logo: "/assets/logos/continental.png",
     company: "Continental Automotive",
     role: "Software Engineer Intern",
-    period: "Jul 2023 — Dec 2023",
+    period: "Jul 2023 - Dec 2023",
     field: "Robotics & connected systems",
     summary:
       "Connecting autonomous robots, from fleet dashboard to live delivery.",
@@ -120,7 +120,7 @@ export const experiences = [
     logo: "/assets/logos/amaris-ai.png",
     company: "AMARIS.AI",
     role: "Software Developer Intern",
-    period: "Jul 2022 — Dec 2022",
+    period: "Jul 2022 - Dec 2022",
     field: "Full-stack product development",
     summary:
       "Building a more reliable AI-powered paint visualisation experience.",

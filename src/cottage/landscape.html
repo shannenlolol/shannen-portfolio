@@ -1,0 +1,243 @@
+    <div class="sky"></div>
+
+    <svg class="scene" id="scene" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" role="group"
+      aria-label="Illustrated countryside with a cottage on a hill, a garden robot, and a wooden signpost. The light changes with the time-of-day slider.">
+      <defs>
+        <mask id="moon-cutout" maskUnits="userSpaceOnUse" x="-32" y="-32" width="64" height="64">
+          <circle r="30" fill="white" />
+          <circle cx="13" cy="-6" r="26" fill="black" />
+        </mask>
+        <radialGradient id="glowY">
+          <stop offset="0" stop-color="#FFD98A" stop-opacity=".95" />
+          <stop offset="1" stop-color="#FFD98A" stop-opacity="0" />
+        </radialGradient>
+        <g id="leaf">
+          <path class="fleaf" d="M0 0 C 8 -13 26 -17 42 -5 C 28 8 9 10 0 0 Z" />
+          <path d="M2 -1 C 14 -4 26 -5 38 -5" fill="none" style="stroke:var(--leafS)" stroke-width=".9"
+            stroke-linecap="round" />
+        </g>
+        <g id="pine">
+          <path class="fpine" d="M0 -40 L11 -18 L5 -18 L15 2 L-15 2 L-5 -18 L-11 -18 Z" />
+          <rect class="fpine" x="-2" y="1" width="4" height="7" />
+        </g>
+      </defs>
+
+      <g id="stars"></g>
+
+      <g class="par" data-a="5">
+        <g id="sun">
+          <circle class="sc" r="120" opacity=".10" />
+          <circle class="sc" r="72" opacity=".2" />
+          <circle class="sc" r="36" />
+        </g>
+        <g id="moon">
+          <circle r="30" fill="#F6F2DE" mask="url(#moon-cutout)" />
+        </g>
+      </g>
+
+      <g class="par" data-a="8">
+        <g transform="translate(330 250) scale(1.2)">
+          <g class="drift">
+            <g class="cloud">
+              <ellipse class="fcloud" cx="0" cy="0" rx="60" ry="16" />
+              <ellipse class="fcloud" cx="-26" cy="-10" rx="28" ry="16" />
+              <ellipse class="fcloud" cx="14" cy="-16" rx="34" ry="20" />
+              <ellipse class="fcloud" cx="42" cy="-6" rx="24" ry="13" />
+            </g>
+          </g>
+        </g>
+        <g transform="translate(860 190)">
+          <g class="drift" style="animation-duration:120s">
+            <g class="cloud">
+              <ellipse class="fcloud" cx="0" cy="0" rx="60" ry="16" />
+              <ellipse class="fcloud" cx="-26" cy="-10" rx="28" ry="16" />
+              <ellipse class="fcloud" cx="14" cy="-16" rx="34" ry="20" />
+              <ellipse class="fcloud" cx="42" cy="-6" rx="24" ry="13" />
+            </g>
+          </g>
+        </g>
+        <g transform="translate(1220 330) scale(.8)">
+          <g class="drift" style="animation-duration:100s">
+            <g class="cloud">
+              <ellipse class="fcloud" cx="0" cy="0" rx="60" ry="16" />
+              <ellipse class="fcloud" cx="-26" cy="-10" rx="28" ry="16" />
+              <ellipse class="fcloud" cx="14" cy="-16" rx="34" ry="20" />
+              <ellipse class="fcloud" cx="42" cy="-6" rx="24" ry="13" />
+            </g>
+          </g>
+        </g>
+      </g>
+
+      <g class="par" data-a="12">
+        <path id="hFar"
+          d="M-80 650 C 140 600, 340 650, 540 610 C 760 566, 940 500, 1120 500 C 1260 500, 1380 470, 1520 440 L1520 900 L-80 900Z" />
+      </g>
+
+      <g class="par" data-a="20">
+        <path id="hMid"
+          d="M-80 700 C 120 668, 320 706, 520 680 C 720 654, 900 596, 1090 566 C 1240 544, 1360 560, 1520 540 L1520 900 L-80 900Z" />
+        <g id="pines"></g>
+        <g transform="translate(1090 566)">
+          <ellipse cx="0" cy="2" rx="54" ry="5" fill="rgba(0,0,0,.14)" />
+          <rect x="16" y="-78" width="12" height="28" fill="#9C8F78" />
+          <rect class="fwall" x="-38" y="-42" width="76" height="42" />
+          <path class="froof" d="M-47 -39 L0 -80 L47 -39 Z" />
+          <path class="fdoor" d="M-9 0 V-16 A9 9 0 0 1 9 -16 V0 Z" />
+          <rect id="win1" x="16" y="-34" width="14" height="14" rx="2" />
+          <rect id="win2" x="-30" y="-34" width="14" height="14" rx="2" />
+          <path d="M23 -34V-20M16 -27H30M-23 -34V-20M-30 -27H-16" style="stroke:var(--roof)" stroke-width="1.4"
+            fill="none" />
+          <circle id="wg1" cx="23" cy="-27" r="46" fill="url(#glowY)" opacity="0" />
+          <circle id="wg2" cx="-23" cy="-27" r="46" fill="url(#glowY)" opacity="0" />
+          <circle class="smoke fcloud" cx="22" cy="-84" r="5" />
+          <circle class="smoke fcloud" cx="22" cy="-84" r="6" style="animation-delay:2s" />
+          <circle class="smoke fcloud" cx="22" cy="-84" r="5" style="animation-delay:4s" />
+        </g>
+      </g>
+
+      <g class="par" data-a="30">
+        <path id="hNear"
+          d="M-80 800 C 180 768, 400 812, 640 790 C 860 770, 1080 750, 1280 772 C 1380 782, 1460 770, 1520 762 L1520 900 L-80 900Z" />
+        <g id="grass"></g>
+        <g id="flowers"></g>
+
+        <g id="signpost" transform="translate(430 840) scale(1.08) translate(-210 -824)">
+          <rect class="fwood2" x="203" y="606" width="14" height="218" rx="2" />
+          <ellipse cx="210" cy="824" rx="26" ry="5" fill="rgba(0,0,0,.18)" />
+          <a class="plankA" href="/education" aria-label="Education" data-distance="-1"><g transform="rotate(1.5 210 628)"><polygon class="fwood" points="208,614 96,614 76,628 96,642 208,642"/><text class="signt" x="198" text-anchor="end" y="633">education</text></g></a>
+          <a class="plankA" href="/experience" aria-label="Experience" data-distance="1"><g transform="rotate(-1.5 210 662)"><polygon class="fwood" points="212,648 324,648 344,662 324,676 212,676"/><text class="signt" x="222" y="667">experience</text></g></a>
+          <a class="plankA" href="/resume" aria-label="Resume" data-distance="-2"><g transform="rotate(1.5 210 696)"><polygon class="fwood" points="208,682 58,682 38,696 58,710 208,710"/><text class="signt" x="198" text-anchor="end" y="701">resume</text></g></a>
+          <a class="plankA" href="/projects" aria-label="Projects" data-distance="2"><g transform="rotate(-1.5 210 730)"><polygon class="fwood" points="212,716 362,716 382,730 362,744 212,744"/><text class="signt" x="222" y="735">projects</text></g></a>
+          <a class="plankA" href="/contact" aria-label="Contact" data-distance="-3"><g transform="rotate(1.5 210 764)"><polygon class="fwood" points="208,750 20,750 0,764 20,778 208,778"/><text class="signt" x="198" text-anchor="end" y="769">contact</text></g></a>
+          <a class="plankA" href="/skills" aria-label="Skills" data-distance="3"><g transform="rotate(-1.5 210 798)"><polygon class="fwood" points="212,784 400,784 420,798 400,812 212,812"/><text class="signt" x="222" y="803">skills</text></g></a>
+        </g>
+      </g>
+
+      <g class="par" data-a="40">
+        <g id="robot" transform="translate(880 812) scale(1.15)">
+          <ellipse cx="34" cy="2" rx="72" ry="6" fill="rgba(0,0,0,.16)" />
+
+          <g transform="translate(92 0)">
+            <path class="fpot" d="M-17 -24 L17 -24 L13 0 L-13 0 Z" />
+            <rect class="fpot2" x="-19" y="-30" width="38" height="8" rx="3" />
+            <ellipse cx="0" cy="-30" rx="15" ry="3" fill="#4A3626" />
+            <g class="pl g1">
+              <path class="sstem" d="M0 -30 L0 -46" stroke-width="3" stroke-linecap="round" fill="none" />
+              <g transform="translate(0 -44) rotate(-40) scale(.5)">
+                <use href="#leaf" />
+              </g>
+            </g>
+            <g class="pl g2">
+              <path class="sstem" d="M0 -30 C 2 -46, -2 -56, 0 -68" stroke-width="3" stroke-linecap="round"
+                fill="none" />
+              <g transform="translate(0 -46) rotate(-35) scale(.7)">
+                <use href="#leaf" />
+              </g>
+              <g transform="translate(0 -54) rotate(-145) scale(.65)">
+                <use href="#leaf" />
+              </g>
+              <circle class="ff1" cx="0" cy="-71" r="4.5" />
+            </g>
+            <g class="pl g3">
+              <path class="sstem" d="M0 -30 C 2 -46, -2 -58, 0 -72" stroke-width="3" stroke-linecap="round"
+                fill="none" />
+              <g transform="translate(0 -44) rotate(-35) scale(.75)">
+                <use href="#leaf" />
+              </g>
+              <g transform="translate(0 -54) rotate(-145) scale(.7)">
+                <use href="#leaf" />
+              </g>
+              <g transform="translate(0 -78)">
+                <g class="ff1" stroke="#9A466C" stroke-width=".8">
+                  <ellipse cx="0" cy="-8" rx="5.5" ry="9" />
+                  <ellipse cx="0" cy="-8" rx="5.5" ry="9" transform="rotate(72)" />
+                  <ellipse cx="0" cy="-8" rx="5.5" ry="9" transform="rotate(144)" />
+                  <ellipse cx="0" cy="-8" rx="5.5" ry="9" transform="rotate(216)" />
+                  <ellipse cx="0" cy="-8" rx="5.5" ry="9" transform="rotate(288)" />
+                </g>
+                <circle r="4" fill="#E7CB6B" />
+              </g>
+            </g>
+          </g>
+
+          <g class="drops" id="drops">
+            <circle cx="86" cy="-46" r="2.4" />
+            <circle cx="90" cy="-46" r="2.4" style="animation-delay:.12s" />
+            <circle cx="88" cy="-46" r="2.4" style="animation-delay:.24s" />
+            <circle cx="92" cy="-46" r="2.4" style="animation-delay:.36s" />
+            <circle cx="85" cy="-46" r="2.4" style="animation-delay:.48s" />
+            <circle cx="91" cy="-46" r="2.4" style="animation-delay:.6s" />
+          </g>
+
+          <g class="botbtn" id="botbtn" role="button" tabindex="0"
+            aria-label="Garden robot. Activate to water the seedling.">
+            <rect class="hit" x="-50" y="-170" width="150" height="176" rx="14" />
+            <g class="bob">
+              <rect class="fr2" x="-24" y="-9" width="20" height="9" rx="4" />
+              <rect class="fr2" x="4" y="-9" width="20" height="9" rx="4" />
+              <path class="sr2" d="M-32 -66 C -46 -56, -46 -40, -38 -30" stroke-width="9" fill="none"
+                stroke-linecap="round" />
+              <rect class="fr1 robot-body" x="-32" y="-84" width="64" height="76" rx="18" />
+              <rect class="fr2" x="-22" y="-70" width="44" height="30" rx="9" />
+              <circle id="lampG" cx="0" cy="-55" r="16" fill="url(#glowY)" opacity="0" />
+              <circle id="lamp" cx="0" cy="-55" r="6.5" />
+              <g class="fr3">
+                <circle cx="-26" cy="-16" r="2" />
+                <circle cx="26" cy="-16" r="2" />
+              </g>
+              <path class="sr2" d="M32 -70 C 44 -68, 46 -64, 44 -58" stroke-width="9" fill="none"
+                stroke-linecap="round" />
+              <g class="can" id="can">
+                <path class="sr3" d="M40 -68 C 40 -82, 58 -82, 58 -68" stroke-width="3" fill="none"
+                  stroke-linecap="round" />
+                <rect class="fr3" x="36" y="-68" width="26" height="20" rx="5" />
+                <path class="sr3" d="M62 -60 L82 -76" stroke-width="5" stroke-linecap="round" />
+                <circle class="fr3" cx="84" cy="-77" r="4" />
+              </g>
+              <g id="head">
+                <g class="sprout" id="sprout">
+                  <path class="sstem" d="M0 -134 C 0 -144, 2 -150, 0 -158" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+                  <g transform="translate(0 -146) rotate(-35) scale(.55)">
+                    <use href="#leaf" />
+                  </g>
+                  <g transform="translate(0 -146) rotate(-145) scale(.55)">
+                    <use href="#leaf" />
+                  </g>
+                  <circle class="ff1" cx="0" cy="-160" r="4.5" />
+                </g>
+                <rect class="fr1" x="-30" y="-134" width="60" height="46" rx="16" />
+                <rect class="fface" x="-23" y="-127" width="46" height="30" rx="11" />
+                <circle class="fr3" cx="-32" cy="-111" r="5" />
+                <circle class="fr3" cx="32" cy="-111" r="5" />
+                <g id="eyes">
+                  <g transform="translate(-9 -112)">
+                    <g class="eye">
+                      <circle r="6.5" style="fill:var(--eye)" />
+                      <circle class="pup" r="2.6" fill="#1a241a" />
+                    </g>
+                  </g>
+                  <g transform="translate(9 -112)">
+                    <g class="eye">
+                      <circle r="6.5" style="fill:var(--eye)" />
+                      <circle class="pup" r="2.6" fill="#1a241a" />
+                    </g>
+                  </g>
+                </g>
+                <path d="M-5 -102 Q0 -98 5 -102" fill="none" style="stroke:var(--eye)" stroke-width="1.6"
+                  stroke-linecap="round" />
+              </g>
+            </g>
+          </g>
+
+          <g class="bubble" id="bubble" role="status" aria-live="polite">
+            <rect x="-96" y="-250" width="212" height="58" rx="14" fill="#FBF7EA" stroke="rgba(34,43,29,.25)" />
+            <path d="M4 -193 L16 -177 L24 -193Z" fill="#FBF7EA" />
+            <text class="say" id="b1" x="10" y="-227"></text>
+            <text class="say" id="b2" x="10" y="-207"></text>
+          </g>
+        </g>
+      </g>
+    </svg>
+
+    <canvas class="flies" id="flies" aria-hidden="true"></canvas>
