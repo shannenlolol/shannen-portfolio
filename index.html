@@ -1,40 +1,23 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#fff9e8" />
-    <script>
-      (() => {
-        let theme;
-        try {
-          theme = localStorage.getItem("portfolio-theme");
-        } catch {}
-        if (theme !== "light" && theme !== "dark")
-          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-        document.documentElement.dataset.theme = theme;
-        document
-          .querySelector('meta[name="theme-color"]')
-          .setAttribute("content", theme === "dark" ? "#282522" : "#fff9e8");
-      })();
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Shannen Lee - full-stack software engineer building applications, backend systems, and deployment infrastructure, with a background in machine learning and robotics."
-    />
-    <meta property="og:title" content="Shannen Lee - Software Engineer" />
-    <meta
-      property="og:description"
-      content="Ideas into working systems. Explore my work in full-stack engineering, machine learning, and robotics."
-    />
-    <meta property="og:type" content="website" />
-    <title>Shannen Lee — Software Engineer</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="theme-color" content="#fff9e8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Shannen Lee - full-stack software engineer building applications, backend systems, and deployment infrastructure, with a background in machine learning and robotics." />
+  <meta property="og:title" content="Shannen Lee - Software Engineer" />
+  <meta property="og:description"
+    content="Ideas into working systems. Explore my work in full-stack engineering, machine learning, and robotics." />
+  <meta property="og:type" content="website" />
+  <title>Shannen Lee - Software Engineer</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
