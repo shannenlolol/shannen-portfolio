@@ -1,51 +1,47 @@
-// src/components/Home.tsx
-const Home = () => {
+export default function Home() {
   return (
-    <section
-      id='home'
-      className='section-padding section-connector'
-    >
-      <div id='stars' />
-      <div id='stars2' />
-      <div id='stars3' />
-      <div className='title' data-aos='fade-up' style={{ marginTop: "10%" }}>
-        <span>Hello, I'm Shannen.</span>
-      </div>
-      <div className='special-container'>
-        <div className='planets-container'>
-          <div className='sun'></div>
-          {["first", "second", "third"].map((planet, idx) => (
-            <div
-              key={idx}
-              className='planet-index'
-              id={`${planet}-planet-index`}
-            >
-              <div className='route'>
-                <div
-                  className='planet-container'
-                  id={`${planet}-planet-container`}
-                >
-                  <div className='planet' id={`${planet}-planet`}></div>
-                </div>
-              </div>
-            </div>
-          ))}
+    <section className="hero" id="home">
+      <div className="hero-copy">
+        <h1>
+          <span className="hero-greeting">Hi, I’m Shannen.</span>I turn ideas
+          into
+          <br />
+          <span className="serif-accent">working systems.</span>
+        </h1>
+        <p className="hero-description">
+          I’m a software engineer building full-stack applications,
+          <br className="desktop-break" /> with a background in machine learning
+          and robotics.
+        </p>
+        <div className="hero-actions">
+          <a className="button hero-experience-button" href="/experience">
+            View experience
+          </a>
+          <a
+            className="text-link"
+            href="/assets/Shannen%20Lee%20Resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Resume
+          </a>
         </div>
       </div>
-      <div className='phone-container'>
-        <img
-          style={{
-            width: "80%",
-            maxWidth: "500px",
-            height: "auto",
-            animation: "mover 2s infinite alternate",
-          }}
-          src='/assets/images/spacecat.png'
-          alt='space cat'
-        />
+      <figure className="hero-portrait">
+        <span className="polaroid-tape" aria-hidden="true" />
+        <div className="hero-portrait-image">
+          <img
+            src="/assets/images/profilepic.jpeg"
+            alt="Shannen Lee"
+            fetchPriority="high"
+          />
+        </div>
+      </figure>
+      <div className="hero-bottom">
+        <span>COMPUTER SCIENCE, NTU</span>
+        <a href="#experience">Discover more ↓</a>
+        <span>BASED IN SINGAPORE</span>
       </div>
     </section>
   );
-};
-
-export default Home;
+}

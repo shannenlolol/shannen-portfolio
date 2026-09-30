@@ -1,88 +1,94 @@
-import { useEffect } from "react";
-import Collapse from "bootstrap/js/dist/collapse";
+import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
-const Navbar = () => {
-  // Collapse navbar manually when a link is clicked
-  useEffect(() => {
-    const navLinks = document.querySelectorAll(".nav-link");
-    const navbarCollapse = document.getElementById("navbarNav");
-
-    navLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        // If the navbar is expanded, collapse it
-        if (navbarCollapse?.classList.contains("show")) {
-          new Collapse(navbarCollapse).hide();
-        }
-      });
-    });
-
-    return () => {
-      navLinks.forEach((link) => {
-        link.removeEventListener("click", () => {
-          if (navbarCollapse?.classList.contains("show")) {
-            new Collapse(navbarCollapse).hide();
-          }
-        });
-      });
-    };
-  }, []);
-
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
   return (
-    <nav className='navbar navbar-expand-lg navbar-dark bg-dark fixed-top'>
-      <div className='container-fluid'>
-        <a className='navbar-brand' href='#'>
-          <img
-            className='signature'
-            src='/assets/images/Shannen signature.png'
-            alt='Shannen signature'
-          />
-        </a>
+    <header className="site-header">
+      <a href="/" className="wordmark" aria-label="Shannen Lee home">
+        shannen lee
+      </a>
+      <div className="header-controls">
+        <ThemeToggle />
         <button
-          className='navbar-toggler'
-          type='button'
-          data-bs-toggle='collapse'
-          data-bs-target='#navbarNav'
-          aria-controls='navbarNav'
-          aria-expanded='false'
-          aria-label='Toggle navigation'
+          className="menu-toggle"
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-expanded={open}
+          aria-controls="main-nav"
+          onClick={() => setOpen(!open)}
         >
-          <span className='navbar-toggler-icon'></span>
+          {open ? "Close −" : "Menu +"}
         </button>
-        <div
-          className='collapse navbar-collapse justify-content-end'
-          id='navbarNav'
-        >
-          <ul className='navbar-nav'>
-            <li className='nav-item'>
-              <a className='nav-link' href='#aboutme'>
-                About Me <i className='fas fa-user'></i>
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link' href='#education'>
-                Education <i className='fas fa-graduation-cap'></i>
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link' href='#experience'>
-                Experiences <i className='fas fa-briefcase'></i>
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link' href='#projects'>
-                Projects <i className='fas fa-code'></i>
-              </a>
-            </li>
-            <li className='nav-item'>
-              <a className='nav-link' href='#contact'>
-                Contact <i className='fas fa-envelope'></i>
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
+      <nav
+        id="main-nav"
+        className={open ? "navigation is-open" : "navigation"}
+        aria-label="Main navigation"
+      >
+        <a
+          href="/experience"
+          aria-current={
+            /^\/experience(?:\/|$)/.test(window.location.pathname)
+              ? "page"
+              : undefined
+          }
+          onClick={() => setOpen(false)}
+        >
+          Experience
+        </a>
+        <a
+          href="/projects"
+          aria-current={
+            window.location.pathname.replace(/\/$/, "") === "/projects"
+              ? "page"
+              : undefined
+          }
+          onClick={() => setOpen(false)}
+        >
+          Projects
+        </a>
+        <a
+          href="/skills"
+          aria-current={
+            window.location.pathname.replace(/\/$/, "") === "/skills"
+              ? "page"
+              : undefined
+          }
+          onClick={() => setOpen(false)}
+        >
+          Skills
+        </a>
+        <a
+          href="/education"
+          aria-current={
+            window.location.pathname.replace(/\/$/, "") === "/education"
+              ? "page"
+              : undefined
+          }
+          onClick={() => setOpen(false)}
+        >
+          Education
+        </a>
+        <a
+          href="/contact"
+          aria-current={
+            window.location.pathname.replace(/\/$/, "") === "/contact"
+              ? "page"
+              : undefined
+          }
+          onClick={() => setOpen(false)}
+        >
+          Contact
+        </a>
+        <a
+          className="nav-resume"
+          href="/assets/Shannen%20Lee%20Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Resume
+        </a>
+      </nav>
+    </header>
   );
-};
-
-export default Navbar;
+}
