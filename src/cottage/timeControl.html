@@ -1,0 +1,13 @@
+<div class="time-control">
+  <button class="time-trigger" type="button" aria-expanded="false" aria-controls="time-popover" aria-haspopup="dialog" aria-label="Time of day">
+    <span class="time-icon" aria-hidden="true"><svg class="time-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="time-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></span>
+    <span class="time-label">Day</span>
+    <svg class="time-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <div class="time-popover" id="time-popover" role="dialog" aria-label="Time of day" hidden>
+    <div class="time-preview" aria-hidden="true"></div>
+    <label class="time-caption" for="nav-time">Time of day <output class="time-value" for="nav-time">Day</output></label>
+    <input id="nav-time" class="time-range" type="range" min="0" max="1000" value="250">
+    <div class="time-presets"><button type="button" data-time="0.25">Day</button><button type="button" data-time="0.5">Sunset</button><button type="button" data-time="1">Night</button></div>
+  </div>
+</div>
