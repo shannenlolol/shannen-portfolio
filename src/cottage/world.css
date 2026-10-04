@@ -36,9 +36,11 @@ body{isolation:isolate}
 .cottage-footer{position:relative;z-index:1}
 .resume-page{max-width:1048px;width:calc(100% - 48px);margin:40px auto 100px}
 .resume-page h1{margin:20px 0 24px}
-.resume-page>p{max-width:42ch;font-size:20px;color:var(--muted)}
-.resume-page .button{display:inline-block;margin:28px 24px 30px 0}
-.resume-document{display:block;width:100%;height:80svh;min-height:500px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.resume-intro{max-width:42ch;font-size:20px;line-height:1.7;color:var(--muted)}
+.resume-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:28px 0 32px}
+/* A full A4 page, plus room for the native viewer toolbar and page margins. */
+.resume-viewer{position:relative;aspect-ratio:595/842;padding-top:80px;box-sizing:content-box}
+.resume-document{position:absolute;inset:0;display:block;width:100%;height:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
 .still-landscape .par{translate:0!important;transition:none}
 @media(max-width:1100px){.world-view{padding-top:150px}.world-view.at-home{padding-top:0}}
 @media(max-width:700px){
