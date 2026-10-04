@@ -322,11 +322,6 @@ button:focus-visible {
   color: var(--accent);
 }
 
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-}
 
 .project-image {
   height: 250px;
@@ -356,9 +351,6 @@ button:focus-visible {
   transition: transform 0.3s;
 }
 
-.project-card:hover img {
-  transform: scale(1.04);
-}
 
 .project-caption {
   padding: 22px 0;
@@ -777,10 +769,6 @@ button:focus-visible {
     gap: 10px;
     text-align: left;
   }
-  .project-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
   .project-image {
     height: 300px;
     padding: 30px;
@@ -876,12 +864,6 @@ button:focus-visible {
   }
 }
 
-.project-action {
-  display: inline-block;
-  margin-top: 16px;
-  font-size: 12px;
-  color: var(--accent);
-}
 
 /* Theme tokens are shared by the home, experience, and skills pages. */
 :root[data-theme="dark"] {
