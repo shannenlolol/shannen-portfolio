@@ -10,8 +10,8 @@
   --accent: #2f5a2a;
   --line: #1e2a1b30;
   --surface: #f5f4df94;
-  --button: #9a466c;
-  --button-hover: #823a5b;
+  --button: #365b35;
+  --button-hover: #284627;
   --project-one: #e6edd3;
   --project-two: #e8dcc4;
   --project-three: #d9e3c6;
@@ -27,8 +27,8 @@
   --accent: #b7d9a0;
   --line: #f1eedc30;
   --surface: #233135;
-  --button: #9a466c;
-  --button-hover: #823a5b;
+  --button: #b7d9a0;
+  --button-hover: #c8e4b6;
   --project-one: #2d3e38;
   --project-two: #3a3930;
   --project-three: #263b35;
@@ -76,15 +76,16 @@ main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; 
 .eyebrow { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: .1em; color: var(--accent); }
 .experience-overview-heading > p:last-child,.education-page-heading > p:last-child,
 .skills-intro,.contact-page-intro > p:not(.eyebrow) { font-size: 20px; line-height: 1.7; }
-.text-link,.back-link { font-size: 17px; text-decoration: underline dotted; text-underline-offset: 6px; }
-.text-link:hover,.back-link:hover { text-decoration-style: solid; }
+.text-link,.back-link { font-size: 17px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 18px; min-height: 44px; }
+.text-link:hover,.back-link:hover { background: var(--surface); border-color: var(--accent); }
 .button { border-radius: 999px; font: 500 18px/1.5 var(--sans); padding: 12px 26px; }
 .button-primary { background: var(--button); color: #fff; }
+[data-theme="dark"] .button-primary { color: #1e2a1b; }
 .button-primary:hover { background: var(--button-hover); }
 .experience-overview-list { display: grid; gap: 18px; }
 .experience-overview-card,.experience-overview-card:last-child {
   border: 1px solid var(--line);
-  border-radius: 16px 5px 16px 5px;
+  border-radius: 18px;
   padding: 30px;
   background: var(--surface);
 }
@@ -104,11 +105,11 @@ main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; 
   background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 16px;
 }
 .metrics-panel strong { letter-spacing: -.025em; color: var(--accent); }
-.contributions article { border-top-style: dotted; }
+.contributions article { border-top-style: solid; }
 .contributions h3 { font-size: 22px; letter-spacing: 0; }
 .contributions article p,.large-copy { font-size: 19px; }
 .contribution-number { font-size: 15px; }
-.experience-gallery figure,.education-gallery a { padding: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.experience-gallery figure,.education-gallery a { padding: 7px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
 .experience-gallery figcaption,.education-gallery figcaption { font-size: 15px; }
 .project-grid { gap: 24px; }
 .project-card { overflow: hidden; border: 1px solid var(--line); background: var(--surface); border-radius: 16px 16px 6px 6px; }
@@ -118,25 +119,24 @@ main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; 
 .project-caption > p:not(.eyebrow) { font-size: 18px; line-height: 1.65; }
 .project-caption .eyebrow { font-size: 12px; letter-spacing: .06em; }
 .project-action { font-size: 16px; color: var(--accent); }
-.education-record { border-top-style: dotted; }
+.education-record { border-top-style: solid; }
 .education-record h2 { font-size: 27px; }
 .education-record h3 { font: 700 19px/1.5 var(--sans); letter-spacing: 0; }
 .education-record p:not(.eyebrow) { font-size: 18px; }
 .skills-intro { max-width: 42ch; margin-top: 22px; }
 .garden-toolkit { margin: 48px 0 0; }
-.toolkit-group { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 28px 0; border-top: 1px dotted var(--line); }
-.toolkit-group:last-child { border-bottom: 1px dotted var(--line); }
-.toolkit-group dt { font-family: var(--serif); font-size: 23px; line-height: 1.35; color: var(--accent); }
-.toolkit-group dt span { display: block; font: 400 13px var(--sans); color: var(--muted); margin-bottom: 10px; }
+.toolkit-group { display: grid; grid-template-columns: 220px 1fr; gap: 30px; padding: 28px 0; border-top: 1px solid var(--line); }
+.toolkit-group:last-child { border-bottom: 1px solid var(--line); }
+.toolkit-group dt { font-family: var(--sans); font-weight: 700; font-size: 22px; line-height: 1.35; color: var(--ink); }
 .toolkit-group dd { margin: 0; align-self: center; }
 .toolkit-group ul { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; gap: 9px; }
-.toolkit-group li { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; font-size: 18px; padding: 4px 14px; }
+.toolkit-group li { background: color-mix(in srgb,var(--accent) 9%,var(--surface)); border: 1px solid transparent; border-radius: 999px; font-size: 16px; padding: 5px 13px; }
 .skills-footnote { font-size: 17px; }
 .contact-page { gap: 64px; }
-.contact-form-panel { border-radius: 18px 5px 18px 5px; background: var(--surface); }
+.contact-form-panel { border-radius: 18px; border: 1px solid var(--line); background: color-mix(in srgb,var(--page) 42%,var(--surface)); }
 .contact-form-panel h2 { font-size: 30px; }
 .contact-field label { font-size: 17px; }
-.contact-field input,.contact-field textarea { font-family: var(--sans); font-size: 18px; border-radius: 8px; background: var(--page); }
+.contact-field input,.contact-field textarea { font-family: var(--sans); font-size: 18px; border-radius: 8px; background: var(--surface); border-color: var(--line); transition: border-color .2s,box-shadow .2s; }
 .field-hint,.form-note { font-size: 15px; }
 ::selection { background: #bdce97; color: #1e2a1b; }
 [data-theme="dark"] ::selection { background: #526344; color: #f1eedc; }
@@ -164,7 +164,16 @@ main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; 
   .project-grid { grid-template-columns: 1fr; }
   .project-image { height: 260px; }
   .toolkit-group { grid-template-columns: 1fr; gap: 20px; }
-  .toolkit-group dt span { display: inline; margin-right: 12px; }
   .contact-page { grid-template-columns: 1fr; }
   .detail-body { gap: 35px; }
 }
+
+/* Quiet depth and consistent edges across the reading pages. */
+.experience-overview-card{transition:border-color .2s,background-color .2s,transform .2s}
+.experience-overview-card:hover{background:color-mix(in srgb,var(--accent) 5%,var(--surface));transform:translateY(-2px)}
+.overview-tools li{background:color-mix(in srgb,var(--accent) 8%,var(--surface));border-color:transparent}
+.contact-field input:focus,.contact-field textarea:focus{outline:2px solid var(--accent);outline-offset:2px;border-color:transparent}
+.education-page-grid{gap:36px}
+.education-gallery img,.experience-gallery img{border-radius:6px}
+.text-link:focus-visible,.button:focus-visible,.project-story a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.experience-overview-card{transition:none}.experience-overview-card:hover{transform:none}}
