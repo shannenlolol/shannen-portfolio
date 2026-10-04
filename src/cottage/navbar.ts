@@ -14,5 +14,13 @@ export function mountNavbar(host: HTMLElement, path: string) {
       link.setAttribute("aria-current", "page");
     }
   });
-  return mountTimeControl(host.querySelector<HTMLElement>(".time-control-host")!);
+  const navbar = host.querySelector<HTMLElement>(".cottage-navbar")!;
+  const onScroll = () => navbar.classList.toggle("is-scrolled", window.scrollY > 16);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  const unmountControl = mountTimeControl(host.querySelector<HTMLElement>(".time-control-host")!);
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+    unmountControl();
+  };
 }
