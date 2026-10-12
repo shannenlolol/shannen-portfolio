@@ -1,116 +1,57 @@
-// src/components/Projects.tsx
-const Projects = () => {
-  return (
-    <section id='projects' className='section-padding section-connector'>
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col-12' data-aos='fade-up' data-aos-delay='100'>
-            <div className='section-title text-center'>
-              <br />
-              <h1>Projects</h1>
-              <div className='line'></div>
-              <br />
-              <p>Showcasing some of my personal projects that I have done.</p>
-            </div>
-          </div>
-        </div>
+import { useState } from "react";
+import { projects } from "../data/projects";
+import "../cottage/projects.css";
 
-        <div className='row g-1'>
-          <div
-            className='col-12 col-sm-6 col-lg-4 mb-2'
-            data-aos='fade-up'
-            data-aos-delay='200'
-          >
-            <div className='project rounded-4 overflow-hidden shadow-sm'>
-              <img
-                src='/assets/images/mealmacroinsights.jpeg'
-                alt='Meal Macro Insights'
-                className='img-fluid w-100'
-                style={{ borderRadius: "12px" }}
-              />
-              <div className='content p-2 text-center'>
-                <a
-                  href='https://github.com/shannenlolol/meal-macro-insights'
-                  className='btn btn-outline-light btn-sm'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  View Project
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className='col-lg-4 col-sm-6 mb-2'
-            data-aos='fade-up'
-            data-aos-delay='100'
-          >
-            <div className='project rounded-4 overflow-hidden shadow-sm'>
-              <img
-                src='/assets/images/background_removal.png'
-                alt='Image Editor'
-                className='img-fluid w-100'
-                style={{ borderRadius: "12px" }}
-              />
-              <div className='content p-2 text-center'>
-                <a
-                  href='https://shannenlolol.pythonanywhere.com/'
-                  className='btn btn-outline-light btn-sm'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  View Project
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className='col-lg-4 col-sm-6 mb-2'
-            data-aos='fade-up'
-            data-aos-delay='300'
-          >
-            <div className='project rounded-4 overflow-hidden shadow-sm'>
-              <img
-                src='/assets/images/grocery-guru.jpeg'
-                alt='Grocery Guru'
-                className='img-fluid w-100'
-                style={{ borderRadius: "12px" }}
-              />
-              <div className='content p-2 text-center'>
-                <a
-                  href='https://github.com/shannenlolol/grocery-guru'
-                  className='btn btn-outline-light btn-sm'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  View Project
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className='section-title text-center'
-          data-aos='fade-up'
-          data-aos-delay='100'
-        >
-          <p>View more projects here:</p>
-          <a
-            className='btn btn-light btn-sm'
-            role='button'
-            aria-pressed='true'
-            href='https://github.com/shannenlolol'
-            style={{ width: "30%" }}
-          >
-            <img src='/assets/images/github.png' alt='GitHub' />
-          </a>
-        </div>
+function EditorPreview() {
+  const [after, setAfter] = useState(true);
+  return <figure className="project-preview editor-preview">
+    <div className="preview-topline">
+      <span>Background removal</span>
+      <div className="preview-switch" role="group" aria-label="Image Editor preview">
+        <button type="button" aria-pressed={!after} onClick={() => setAfter(false)}>Before</button>
+        <button type="button" aria-pressed={after} onClick={() => setAfter(true)}>After</button>
       </div>
-    </section>
-  );
-};
+    </div>
+    <div className="editor-preview-canvas">
+      <img src={`/assets/images/image-editor/${after ? "after" : "before"}.png`} alt={after ? "Image Editor with an apple isolated on a transparent background" : "Image Editor with the original apple photo on a green background"} loading="lazy" width="1920" height="960" />
+    </div>
+    <figcaption>One photo. A whole new background.</figcaption>
+  </figure>;
+}
 
-export default Projects;
+export default function Projects() {
+  return (
+    <main className="projects-page" id="main-content">
+      <header className="projects-heading">
+        <div>
+          <p className="eyebrow">Projects / Outside the day job</p>
+          <h1>Ideas, <span className="serif-accent">made real.</span></h1>
+          <p className="projects-intro">Small ideas, useful tools. A few things I’ve built to make everyday tasks a little easier.</p>
+        </div>
+        <a className="text-link" href="https://github.com/shannenlolol" target="_blank" rel="noreferrer">More on GitHub</a>
+      </header>
+      <div className="project-list">
+        {projects.map((project, index) => (
+          <article className={`project-story project-story-${project.slug}`} id={`project-${index + 1}`} key={project.slug} aria-labelledby={`${project.slug}-title`}>
+            {project.slug === "image-editor" ? <EditorPreview /> :
+              <figure className="project-preview">
+                <div className="preview-topline"><span>{project.kind}</span><span className="preview-number">0{index + 1}</span></div>
+                <div className="project-preview-image"><img src={`/assets/images/${project.image}`} alt={`${project.name} app screens`} loading="lazy" /></div>
+              </figure>
+            }
+            <div className="project-story-copy">
+              <p className="eyebrow">{project.kind}</p>
+              <h2 id={`${project.slug}-title`}>{project.name}</h2>
+              <p className="project-description">{project.description}</p>
+              <p className="project-detail">{project.detail}</p>
+              {project.technologies.length > 0 && <ul className="project-technologies" aria-label="Built with">{project.technologies.map(item => <li key={item}>{item}</li>)}</ul>}
+              <div className="project-links">
+                {project.links.map((link, i) => <a key={link.href} className={i === 0 ? "button button-primary" : "text-link"} href={link.href} target="_blank" rel="noreferrer" aria-label={`${link.label}: ${project.name}`}>{link.label}</a>)}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+  );
+}
