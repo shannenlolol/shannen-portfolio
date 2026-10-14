@@ -15,4 +15,5 @@
 .cottage-footer .footer-links a:hover .footer-icon{opacity:1;transform:translateY(-2px)}
 @media(prefers-reduced-motion:reduce){.cottage-footer .footer-icon{transition:none}.cottage-footer .footer-links a:hover .footer-icon{transform:none}}
 .cottage-footer small{display:block;margin:0;color:#bbb39e;font-size:.85rem;line-height:1.6}
-@media(max-width:600px){.cottage-footer-inner{gap:8px}}
+/* On phones the row wraps; keep the links first and drop © underneath. */
+@media(max-width:600px){.cottage-footer-inner{gap:8px}.cottage-footer small{order:1}}
