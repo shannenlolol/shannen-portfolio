@@ -1187,82 +1187,6 @@ a {
   height: auto;
   display: block;
 }
-.education-page {
-  width: 88%;
-  max-width: var(--max);
-  margin: 80px auto 100px;
-}
-.education-page-heading {
-  max-width: 740px;
-  margin-bottom: 55px;
-}
-.education-page-heading h1 {
-  font-size: clamp(38px, 5vw, 64px);
-  line-height: 1.15;
-  margin: 20px 0 24px;
-}
-.education-page-heading > p:last-child {
-  color: var(--muted);
-  font-size: 15px;
-}
-.education-page-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 65px;
-  align-items: start;
-}
-.education-record {
-  display: grid;
-  grid-template-columns: 78px minmax(0, 1fr);
-  gap: 22px;
-  padding: 30px 0;
-  border-top: 1px solid var(--line);
-}
-.education-record h2 {
-  font-size: 24px;
-  line-height: 1.3;
-  margin: 9px 0 14px;
-}
-.education-record h3 {
-  font-size: 15px;
-  line-height: 1.6;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-}
-.education-record p:not(.eyebrow) {
-  font-size: 13px;
-  color: var(--muted);
-}
-.education-detail {
-  margin-top: 12px;
-}
-.education-record .text-link {
-  margin-top: 18px;
-}
-.education-gallery {
-  display: grid;
-  gap: 30px;
-}
-.education-gallery a {
-  display: block;
-  padding: 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-}
-.education-gallery a:hover {
-  transform: translateY(-3px);
-}
-.education-gallery img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-.education-gallery figcaption {
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 11px;
-}
 @media (min-width: 1001px) and (max-width: 1180px) {
   .site-header {
     flex-wrap: wrap;
@@ -1276,34 +1200,10 @@ a {
     justify-content: space-between;
   }
 }
-@media (max-width: 900px) {
-  .education-page-grid {
-    gap: 30px;
-  }
-}
 @media (max-width: 700px) {
   .hero-portrait {
     margin: 40px auto 0;
     max-width: 360px;
-  }
-  .education-page {
-    margin-top: 50px;
-    margin-bottom: 60px;
-  }
-  .education-page-grid {
-    grid-template-columns: 1fr;
-  }
-  .education-record {
-    grid-template-columns: 62px minmax(0, 1fr);
-    gap: 15px;
-  }
-  .education-record h2 {
-    font-size: 22px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .education-gallery a:hover {
-    transform: none;
   }
 }
 

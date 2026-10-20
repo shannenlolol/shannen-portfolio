@@ -74,7 +74,7 @@ main:not(.home-page) { min-height: 55vh; }
 }
 main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; }
 .eyebrow { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: .1em; color: var(--accent); }
-.experience-overview-heading > p:last-child,.education-page-heading > p:last-child,
+.experience-overview-heading > p:last-child,
 .skills-intro { font-size: 20px; line-height: 1.7; }
 .text-link,.back-link { font-size: 17px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 18px; min-height: 44px; }
 .text-link:hover,.back-link:hover { background: var(--surface); border-color: var(--accent); }
@@ -109,17 +109,13 @@ main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; 
 .contributions h3 { font-size: 22px; letter-spacing: 0; }
 .contributions article p,.large-copy { font-size: 19px; }
 .contribution-number { font-size: 15px; }
-.experience-gallery figure,.education-gallery a { padding: 7px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
-.experience-gallery figcaption,.education-gallery figcaption { font-size: 15px; }
+.experience-gallery figure { padding: 7px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.experience-gallery figcaption { font-size: 15px; }
 .project-image { border-radius: 0; height: 235px; }
 .project-caption { padding: 24px; }
 .project-caption h3 { font-size: 25px; line-height: 1.25; }
 .project-caption > p:not(.eyebrow) { font-size: 18px; line-height: 1.65; }
 .project-caption .eyebrow { font-size: 12px; letter-spacing: .06em; }
-.education-record { border-top-style: solid; }
-.education-record h2 { font-size: 27px; }
-.education-record h3 { font: 700 19px/1.5 var(--sans); letter-spacing: 0; }
-.education-record p:not(.eyebrow) { font-size: 18px; }
 .skills-intro { max-width: 42ch; margin-top: 22px; }
 .garden-toolkit { margin: 48px 0 0; }
 .toolkit-group { display: grid; grid-template-columns: 220px 1fr; gap: 30px; padding: 28px 0; border-top: 1px solid var(--line); }
@@ -157,8 +153,7 @@ main h1,.detail-hero h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; 
 .experience-overview-card{transition:border-color .2s,background-color .2s,transform .2s}
 .experience-overview-card:hover{background:color-mix(in srgb,var(--accent) 5%,var(--surface));transform:translateY(-2px)}
 .overview-tools li{background:color-mix(in srgb,var(--accent) 8%,var(--surface));border-color:transparent}
-.education-page-grid{gap:36px}
-.education-gallery img,.experience-gallery img{border-radius:6px}
+.experience-gallery img{border-radius:6px}
 .text-link:focus-visible,.button:focus-visible,.project-story a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.experience-overview-card{transition:none}.experience-overview-card:hover{transform:none}}
 

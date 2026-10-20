@@ -1,107 +1,154 @@
+import { useRef } from "react";
+import type { CSSProperties } from "react";
+import useReveal from "../hooks/useReveal";
+import Polaroid from "./Polaroid";
+import type { Photo } from "./Polaroid";
+import "../cottage/education.css";
+
+type Stop = {
+  id: string;
+  when: string;
+  logo: string;
+  logoAlt: string;
+  name: string;
+  summary: string;
+  tags?: { label: string; highlight?: boolean }[];
+  link?: { label: string; href: string };
+  photos: Photo[];
+  dot: string;
+};
+
+const stops: Stop[] = [
+  {
+    id: "ntu",
+    when: "2020 – 2024 · Singapore",
+    logo: "/assets/images/NTU.png",
+    logoAlt: "",
+    name: "Nanyang Technological University",
+    summary: "Bachelor of Computing in Computer Science.",
+    tags: [
+      { label: "Honours with Distinction", highlight: true },
+      { label: "Artificial Intelligence" },
+      { label: "Data Science & Analytics" },
+    ],
+    photos: [
+      {
+        src: "/assets/images/ntu_friends.jpeg",
+        alt: "Shannen with friends at NTU",
+        caption: "",
+        deco: "tape",
+        tilt: -3,
+        width: 210,
+      },
+      {
+        src: "/assets/images/MDP.png",
+        alt: "Multidisciplinary Design Project certificate",
+        caption: "",
+        deco: "pin",
+        tilt: 4,
+        width: 170,
+      },
+    ],
+    dot: "#b9cea0",
+  },
+  {
+    id: "boston",
+    when: "Summer 2023 · Boston, USA",
+    logo: "/assets/images/BU.png",
+    logoAlt: "",
+    name: "Boston University",
+    summary: "Deep Learning and Design Strategy & Software.",
+    photos: [],
+    dot: "#e7b98a",
+  },
+  {
+    id: "aws",
+    when: "May 2025 · Certification",
+    logo: "/assets/images/aws.png",
+    logoAlt: "AWS certification badge",
+    name: "AWS Certified Machine Learning Engineer – Associate",
+    summary: "Building, training and deploying machine learning models on AWS.",
+    link: {
+      label: "View credential",
+      href: "https://www.credly.com/badges/0fb77826-915f-4f24-91f7-ad6289124323/public_url",
+    },
+    photos: [],
+    dot: "#9fb8c9",
+  },
+];
+
 export default function Education() {
+  const page = useRef<HTMLElement>(null);
+  useReveal(page, ".edu-stop");
   return (
-    <main id="main-content" className="education-page">
-      <header className="education-page-heading">
-        <p className="eyebrow">Education / Always learning</p>
-        <h1>
-          A foundation for
-          <br />
-          <span className="serif-accent">what comes next.</span>
-        </h1>
-        <p>
-          Computer science, a new perspective abroad, and continued learning in
-          machine learning.
-        </p>
+    <main id='main-content' className='education-page' ref={page}>
+      <header className='edu-heading'>
+        <div>
+          <p className='eyebrow'>Education</p>
+          <h1>
+            Where I learned
+            <br />
+            to learn.
+          </h1>
+        </div>
       </header>
-      <div className="education-page-grid">
-        <div className="education-records">
-          <article className="education-record" id="ntu">
-            <div className="education-logo">
-              <img src="/assets/images/NTU.png" alt="" width="64" height="64" />
-            </div>
-            <div>
-              <p className="eyebrow">Aug 2020 – Dec 2024</p>
-              <h2>Nanyang Technological University</h2>
-              <h3>Bachelor of Computing in Computer Science</h3>
-              <p>Honours with Distinction</p>
-              <p className="education-detail">
-                Specialisations in Artificial Intelligence and Data Science &
-                Analytics.
-              </p>
-            </div>
-          </article>
-          <article className="education-record" id="boston">
-            <div className="education-logo">
-              <img
-                src="/assets/images/BU.png"
-                alt=""
-                width="64"
-                height="64"
-                loading="lazy"
-              />
-            </div>
-            <div>
-              <p className="eyebrow">May 2023 – Jul 2023</p>
-              <h2>Boston University</h2>
-              <h3>Summer Exchange Programme</h3>
-              <p className="education-detail">
-                Deep Learning and Design Strategy & Software.
-              </p>
-            </div>
-          </article>
-          <article className="education-record" id="aws">
-            <div className="education-logo education-logo-aws">
-              <img
-                src="/assets/images/aws.png"
-                alt="AWS certification badge"
-                width="64"
-                height="64"
-                loading="lazy"
-              />
-            </div>
-            <div>
-              <p className="eyebrow">Certification · May 2025</p>
-              <h2>AWS Certified Machine Learning Engineer – Associate</h2>
-              <h3>Amazon Web Services</h3>
-              <p className="education-detail">
-                Building, training, tuning, and deploying machine learning
-                models using AWS services.
-              </p>
-              <a
-                className="text-link"
-                href="https://www.credly.com/badges/0fb77826-915f-4f24-91f7-ad6289124323/public_url"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View credential
-              </a>
-            </div>
-          </article>
-        </div>
-        <div className="education-gallery">
-          <figure>
-            <a
-              href="/assets/images/ntu_friends.jpeg"
-              aria-label="View full NTU friends photo"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img src="/assets/images/ntu_friends.jpeg" alt="" />
-            </a>
-            <figcaption>The people along the way · NTU</figcaption>
-          </figure>
-          <figure className="education-certificate">
-            <a
-              href="/assets/images/MDP.png"
-              aria-label="View full MDP certificate"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img src="/assets/images/MDP.png" alt="" loading="lazy" />
-            </a>
-          </figure>
-        </div>
-      </div>
+
+      <ol className='edu-trail'>
+        {stops.map((stop) => (
+          <li
+            className='edu-stop'
+            id={stop.id}
+            key={stop.id}
+            style={{ "--dot": stop.dot } as CSSProperties}
+          >
+            <article className='edu-card'>
+              <div className='edu-card-head'>
+                <img
+                  src={stop.logo}
+                  alt={stop.logoAlt}
+                  width='56'
+                  height='56'
+                  loading='lazy'
+                />
+                <div>
+                  <p className='edu-when'>{stop.when}</p>
+                  <h2>{stop.name}</h2>
+                </div>
+              </div>
+              <p className='edu-summary'>{stop.summary}</p>
+              {stop.tags && (
+                <ul className='edu-tags'>
+                  {stop.tags.map((tag) => (
+                    <li
+                      key={tag.label}
+                      className={tag.highlight ? "is-highlight" : undefined}
+                    >
+                      {tag.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {stop.link && (
+                <a
+                  className='text-link'
+                  href={stop.link.href}
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {stop.link.label}
+                </a>
+              )}
+            </article>
+            {stop.photos.length > 0 && (
+              <div className='edu-photos'>
+                {stop.photos.map((photo) => (
+                  <Polaroid photo={photo} key={photo.caption} />
+                ))}
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
     </main>
   );
 }

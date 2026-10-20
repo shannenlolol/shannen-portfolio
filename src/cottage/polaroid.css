@@ -1,0 +1,44 @@
+/* Scrapbook polaroids and their fasteners, shared by the Education and experience pages. */
+.polaroid{position:relative;margin:0;width:var(--w);max-width:100%;padding:10px 10px 14px;box-sizing:border-box;background:#faf5e8;color:#514b3b;box-shadow:0 10px 22px #10202026;transform:rotate(var(--tilt));transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.polaroid:hover{transform:rotate(0) translateY(-6px) scale(1.03)}
+.polaroid a{display:block}
+.polaroid img,.polaroid-placeholder{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.polaroid a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.polaroid-placeholder{display:grid;place-items:center;padding:12px;box-sizing:border-box;text-align:center;font-size:14px;color:#6b604c;background:repeating-linear-gradient(45deg,#efe6cf 0 10px,#e7dcc0 10px 20px)}
+.polaroid figcaption{margin-top:10px;text-align:center;font-size:15px;font-style:italic;line-height:1.35}
+/* Without a caption, keep the deeper bottom border that makes it read as a polaroid. */
+.polaroid:not(:has(figcaption)){padding-bottom:34px}
+
+/* Fasteners. Purely decorative, so they never catch the pointer. */
+.deco{position:absolute;z-index:2;pointer-events:none}
+.deco-tape{top:-12px;left:calc(50% - 38px);width:76px;height:24px;transform:rotate(4deg);box-shadow:0 1px 2px #0001;background:repeating-linear-gradient(90deg,transparent 0 8px,#ffffff40 8px 12px),#c4c79ec9}
+.deco-pin{top:-9px;left:calc(50% - 10px);width:20px;height:20px;border-radius:50%;box-shadow:0 3px 4px #0004;background:radial-gradient(circle at 35% 30%,#ffffffa0 0 3px,transparent 4px),radial-gradient(circle,#d9634c,#a8402f)}
+/* Wooden sewing button: four holes over a ring and wood grain, with crossed thread drawn by ::before/::after. */
+.deco-button{top:-17px;left:calc(50% - 17px);width:34px;height:34px;border-radius:50%;box-shadow:0 3px 5px #0003,inset 0 -2px 3px #0002;transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+  background:
+    radial-gradient(circle at 38% 38%,#3b2a1a 0 2.4px,transparent 3px),
+    radial-gradient(circle at 62% 38%,#3b2a1a 0 2.4px,transparent 3px),
+    radial-gradient(circle at 38% 62%,#3b2a1a 0 2.4px,transparent 3px),
+    radial-gradient(circle at 62% 62%,#3b2a1a 0 2.4px,transparent 3px),
+    radial-gradient(circle,transparent 0 11px,#00000026 11.5px 12.5px,transparent 13px),
+    repeating-radial-gradient(circle at 30% 40%,#c08a55 0 2px,#b07a47 2px 4px)}
+.deco-button::before,.deco-button::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;border-radius:1px;background:#f3ead2;transform:translate(-50%,-50%) rotate(45deg)}
+.deco-button::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.polaroid:hover .deco-button{transform:rotate(35deg)}
+/* Wooden clothes peg with a metal spring. */
+.deco-clip{top:-30px;left:calc(50% - 9px);width:18px;height:52px;border-radius:4px 4px 6px 6px;box-shadow:0 2px 3px #0003;background:linear-gradient(90deg,#c99a63,#dcb27c 45%,#b88752)}
+.deco-clip::before{content:"";position:absolute;top:18px;left:-3px;right:-3px;height:7px;border-radius:3px;background:repeating-linear-gradient(90deg,#9aa1a6 0 2px,#d5dadd 2px 3px)}
+.deco-clip::after{content:"";position:absolute;left:50%;top:26px;bottom:2px;width:1px;background:#8a6238}
+
+/* When a revealed section (see useReveal) comes into view, its polaroids drop in and settle.
+   `backwards` fill hands the resting transform (and hover) back once the animation ends. */
+.reveal-ready .is-visible .polaroid{animation:polaroid-drop .8s cubic-bezier(.34,1.56,.64,1) backwards}
+.reveal-ready .is-visible .polaroid:nth-child(2){animation-delay:.15s}
+@keyframes polaroid-drop{from{opacity:0;transform:translateY(-18px) rotate(calc(var(--tilt) + 9deg))}to{opacity:1;transform:rotate(var(--tilt))}}
+
+@media(prefers-reduced-motion:reduce){
+  .reveal-ready .is-visible .polaroid{animation:none}
+  .polaroid,.deco-button{transition:none}
+  .polaroid:hover{transform:rotate(var(--tilt))}
+  .polaroid:hover .deco-button{transform:none}
+}
