@@ -20,7 +20,15 @@ body{isolation:isolate}
 .world-view>main{margin-top:35px;padding:36px;background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 8px 32px #1020200a}
 .home-content.cottage-home{background:transparent;pointer-events:none}
 .home-content .hero{background:transparent;min-height:max(760px,100svh)}
-.home-content .clock,.home-content .copy a,.home-content .garden{pointer-events:auto}
+.home-content .clock,.home-content .copy a,.home-content .garden,.home-content .scroll-cue{pointer-events:auto}
+.home-content .garden-invitation a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;white-space:nowrap}
+.home-content .garden-invitation a:hover{color:var(--ink)}
+/* A gently bobbing arrow at the foot of the hero, so visitors know Home scrolls down to the about section. */
+.home-content .scroll-cue{position:absolute;left:50%;bottom:26px;z-index:3;display:grid;place-items:center;width:48px;height:48px;margin-left:-24px;border-radius:50%;background:var(--panel);border:1px solid var(--line);color:var(--ink);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:scroll-cue 2.4s ease-in-out infinite}
+.home-content .scroll-cue svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.home-content .scroll-cue:hover{border-color:var(--ink)}
+.home-content .scroll-cue:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+@keyframes scroll-cue{0%,60%,100%{translate:0 0}30%{translate:0 6px}}
 .home-content .garden{background:var(--surface);border-radius:20px;margin-bottom:70px;padding-top:60px;padding-bottom:60px}
 .world-outgoing{position:absolute;inset:0 0 auto;top:calc(-1 * var(--departure-scroll));width:100%;pointer-events:none!important;z-index:1}
 .is-travelling .world-current{animation:world-arrive 700ms cubic-bezier(.4,0,.2,1) both;will-change:transform,opacity}
@@ -63,10 +71,13 @@ body{isolation:isolate}
  .home-content .copy h1{font-size:clamp(30px,7.7vw,44px)}
  .home-content .sub{max-width:32ch;font-size:18px;line-height:1.5;margin-top:18px}
  .home-content .garden-invitation{margin-top:18px}
- .home-content .clock{min-height:48px;bottom:16px}
+ .home-content .clock{min-height:48px;bottom:16px;right:80px}
+ /* Beside the full-width time slider rather than on top of the signpost. */
+ .home-content .scroll-cue{left:auto;right:20px;bottom:16px;margin-left:0}
 }
 
 /* Match the garden objects’ scroll departure, including keyboard visibility. */
-.home-content .copy,.home-content .clock{opacity:1;visibility:visible;transition:opacity 250ms ease,visibility 250ms}
+.home-content .copy,.home-content .clock,.home-content .scroll-cue{opacity:1;visibility:visible;transition:opacity 250ms ease,visibility 250ms}
 .persistent-landscape[data-scrolled="true"]~.world-stage .home-content .copy,
-.persistent-landscape[data-scrolled="true"]~.world-stage .home-content .clock{opacity:0;visibility:hidden;pointer-events:none}
+.persistent-landscape[data-scrolled="true"]~.world-stage .home-content .clock,
+.persistent-landscape[data-scrolled="true"]~.world-stage .home-content .scroll-cue{opacity:0;visibility:hidden;pointer-events:none}

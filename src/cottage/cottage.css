@@ -149,7 +149,7 @@
 /* A personal keepsake beside the introduction. */
 .cottage-home .about-keepsake{min-width:0}
 .cottage-home .about-keepsake h2{font-size:clamp(28px,3vw,38px);margin-bottom:28px}
-.cottage-home .about-polaroid{position:relative;max-width:290px;margin:0 auto;padding:12px 12px 18px;background:#faf5e8;color:#514b3b;transform:rotate(-3deg);box-shadow:0 8px 18px #10202020}
+.cottage-home .about-polaroid{position:relative;max-width:290px;margin:0 auto;padding:12px 12px 40px;background:#faf5e8;color:#514b3b;transform:rotate(-3deg);box-shadow:0 8px 18px #10202020}
 .cottage-home .about-polaroid img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 42%}
 .cottage-home .about-polaroid figcaption{margin-top:14px;text-align:center;font-size:15px;line-height:1.4;font-style:italic}
 .cottage-home .about-tape{position:absolute;z-index:1;top:-13px;left:calc(50% - 42px);width:84px;height:28px;background:#c4c79ec9;transform:rotate(5deg);box-shadow:0 1px 2px #0001}
