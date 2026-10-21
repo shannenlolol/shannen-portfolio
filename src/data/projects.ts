@@ -35,7 +35,7 @@ export const projects: Project[] = [
     highlights: ["[One thing you’re proud of]"],
     links: [{ label: "Try the editor", href: "https://shannenlolol.pythonanywhere.com/" }, { label: "Source code", href: "https://github.com/shannenlolol/image-editor-web-app" }],
     category: "Python · Flask · Image processing",
-    image: "image-editor/after.png",
+    image: "projects/image-editor/after.png",
   },
   {
     name: "Health Tracker",

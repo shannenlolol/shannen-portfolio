@@ -22,7 +22,7 @@ const stops: Stop[] = [
   {
     id: "ntu",
     when: "2020 – 2024 · Singapore",
-    logo: "/assets/images/NTU.png",
+    logo: "/assets/logos/ntu.png",
     logoAlt: "",
     name: "Nanyang Technological University",
     summary: "Bachelor of Computing in Computer Science.",
@@ -33,7 +33,7 @@ const stops: Stop[] = [
     ],
     photos: [
       {
-        src: "/assets/images/ntu_friends.jpeg",
+        src: "/assets/images/education/ntu-friends.jpg",
         alt: "Shannen with friends at NTU",
         caption: "",
         deco: "tape",
@@ -41,7 +41,7 @@ const stops: Stop[] = [
         width: 210,
       },
       {
-        src: "/assets/images/MDP.png",
+        src: "/assets/images/education/ntu-mdp-certificate.png",
         alt: "Multidisciplinary Design Project certificate",
         caption: "",
         deco: "pin",
@@ -54,7 +54,7 @@ const stops: Stop[] = [
   {
     id: "boston",
     when: "Summer 2023 · Boston, USA",
-    logo: "/assets/images/BU.png",
+    logo: "/assets/logos/boston-university.png",
     logoAlt: "",
     name: "Boston University",
     summary: "Deep Learning and Design Strategy & Software.",
@@ -64,7 +64,7 @@ const stops: Stop[] = [
   {
     id: "aws",
     when: "May 2025 · Certification",
-    logo: "/assets/images/aws.png",
+    logo: "/assets/images/education/aws-ml-engineer-badge.png",
     logoAlt: "AWS certification badge",
     name: "AWS Certified Machine Learning Engineer – Associate",
     summary: "Building, training and deploying machine learning models on AWS.",

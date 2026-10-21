@@ -73,7 +73,7 @@ export const experiences = [
     ],
     images: [
       {
-        src: "DSO-prawning.jpg",
+        src: "experience/dso/team-outing-prawning.jpg",
         alt: "Team outing during my DSO internship",
         // caption: "Outside the lab · A team outing at DSO",
       },
@@ -110,12 +110,12 @@ export const experiences = [
     ],
     images: [
       {
-        src: "conti_group.jpeg",
+        src: "experience/continental/intern-cohort.jpg",
         alt: "Shannen with colleagues at Continental",
         // caption: "The people behind the project · Continental",
       },
       {
-        src: "Conti_solo.jpeg",
+        src: "experience/continental/office-lobby.jpg",
         alt: "Shannen during her Continental internship",
         // caption: "On site · Continental Automotive Singapore",
       },
@@ -151,6 +151,6 @@ export const experiences = [
       },
     ],
     images: [],
-    recommendation: "/assets/images/Testimonial%20Amaris%20AI.pdf",
+    recommendation: "/assets/images/experience/amaris-ai/testimonial.pdf",
   },
 ];
