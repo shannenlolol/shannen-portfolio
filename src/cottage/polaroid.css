@@ -3,6 +3,7 @@
 .polaroid:hover{transform:rotate(0) translateY(-6px) scale(1.03)}
 .polaroid a{display:block}
 .polaroid img,.polaroid-placeholder{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.polaroid-uncropped img{aspect-ratio:auto;height:auto}
 .polaroid a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .polaroid-placeholder{display:grid;place-items:center;padding:12px;box-sizing:border-box;text-align:center;font-size:14px;color:#6b604c;background:repeating-linear-gradient(45deg,#efe6cf 0 10px,#e7dcc0 10px 20px)}
 .polaroid figcaption{margin-top:10px;text-align:center;font-size:15px;font-style:italic;line-height:1.35}

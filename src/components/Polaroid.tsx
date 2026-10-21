@@ -3,13 +3,14 @@ import "../cottage/polaroid.css";
 
 /** Scrapbook fasteners drawn in CSS: washi tape, push pin, wooden button, clothes peg. */
 export type Deco = "tape" | "pin" | "button" | "clip";
-export type Photo = { src?: string; alt?: string; placeholder?: string; caption?: string; deco: Deco; tilt: number; width?: number };
+/** `uncropped` keeps the photo's own aspect ratio instead of cropping it to 4:3. */
+export type Photo = { src?: string; alt?: string; placeholder?: string; caption?: string; deco: Deco; tilt: number; width?: number; uncropped?: boolean };
 
 /** A tilted photo print. Without `src` it shows a labelled placeholder until the image is ready. */
 export default function Polaroid({ photo }: { photo: Photo }) {
   const style = { "--tilt": `${photo.tilt}deg`, "--w": `${photo.width ?? 200}px` } as CSSProperties;
   return (
-    <figure className="polaroid" style={style}>
+    <figure className={photo.uncropped ? "polaroid polaroid-uncropped" : "polaroid"} style={style}>
       <span className={`deco deco-${photo.deco}`} aria-hidden="true" />
       {photo.src ? (
         <a href={photo.src} target="_blank" rel="noreferrer" aria-label={`View full photo: ${photo.alt}`}>
