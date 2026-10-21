@@ -59,6 +59,14 @@ export default function ExperiencePage({ slug }: { slug: string }) {
           <span className="xd-logo">
             <img src={job.logo} alt="" />
           </span>
+          {job.attachedTo && (
+            <span className="xd-attached">
+              attached to
+              <span className="xd-logo">
+                <img src={job.attachedTo.logo} alt={job.attachedTo.name} />
+              </span>
+            </span>
+          )}
           <h1>
             <span className="visually-hidden">{job.company}, </span>
             {job.role} · {shortPeriod(job.period)}

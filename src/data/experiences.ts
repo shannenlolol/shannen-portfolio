@@ -3,6 +3,7 @@ export const experiences = [
     slug: "st-engineering",
     logo: "/assets/logos/st-engineering.png",
     company: "ST Engineering",
+    attachedTo: { name: "The Digital and Intelligence Service", logo: "/assets/logos/dis.png" },
     role: "Software Engineer",
     period: "Sep 2025 - Present",
     field: "Platforms & infrastructure",
