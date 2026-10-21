@@ -1,8 +1,7 @@
 export default function ResumePage() {
   return <main id="main-content" className="resume-page">
     <header className="resume-heading">
-      <h1 className="eyebrow">Resume / The story so far</h1>
-      <p className="resume-intro">My experience, education, and technical toolkit, all in one place.</p>
+      <h1 className="eyebrow">Resume</h1>
     </header>
     <div className="resume-actions">
       <a className="button button-primary" href="/assets/Shannen%20Lee%20Resume.pdf" target="_blank" rel="noreferrer">Open my resume</a>
