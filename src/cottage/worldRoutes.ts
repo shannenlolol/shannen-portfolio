@@ -9,7 +9,9 @@ export const worldRoutes = [
 ];
 export function worldPosition(path: string) {
   const normalized = path.replace(/\/$/, "") || "/";
-  return normalized.startsWith("/experience/") ? 4 : worldRoutes.findIndex(route => route.path === normalized);
+  // Detail pages (/experience/<slug>, /projects/<slug>) share their section's place in the world.
+  const section = normalized.match(/^\/(experience|projects)\/[^/]+$/);
+  return worldRoutes.findIndex(route => route.path === (section ? `/${section[1]}` : normalized));
 }
 export function travelDirection(from: string, to: string) {
   return Math.sign(worldPosition(to) - worldPosition(from));

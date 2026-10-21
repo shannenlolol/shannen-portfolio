@@ -9,9 +9,11 @@ import ExperiencePage from "./components/ExperiencePage";
 import Education from "./components/Education";
 import SkillsPage from "./components/SkillsPage";
 import Projects from "./components/Projects";
+import ProjectPage from "./components/ProjectPage";
 import ContactPage from "./components/ContactPage";
 import ResumePage from "./components/ResumePage";
 import { experiences } from "./data/experiences";
+import { projects } from "./data/projects";
 import { travelDirection, worldPosition, worldRoutes } from "./cottage/worldRoutes";
 import "./index.css";
 import "./cottage/pages.css";
@@ -28,7 +30,9 @@ function Page({ route }: { route: Location }) {
     case "/skills": return <SkillsPage />;
     case "/contact": return <ContactPage />;
     case "/resume": return <ResumePage />;
-    default: return <ExperiencePage slug={route.path.startsWith("/experience/") ? route.path.slice(12) : ""} />;
+    default:
+      if (route.path.startsWith("/projects/")) return <ProjectPage slug={route.path.slice(10)} />;
+      return <ExperiencePage slug={route.path.startsWith("/experience/") ? route.path.slice(12) : ""} />;
   }
 }
 export default function App() {
@@ -131,7 +135,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experience/${job.slug}`)?.company ?? "Page not found";
+    const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experience/${job.slug}`)?.company ?? projects.find(project => route.path === `/projects/${project.slug}`)?.name ?? "Page not found";
     document.title = route.path === "/" ? "Shannen Lee - Software Engineer" : `${title} - Shannen Lee`;
     if (outgoing.current) outgoing.current.inert = true;
   }, [route]);
@@ -145,6 +149,6 @@ export default function App() {
       <div key={route.key} className={`world-view world-current ${route.path === "/" ? "at-home" : ""}`}><Page route={route} /></div>
     </div>
     <Footer />
-    <span className="world-announcement" role="status" aria-live="polite">{previous ? "" : `${worldRoutes.find(item => item.path === route.path)?.label ?? "Experience details"} page`}</span>
+    <span className="world-announcement" role="status" aria-live="polite">{previous ? "" : `${worldRoutes.find(item => item.path === route.path)?.label ?? (route.path.startsWith("/projects/") ? "Project details" : "Experience details")} page`}</span>
   </>;
 }

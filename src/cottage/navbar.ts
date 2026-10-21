@@ -10,7 +10,7 @@ export function getNavbarMarkup(path: string) { return template
 
 export function mountNavbar(host: HTMLElement, path: string) {
   host.querySelectorAll<HTMLAnchorElement>(".cottage-nav-links a").forEach(link => {
-    if (link.pathname === path || (link.pathname === "/experience" && path.startsWith("/experience/"))) {
+    if (link.pathname === path || ((link.pathname === "/experience" || link.pathname === "/projects") && path.startsWith(`${link.pathname}/`))) {
       link.setAttribute("aria-current", "page");
     }
   });
