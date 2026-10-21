@@ -15,7 +15,7 @@ export default function ExperienceOverview() {
     <main className="experience-overview" id="main-content" ref={page}>
       <header className="xp-heading">
         <div>
-          <h1 className="eyebrow">Experience</h1>
+          <h1 className="eyebrow">Experiences</h1>
         </div>
         <ul className="xp-facts" aria-label="At a glance">
           {/* <li>{experiences.length} roles</li>
@@ -29,7 +29,7 @@ export default function ExperienceOverview() {
             <a
               className="xp-card"
               data-color={job.color}
-              href={`/experience/${job.slug}`}
+              href={`/experiences/${job.slug}`}
               key={job.slug}
               style={{ "--i": index } as CSSProperties}
             >

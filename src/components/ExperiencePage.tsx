@@ -49,7 +49,7 @@ export default function ExperiencePage({ slug }: { slug: string }) {
 
   return (
     <main id="main-content" className="experience-page" data-color={job.color} ref={page}>
-      <a className="back-link" href="/experience">
+      <a className="back-link" href="/experiences">
         ← All experience
       </a>
 
@@ -131,7 +131,7 @@ export default function ExperiencePage({ slug }: { slug: string }) {
         </div>
       </div>
 
-      <a className="xd-next" href={`/experience/${next.slug}`}>
+      <a className="xd-next" href={`/experiences/${next.slug}`}>
         <span>
           <span className="xd-label">Next stop</span>
           <span className="xd-next-name">{next.company}</span>

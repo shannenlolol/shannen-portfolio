@@ -24,7 +24,7 @@ const readLocation = (): Location => ({ path: window.location.pathname.replace(/
 function Page({ route }: { route: Location }) {
   switch (route.path) {
     case "/": return <CottageHome />;
-    case "/experience": return <ExperienceOverview />;
+    case "/experiences": return <ExperienceOverview />;
     case "/projects": return <Projects />;
     case "/education": return <Education />;
     case "/skills": return <SkillsPage />;
@@ -32,7 +32,7 @@ function Page({ route }: { route: Location }) {
     case "/resume": return <ResumePage />;
     default:
       if (route.path.startsWith("/projects/")) return <ProjectPage slug={route.path.slice(10)} />;
-      return <ExperiencePage slug={route.path.startsWith("/experience/") ? route.path.slice(12) : ""} />;
+      return <ExperiencePage slug={route.path.startsWith("/experiences/") ? route.path.slice("/experiences/".length) : ""} />;
   }
 }
 export default function App() {
@@ -135,7 +135,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experience/${job.slug}`)?.company ?? projects.find(project => route.path === `/projects/${project.slug}`)?.name ?? "Page not found";
+    const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experiences/${job.slug}`)?.company ?? projects.find(project => route.path === `/projects/${project.slug}`)?.name ?? "Page not found";
     document.title = route.path === "/" ? "Shannen Lee - Software Engineer" : `${title} - Shannen Lee`;
     if (outgoing.current) outgoing.current.inert = true;
   }, [route]);
