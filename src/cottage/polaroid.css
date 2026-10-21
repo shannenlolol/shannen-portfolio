@@ -4,6 +4,11 @@
 .polaroid a{display:block}
 .polaroid img,.polaroid-placeholder{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 .polaroid-uncropped img{aspect-ratio:auto;height:auto}
+/* Play badge for video thumbnails: a dark disc with a CSS triangle, centred on the photo. */
+.polaroid a:has(.polaroid-play){position:relative}
+.polaroid-play{position:absolute;top:50%;left:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:#1e2a1bcc;box-shadow:0 4px 14px #0004;transition:transform .2s}
+.polaroid-play::after{content:"";position:absolute;top:50%;left:50%;margin:-11px 0 0 -6px;border-style:solid;border-width:11px 0 11px 18px;border-color:transparent transparent transparent #faf5e8}
+.polaroid a:hover .polaroid-play{transform:scale(1.08)}
 .polaroid a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .polaroid-placeholder{display:grid;place-items:center;padding:12px;box-sizing:border-box;text-align:center;font-size:14px;color:#6b604c;background:repeating-linear-gradient(45deg,#efe6cf 0 10px,#e7dcc0 10px 20px)}
 .polaroid figcaption{margin-top:10px;text-align:center;font-size:15px;font-style:italic;line-height:1.35}

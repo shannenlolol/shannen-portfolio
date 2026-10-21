@@ -93,6 +93,12 @@ export const experiences = [
         alt: "Team outing during my DSO internship",
         // caption: "Outside the lab · A team outing at DSO",
       },
+      {
+        src: "experience/dso/linkedin-video-thumbnail.jpg",
+        alt: "Shannen waving hello outside DSO National Laboratories, introduced as an intern in the Information Division",
+        caption: "Featured in a DSO video · Watch on LinkedIn",
+        video: "https://lnkd.in/p/gmHKT3rb",
+      },
     ],
   },
   {

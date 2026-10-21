@@ -9,8 +9,9 @@ import "../cottage/experience.css";
 /**
  * Captions are optional, so some or all entries in the data may leave them out.
  * `uncropped` is for group photos: shown whole as a wide print instead of cropped to 4:3.
+ * `video` turns the photo into a thumbnail that links to that video (e.g. a LinkedIn post).
  */
-type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean };
+type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean; video?: string };
 
 const shortPeriod = (period: string) => period.replace(" - Present", " – now").replace(" - ", " – ");
 
@@ -30,14 +31,16 @@ export default function ExperiencePage({ slug }: { slug: string }) {
       </main>
     );
   const next = experiences[(index + 1) % experiences.length];
-  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped }));
+  // Video thumbnails are portrait phone frames, so they stay uncropped to keep the on-screen name and title.
+  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped || !!img.video, href: img.video, video: !!img.video }));
   const leadPhoto: Photo = lead
     ? { ...lead, deco: "tape", tilt: -2.5, width: 270 }
     : { placeholder: "Photo to come", caption: "[caption]", deco: "tape", tilt: -2.5, width: 270 };
   // Pad the gallery to two prints with placeholders until more images are added.
   const gallery: Photo[] = [
     // Uncropped prints are wide enough to fill a row on their own, so the faces stay readable.
-    ...rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.uncropped ? 560 : 260 })),
+    // Portrait video thumbnails are narrower so they don't tower over the rest of the gallery.
+    ...rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.video ? 220 : img.uncropped ? 560 : 260 })),
     ...Array.from({ length: Math.max(0, 2 - rest.length) }, (_, i): Photo => ({
       placeholder: "Screenshot or photo to come",
       caption: "[caption]",
