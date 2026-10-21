@@ -9,7 +9,7 @@ import "../cottage/experience.css";
 /**
  * Captions are optional, so some or all entries in the data may leave them out.
  * `uncropped` is for group photos: shown whole as a wide print instead of cropped to 4:3.
- * `video` turns the photo into a thumbnail that links to that video (e.g. a LinkedIn post).
+ * `video` is an embeddable player URL (e.g. a LinkedIn embed): the photo becomes its click-to-play thumbnail.
  */
 type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean; video?: string };
 
@@ -32,7 +32,7 @@ export default function ExperiencePage({ slug }: { slug: string }) {
     );
   const next = experiences[(index + 1) % experiences.length];
   // Video thumbnails are portrait phone frames, so they stay uncropped to keep the on-screen name and title.
-  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped || !!img.video, href: img.video, video: !!img.video }));
+  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped || !!img.video, video: img.video }));
   const leadPhoto: Photo | undefined = lead && { ...lead, deco: "tape", tilt: -2.5, width: 270 };
   // Uncropped prints are wide enough to fill a row on their own, so the faces stay readable.
   // Portrait video thumbnails are narrower so they don't tower over the rest of the gallery.

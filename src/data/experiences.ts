@@ -96,8 +96,8 @@ export const experiences = [
       {
         src: "experience/dso/linkedin-video-thumbnail.jpg",
         alt: "Shannen waving hello outside DSO National Laboratories, introduced as an intern in the Information Division",
-        caption: "Featured in a DSO video · Watch on LinkedIn",
-        video: "https://lnkd.in/p/gmHKT3rb",
+        caption: "Featured in a DSO video",
+        video: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7275813594418528256?compact=1",
       },
     ],
   },
