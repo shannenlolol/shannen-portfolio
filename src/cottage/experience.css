@@ -1,0 +1,105 @@
+/* Experience overview: colour-coded cards that lead with each role's result. */
+.xp-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px}
+.xp-heading h1{margin:12px 0 0}
+.xp-facts{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.xp-facts li{padding:6px 16px;border:1px solid var(--line);border-radius:999px;font-size:16px;background:var(--surface)}
+
+/* Each role's colour, as a tint and a darker ink. Used by the overview cards and the detail pages. */
+[data-color="blue"]{--tint:#e6ecf3;--tint-deep:#d8e0eb;--tint-ink:#2f4a6e}
+[data-color="purple"]{--tint:#ece6f2;--tint-deep:#dfd6ea;--tint-ink:#57427a}
+[data-color="orange"]{--tint:#f6e9da;--tint-deep:#eedac3;--tint-ink:#8a4d1f}
+[data-color="green"]{--tint:#e4efdc;--tint-deep:#d4e4c8;--tint-ink:#3d6a2f}
+[data-theme="dark"] [data-color="blue"]{--tint:#1f2a38;--tint-deep:#283547;--tint-ink:#b2c2ff}
+[data-theme="dark"] [data-color="purple"]{--tint:#2a2338;--tint-deep:#352c47;--tint-ink:#d0b8ec}
+[data-theme="dark"] [data-color="orange"]{--tint:#352a1f;--tint-deep:#443527;--tint-ink:#e7ca88}
+[data-theme="dark"] [data-color="green"]{--tint:#213122;--tint-deep:#2b3f2c;--tint-ink:#b3d8b8}
+
+.xp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:28px}
+.xp-card{display:flex;flex-direction:column;overflow:hidden;border-radius:26px;background:var(--tint);color:var(--ink);text-decoration:none;box-shadow:0 1px 0 #0000;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.xp-card:hover{transform:translateY(-5px) rotate(-.5deg);box-shadow:0 16px 32px #10202024}
+.xp-card:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+
+.xp-photo{position:relative;height:200px;background:var(--tint-deep)}
+.xp-photo > img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.xp-card:hover .xp-photo > img{transform:scale(1.04)}
+.xp-placeholder{display:grid;place-items:center;height:100%;font-size:15px;color:var(--muted);background:repeating-linear-gradient(45deg,transparent 0 12px,#ffffff2e 12px 24px)}
+/* The company logo sits on the photo like a sticker. A fixed image height makes square logos
+   (e.g. DSO) scale down to fit rather than spilling out. */
+.xp-logo{position:absolute;left:20px;bottom:-22px;display:flex;align-items:center;height:48px;padding:6px 12px;box-sizing:border-box;border-radius:12px;background:#f8f6e9;box-shadow:0 4px 10px #0000002a;transform:rotate(-3deg)}
+.xp-logo img{display:block;height:36px;width:auto;max-width:130px;object-fit:contain}
+
+.xp-body{display:flex;flex-direction:column;gap:8px;padding:38px 28px 26px;flex:1}
+.xp-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;margin:0;font-size:15px;color:var(--muted)}
+.xp-body h2{margin:4px 0 0;font-family:var(--sans);font-size:23px;font-weight:700;line-height:1.35}
+.xp-result{margin:0;font-size:18px;line-height:1.5;color:var(--muted)}
+.xp-result strong{font-weight:700;color:var(--tint-ink)}
+.xp-body h2 span{font-weight:400;color:var(--muted)}
+.xp-cta{margin-top:auto;padding-top:12px;font-size:17px;font-weight:500;color:var(--tint-ink);transition:transform .25s}
+.xp-card:hover .xp-cta{transform:translateX(5px)}
+
+/* Scroll reveal (see useReveal), staggered by each card's --i. */
+.reveal-ready .xp-card{opacity:0;translate:0 24px;transition:opacity .7s ease-out,translate .7s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;transition-delay:calc(var(--i) * 90ms),calc(var(--i) * 90ms),0s,0s}
+.reveal-ready .xp-card.is-visible{opacity:1;translate:0 0}
+
+/* Experience detail pages. */
+.experience-page .back-link{display:inline-flex;align-items:center;color:var(--ink)}
+.xd-hero{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px 48px;margin:36px 0 56px}
+.xd-hero-copy{flex:1 1 520px;min-width:0}
+.xd-badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 18px;font-size:17px;color:var(--muted)}
+.xd-logo{display:flex;align-items:center;height:48px;padding:6px 12px;box-sizing:border-box;border-radius:12px;background:#f8f6e9;border:1px solid #d4d9c6}
+.xd-logo img{display:block;height:34px;width:auto;max-width:150px;object-fit:contain}
+.xd-hero h1{margin:0;max-width:18ch}
+/* Results as tilted rubber stamps: the first solid, the rest outlined. */
+.xd-stamps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
+.xd-stamps li{display:grid;gap:4px;min-width:150px;max-width:220px;padding:16px 20px;border-radius:20px;border:2px dashed var(--tint-ink);background:var(--tint);color:var(--tint-ink);transform:rotate(1.5deg)}
+.xd-stamps li:first-child{border-style:solid;background:var(--tint-ink);color:var(--tint);transform:rotate(-2deg)}
+.xd-stamps strong{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3vw,38px);line-height:1.05}
+.xd-stamps span{font-size:16px;line-height:1.3}
+
+.xd-label{margin:0;font-family:var(--sans);font-size:14px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.xd-body{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.xd-aside{flex:1 1 280px;max-width:340px;display:flex;flex-direction:column;gap:32px}
+.xd-aside section{display:grid;gap:12px}
+.xd-tools{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.xd-tools li{padding:5px 13px;border-radius:999px;font-size:16px;background:var(--tint);color:var(--ink)}
+.xd-lead-photo{display:flex;justify-content:center;padding-top:8px}
+.xd-proud{position:relative;padding:24px 24px 22px;border-radius:6px;background:#faf5e8;color:#3a3324;box-shadow:0 8px 18px #10202020;transform:rotate(1deg)}
+.xd-proud .xd-label{color:#526344}
+.xd-proud p{margin:0;font-size:19px;line-height:1.5}
+.xd-main{flex:999 1 480px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.xd-context{margin:0 0 14px;font-size:22px;line-height:1.6}
+.xd-contributions{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.xd-contributions li{display:flex;gap:20px;align-items:flex-start;padding:22px 24px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.xd-number{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;font-family:var(--serif);font-size:18px;background:var(--tint);color:var(--tint-ink);transform:rotate(-6deg)}
+.xd-contributions h3{margin:0 0 4px;font-family:var(--sans);font-size:21px;font-weight:700;line-height:1.35}
+.xd-contributions p{margin:0;font-size:18px;line-height:1.55;color:var(--muted)}
+.xd-gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:36px 28px;padding-top:36px}
+.xd-gallery .polaroid:nth-child(2){margin-top:20px}
+
+.xd-next{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.xd-next > span:first-child{display:grid;gap:4px}
+.xd-next-name{font-family:var(--serif);font-size:clamp(26px,3vw,34px);line-height:1.2}
+.xd-next-arrow{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;font-size:24px;background:var(--button);color:var(--page);transition:transform .25s}
+.xd-next:hover .xd-next-arrow{transform:translateX(6px)}
+.xd-next:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+
+/* Detail reveal: sections rise in as they scroll into view, contributions one after another. */
+.reveal-ready .xd-reveal{opacity:0;translate:0 24px;transition:opacity .7s ease-out,translate .7s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i, 0) * 90ms)}
+.reveal-ready .xd-reveal.is-visible{opacity:1;translate:0 0}
+
+@media(max-width:700px){
+  .xp-heading{margin-bottom:36px}
+  .xp-photo{height:170px}
+  .xp-body{padding:34px 20px 22px}
+  .xd-hero{margin:28px 0 40px}
+  .xd-aside{max-width:none}
+  .xd-contributions li{padding:18px;gap:14px}
+  .xd-context{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  .xp-card,.xp-photo > img,.xp-cta{transition:none}
+  .xp-card:hover,.xp-card:hover .xp-photo > img,.xp-card:hover .xp-cta{transform:none}
+  .reveal-ready .xp-card,.reveal-ready .xd-reveal{opacity:1;translate:none;transition:none}
+  .xd-next-arrow{transition:none}
+  .xd-next:hover .xd-next-arrow{transform:none}
+}

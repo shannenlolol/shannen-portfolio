@@ -1,53 +1,65 @@
+import { useRef } from "react";
+import type { CSSProperties } from "react";
 import { experiences } from "../data/experiences";
+import useReveal from "../hooks/useReveal";
+import "../cottage/experience.css";
+
+// "Sep 2025 - Present" reads better on a card as "Since Sep 2025".
+const shortPeriod = (period: string) =>
+  period.endsWith("Present") ? `Since ${period.split(" - ")[0]}` : period.replace(" - ", " – ");
 
 export default function ExperienceOverview() {
+  const page = useRef<HTMLElement>(null);
+  useReveal(page, ".xp-card");
   return (
-    <main className="experience-overview" id="main-content">
-      <header className="experience-overview-heading">
-        <p className="eyebrow">Experience / Where I’ve contributed</p>
-        <h1>
-          Different challenges.
-          <br />
-          <span className="serif-accent">One builder’s mindset.</span>
-        </h1>
-        <p>
-          From full-stack products to intelligent systems. Explore the projects,
-          contributions, and lessons behind each role.
-        </p>
+    <main className="experience-overview" id="main-content" ref={page}>
+      <header className="xp-heading">
+        <div>
+          <p className="eyebrow">Experience</p>
+          <h1>Four places,<br />one habit: ship it.</h1>
+        </div>
+        <ul className="xp-facts" aria-label="At a glance">
+          {/* <li>{experiences.length} roles</li>
+          <li>Web · ML · Robotics · Platforms</li> */}
+        </ul>
       </header>
-      <div className="experience-overview-list">
-        {experiences.map((job) => (
-          <a
-            className="experience-overview-card"
-            href={`/experience/${job.slug}`}
-            key={job.slug}
-          >
-            <div className={`company-logo company-logo-${job.slug}`}>
-              <img
-                src={job.logo}
-                alt=""
-                width="110"
-                height="54"
-                loading="lazy"
-              />
-            </div>
-            <div className="experience-overview-copy">
-              <p className="eyebrow">{job.field}</p>
-              <h2>{job.company}</h2>
-              <p className="overview-role">{job.role}</p>
-              <p className="overview-summary">{job.summary}</p>
-              <ul className="overview-tools" aria-label="Key technologies">
-                {job.skills.slice(0, 4).map((skill) => (
-                  <li key={skill}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="experience-overview-meta">
-              <span>{job.period}</span>
-              <span className="experience-cta">Read about this role</span>
-            </div>
-          </a>
-        ))}
+      <div className="xp-grid">
+        {experiences.map((job, index) => {
+          const photo = job.images[0];
+          return (
+            <a
+              className="xp-card"
+              data-color={job.color}
+              href={`/experience/${job.slug}`}
+              key={job.slug}
+              style={{ "--i": index } as CSSProperties}
+            >
+              <div className="xp-photo">
+                {photo ? (
+                  <img src={`/assets/images/${photo.src}`} alt="" loading="lazy" />
+                ) : (
+                  <span className="xp-placeholder">Photo to come</span>
+                )}
+                <span className="xp-logo">
+                  <img src={job.logo} alt="" loading="lazy" />
+                </span>
+              </div>
+              <div className="xp-body">
+                <p className="xp-meta">
+                  <span>{shortPeriod(job.period)}</span>
+                  <span>{job.field}</span>
+                </p>
+                <h2>
+                  {job.company} <span>· {job.role}</span>
+                </h2>
+                <p className="xp-result">
+                  <strong>{job.headline.value}</strong> {job.headline.label}
+                </p>
+                <span className="xp-cta" aria-hidden="true">Read more →</span>
+              </div>
+            </a>
+          );
+        })}
       </div>
     </main>
   );

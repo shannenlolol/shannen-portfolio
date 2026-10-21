@@ -11,6 +11,8 @@ export const experiences = [
     context:
       "Attached to The Digital and Intelligence Service, developing reusable application tooling and deployment infrastructure.",
     color: "blue",
+    headline: { value: "Days → hours", label: "to connect each new service" },
+    // proud: "[Proudest moment: one sentence]",
     metrics: [
       { value: "6", label: "use cases adopted" },
       { value: "Days → hours", label: "integration effort" },
@@ -27,15 +29,15 @@ export const experiences = [
     contributions: [
       {
         title: "A reusable application foundation",
-        text: "Developed a low-code web application builder in Dash that lets non-technical teams dynamically generate custom forms and data visualisations from JSON/YAML configuration. Adopted across six use cases without writing new application code.",
+        text: "A low-code Dash builder that turns JSON/YAML config into forms and charts for non-technical teams. Adopted across six use cases with no new code.",
       },
       {
         title: "Integrations through configuration",
-        text: "Designed configurable Kafka and PostgreSQL integrations so new services can connect to event-driven messaging and persistent storage through configuration alone, reducing integration effort for each new use case from days to hours.",
+        text: "Kafka and PostgreSQL integrations set up through config alone, cutting the effort for each new use case from days to hours.",
       },
       {
         title: "Repeatable deployment",
-        text: "Automated deployment across multiple OpenShift staging environments using Helm charts and Argo CD GitOps, replacing a manual, multi-step setup with a single repeatable process.",
+        text: "Helm and Argo CD GitOps deploys across OpenShift staging, replacing a manual multi-step setup with one repeatable process.",
       },
     ],
     images: [],
@@ -52,6 +54,8 @@ export const experiences = [
     context:
       "Designed and implemented a hierarchical reinforcement learning system for a simulated multi-agent environment.",
     color: "purple",
+    headline: { value: "12 agents", label: "working as a team, with 95%+ task success" },
+    // proud: "[Proudest moment: one sentence]",
     metrics: [
       { value: "12", label: "coordinated agents" },
       { value: "95+%", label: "task success rate" },
@@ -60,18 +64,18 @@ export const experiences = [
     contributions: [
       {
         title: "Coordinating multiple agents",
-        text: "Designed and implemented a hierarchical reinforcement learning system in PyTorch for coordinating 12 agents in a simulated multi-agent environment.",
+        text: "A hierarchical reinforcement learning system in PyTorch that coordinates 12 agents in a simulated environment.",
       },
       {
         title: "Refining the learning environment",
-        text: "Tuned the state, observation, and reward configurations for the system, improving task success rate to over 95%.",
+        text: "Tuned the state, observation and reward design, lifting the task success rate above 95%.",
       },
     ],
     images: [
       {
         src: "DSO-prawning.jpg",
         alt: "Team outing during my DSO internship",
-        caption: "Outside the lab · A team outing at DSO",
+        // caption: "Outside the lab · A team outing at DSO",
       },
     ],
   },
@@ -87,6 +91,8 @@ export const experiences = [
     context:
       "Led development of a fleet management system for autonomous food delivery robots at Continental Automotive Singapore.",
     color: "orange",
+    headline: { value: "3 robots", label: "running live deliveries across 6 waypoints" },
+    // proud: "[Proudest moment: one sentence]",
     metrics: [
       { value: "3", label: "robots operating concurrently" },
       { value: "6", label: "delivery waypoints" },
@@ -95,23 +101,23 @@ export const experiences = [
     contributions: [
       {
         title: "Real-time fleet visibility",
-        text: "Led development of a fleet management system using FastAPI, ROS2, and OpenRMF, including a real-time dashboard tracking robot battery levels, task states, and locations.",
+        text: "Led a fleet management system on FastAPI, ROS2 and OpenRMF, with a live dashboard of each robot's battery, task and location.",
       },
       {
         title: "From development to live delivery",
-        text: "Deployed the system to a fleet of three robots operating concurrently along a six-waypoint delivery route, demonstrating live deliveries to key stakeholders.",
+        text: "Deployed it to three robots running a six-waypoint delivery route at once, with live demos for key stakeholders.",
       },
     ],
     images: [
       {
         src: "conti_group.jpeg",
         alt: "Shannen with colleagues at Continental",
-        caption: "The people behind the project · Continental",
+        // caption: "The people behind the project · Continental",
       },
       {
         src: "Conti_solo.jpeg",
         alt: "Shannen during her Continental internship",
-        caption: "On site · Continental Automotive Singapore",
+        // caption: "On site · Continental Automotive Singapore",
       },
     ],
   },
@@ -127,6 +133,8 @@ export const experiences = [
     context:
       "Worked across React interfaces and FastAPI backend features for a paint-visualisation platform serving customers across APAC.",
     color: "green",
+    headline: { value: "8 countries", label: "across APAC served by the platform" },
+    // proud: "[Proudest moment: one sentence]",
     metrics: [
       { value: "8", label: "APAC countries served" },
       { value: "70+", label: "backend tests" },
@@ -135,11 +143,11 @@ export const experiences = [
     contributions: [
       {
         title: "Reusable, multilingual interfaces",
-        text: "Built reusable, multilingual React components and extended FastAPI backend features for an AI-powered paint-visualisation platform used by customers across eight APAC countries.",
+        text: "Reusable, multilingual React components and FastAPI features for a paint-visualisation platform used in eight APAC countries.",
       },
       {
         title: "Reliability across the product",
-        text: "Resolved more than 30 bugs across photo processing, billing, and report downloads. Built a backend suite of over 70 tests to catch regressions before release and improve platform reliability for production users.",
+        text: "Fixed 30+ bugs across photo processing, billing and reports, and built a 70+ test backend suite to catch regressions before release.",
       },
     ],
     images: [],
