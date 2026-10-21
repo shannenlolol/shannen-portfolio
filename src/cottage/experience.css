@@ -73,6 +73,8 @@
 .xd-contributions h3{margin:0 0 4px;font-family:var(--sans);font-size:21px;font-weight:700;line-height:1.35}
 .xd-contributions p{margin:0;font-size:18px;line-height:1.55;color:var(--muted)}
 .xd-gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:36px 28px;padding-top:36px}
+/* LinkedIn embed at its own size (504 × 1021), centred and narrowed to fit on phones. */
+.xd-embed{display:block;width:504px;max-width:100%;margin:36px auto 0;border:0;border-radius:8px}
 .xd-gallery .polaroid:nth-child(even){margin-top:20px}
 
 .xd-next{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}

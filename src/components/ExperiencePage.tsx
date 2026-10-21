@@ -9,9 +9,8 @@ import "../cottage/experience.css";
 /**
  * Captions are optional, so some or all entries in the data may leave them out.
  * `uncropped` is for group photos: shown whole as a wide print instead of cropped to 4:3.
- * `video` is an embeddable player URL (e.g. a LinkedIn embed): the photo becomes its click-to-play thumbnail.
  */
-type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean; video?: string };
+type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean };
 
 const shortPeriod = (period: string) => period.replace(" - Present", " – now").replace(" - ", " – ");
 
@@ -31,12 +30,10 @@ export default function ExperiencePage({ slug }: { slug: string }) {
       </main>
     );
   const next = experiences[(index + 1) % experiences.length];
-  // Video thumbnails are portrait phone frames, so they stay uncropped to keep the on-screen name and title.
-  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped || !!img.video, video: img.video }));
+  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped }));
   const leadPhoto: Photo | undefined = lead && { ...lead, deco: "tape", tilt: -2.5, width: 270 };
   // Uncropped prints are wide enough to fill a row on their own, so the faces stay readable.
-  // Portrait video thumbnails are narrower so they don't tower over the rest of the gallery.
-  const gallery: Photo[] = rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.video ? 220 : img.uncropped ? 560 : 260 }));
+  const gallery: Photo[] = rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.uncropped ? 560 : 260 }));
 
   return (
     <main id="main-content" className="experience-page" data-color={job.color} ref={page}>
@@ -122,6 +119,17 @@ export default function ExperiencePage({ slug }: { slug: string }) {
                 <Polaroid photo={photo} key={photo.src} />
               ))}
             </div>
+          )}
+          {job.embed && (
+            <iframe
+              className="xd-embed xd-reveal"
+              src={job.embed.src}
+              title={job.embed.title}
+              width="504"
+              height="1021"
+              loading="lazy"
+              allowFullScreen
+            />
           )}
         </div>
       </div>
