@@ -12,10 +12,6 @@ export const experiences = [
     color: "blue",
     headline: { value: "Days → hours", label: "to connect each new service" },
     // proud: "[Proudest moment: one sentence]",
-    metrics: [
-      { value: "6", label: "use cases adopted" },
-      { value: "Days → hours", label: "integration effort" },
-    ],
     skills: [
       "Python",
       "Dash",
@@ -72,10 +68,6 @@ export const experiences = [
     color: "purple",
     headline: { value: "12 agents", label: "working as a team, with 95%+ task success" },
     // proud: "[Proudest moment: one sentence]",
-    metrics: [
-      { value: "12", label: "coordinated agents" },
-      { value: "95+%", label: "task success rate" },
-    ],
     skills: ["Python", "PyTorch", "Hierarchical RL", "Multi-agent systems"],
     contributions: [
       {
@@ -111,10 +103,6 @@ export const experiences = [
     color: "orange",
     headline: { value: "3 robots", label: "running live deliveries across 6 waypoints" },
     // proud: "[Proudest moment: one sentence]",
-    metrics: [
-      { value: "3", label: "robots operating concurrently" },
-      { value: "6", label: "delivery waypoints" },
-    ],
     skills: ["Python", "FastAPI", "ROS2", "OpenRMF"],
     contributions: [
       {
@@ -156,10 +144,6 @@ export const experiences = [
     color: "green",
     headline: { value: "8 countries", label: "across APAC served by the platform" },
     // proud: "[Proudest moment: one sentence]",
-    metrics: [
-      { value: "8", label: "APAC countries served" },
-      { value: "70+", label: "backend tests" },
-    ],
     skills: ["React", "FastAPI", "Python", "JavaScript", "Backend testing"],
     contributions: [
       {

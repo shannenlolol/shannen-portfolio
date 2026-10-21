@@ -41,19 +41,17 @@
 
 /* Experience detail pages. */
 .experience-page .back-link{display:inline-flex;align-items:center;color:var(--ink)}
-.xd-hero{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:32px 48px;margin:36px 0 56px}
-.xd-badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;font-size:17px;color:var(--muted)}
-.xd-logo{display:flex;align-items:center;height:48px;padding:6px 12px;box-sizing:border-box;border-radius:12px;background:#f8f6e9;border:1px solid #d4d9c6}
-.xd-logo img{display:block;height:34px;width:auto;max-width:150px;object-fit:contain}
-.xd-attached{display:flex;align-items:center;gap:10px;font-size:15px}
-/* Overrides the large serif page-heading style: here the heading is just the small role line. */
-.xd-hero h1{margin:0;font:inherit;letter-spacing:normal;color:inherit}
-/* Results as tilted rubber stamps: the first solid, the rest outlined. */
-.xd-stamps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
-.xd-stamps li{display:grid;gap:4px;min-width:150px;max-width:220px;padding:16px 20px;border-radius:20px;border:2px dashed var(--tint-ink);background:var(--tint);color:var(--tint-ink);transform:rotate(1.5deg)}
-.xd-stamps li:first-child{border-style:solid;background:var(--tint-ink);color:var(--tint);transform:rotate(-2deg)}
-.xd-stamps strong{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3vw,38px);line-height:1.05}
-.xd-stamps span{font-size:16px;line-height:1.3}
+.xd-hero{display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px;margin:36px 0 56px}
+/* Logos vary from near-square (DSO) to long strips (ST), so each sits in a card with a minimum width to look similar in weight. */
+.xd-logo{display:flex;align-items:center;justify-content:center;height:84px;min-width:150px;padding:12px 18px;box-sizing:border-box;border-radius:16px;background:#f8f6e9;border:1px solid #d4d9c6;box-shadow:0 6px 16px #10202018;transform:rotate(-2deg)}
+.xd-logo img{display:block;height:56px;width:auto;max-width:200px;object-fit:contain}
+.xd-hero-text{display:grid;gap:4px;min-width:0}
+/* Overrides the large page-heading size: the role is a modest serif title next to the logo. */
+.xd-hero h1{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(24px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em;color:var(--ink)}
+.xd-period{margin:0;font-size:16px;color:var(--muted)}
+.xd-attached{display:flex;align-items:center;gap:10px;margin:6px 0 0;font-size:15px;color:var(--muted)}
+.xd-attached .xd-logo{height:44px;min-width:0;padding:5px 10px;border-radius:10px;box-shadow:none;transform:none}
+.xd-attached .xd-logo img{height:32px}
 
 .xd-label{margin:0;font-family:var(--sans);font-size:14px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .xd-body{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}

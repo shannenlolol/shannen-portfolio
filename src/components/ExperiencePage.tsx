@@ -43,32 +43,25 @@ export default function ExperiencePage({ slug }: { slug: string }) {
       </a>
 
       <header className="xd-hero">
-        {/* The role line doubles as the page heading; the company is spelt out for screen readers since the logo is decorative here. */}
-        <div className="xd-badge-row">
-          <span className="xd-logo">
-            <img src={job.logo} alt="" />
-          </span>
+        <span className="xd-logo">
+          <img src={job.logo} alt="" />
+        </span>
+        <div className="xd-hero-text">
+          {/* The logo shows the company, so it is spelt out for screen readers only. */}
+          <h1>
+            <span className="visually-hidden">{job.company}, </span>
+            {job.role}
+          </h1>
+          <p className="xd-period">{shortPeriod(job.period)}</p>
           {job.attachedTo && (
-            <span className="xd-attached">
-              attached to
+            <p className="xd-attached">
+              Attached to
               <span className="xd-logo">
                 <img src={job.attachedTo.logo} alt={job.attachedTo.name} />
               </span>
-            </span>
+            </p>
           )}
-          <h1>
-            <span className="visually-hidden">{job.company}, </span>
-            {job.role} · {shortPeriod(job.period)}
-          </h1>
         </div>
-        <ul className="xd-stamps" aria-label="Results">
-          {job.metrics.map((metric) => (
-            <li key={metric.label}>
-              <strong>{metric.value}</strong>
-              <span>{metric.label}</span>
-            </li>
-          ))}
-        </ul>
       </header>
 
       <div className="xd-body">
