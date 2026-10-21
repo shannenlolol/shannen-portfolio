@@ -40,7 +40,34 @@ export const experiences = [
         text: "Helm and Argo CD GitOps deploys across OpenShift staging, replacing a manual multi-step setup with one repeatable process.",
       },
     ],
-    images: [],
+    // Unlike the other roles, these keep their captions: they explain the photographer role.
+    images: [
+      {
+        src: "experience/st-engineering/airshow-2026-on-the-floor.jpg",
+        alt: "Shannen with a camera on the Singapore Airshow 2026 show floor, making a peace sign",
+        caption: "Event photographer at Singapore Airshow 2026",
+      },
+      {
+        src: "experience/st-engineering/airshow-2026-photographers-1.jpg",
+        alt: "Shannen and a fellow photographer holding up their cameras at the ST Engineering booth",
+        caption: "Behind the camera with a fellow photographer",
+      },
+      {
+        src: "experience/st-engineering/airshow-2026-with-colleague.jpg",
+        alt: "Shannen and a colleague smiling on the airshow floor",
+        caption: "With a colleague on the show floor",
+      },
+      {
+        src: "experience/st-engineering/cny-dinner-2026.jpg",
+        alt: "Shannen with colleagues dressed in red at a Chinese New Year dinner",
+        caption: "Chinese New Year dinner, 2026",
+      },
+      {
+        src: "experience/st-engineering/mss-40th-anniversary.jpg",
+        alt: "Mission Software & Services team photo in front of the 40th anniversary screen",
+        caption: "Mission Software & Services turns 40",
+      },
+    ],
   },
   {
     slug: "dso",
