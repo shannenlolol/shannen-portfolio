@@ -84,12 +84,7 @@ export default function Education() {
     <main id='main-content' className='education-page' ref={page}>
       <header className='edu-heading'>
         <div>
-          <p className='eyebrow'>Education</p>
-          <h1>
-            Where I learned
-            <br />
-            to learn.
-          </h1>
+          <h1 className='eyebrow'>Education</h1>
         </div>
       </header>
 

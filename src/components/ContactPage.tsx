@@ -7,11 +7,7 @@ export default function ContactPage() {
   return (
     <main id="main-content" className="contact-page">
       <div className="contact-page-intro">
-        <p className="eyebrow">Contact / Say hello</p>
-        <h1>
-          Let’s start a<br />
-          <span className="serif-accent">conversation.</span>
-        </h1>
+        <h1 className="eyebrow">Contact / Say hello</h1>
         <p>
           Have an interesting idea, a question, or an opportunity? Leave me a
           message here.

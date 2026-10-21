@@ -1,6 +1,5 @@
 /* Experience overview: colour-coded cards that lead with each role's result. */
 .xp-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px}
-.xp-heading h1{margin:12px 0 0}
 .xp-facts{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
 .xp-facts li{padding:6px 16px;border:1px solid var(--line);border-radius:999px;font-size:16px;background:var(--surface)}
 

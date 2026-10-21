@@ -68,6 +68,8 @@ main:not(.home-page) { min-height: 55vh; }
 }
 main h1 { font-size: clamp(36px,4.2vw,56px); line-height: 1.15; }
 .eyebrow { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: .1em; color: var(--accent); }
+/* Each page's heading is its small label, so undo the large serif h1 styling. */
+main h1.eyebrow { margin: 0; font-family: var(--sans); font-size: 15px; font-weight: 500; line-height: 1.7; letter-spacing: .1em; }
 .text-link,.back-link { font-size: 17px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 8px 18px; min-height: 44px; }
 .text-link:hover,.back-link:hover { background: var(--surface); border-color: var(--accent); }
 .button { border-radius: 999px; font: 500 18px/1.5 var(--sans); padding: 12px 26px; }

@@ -1,6 +1,5 @@
 /* Skills: category rows of icon chips. */
 .skills-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:40px}
-.skills-heading h1{margin:12px 0 0}
 .skills-heading > p{max-width:380px;margin:0;font-size:19px;line-height:1.6;color:var(--muted)}
 
 .skill-groups{display:flex;flex-direction:column}

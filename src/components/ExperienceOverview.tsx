@@ -15,8 +15,7 @@ export default function ExperienceOverview() {
     <main className="experience-overview" id="main-content" ref={page}>
       <header className="xp-heading">
         <div>
-          <p className="eyebrow">Experience</p>
-          <h1>Four places,<br />one habit: ship it.</h1>
+          <h1 className="eyebrow">Experience</h1>
         </div>
         <ul className="xp-facts" aria-label="At a glance">
           {/* <li>{experiences.length} roles</li>

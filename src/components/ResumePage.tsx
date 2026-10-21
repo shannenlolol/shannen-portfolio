@@ -1,8 +1,7 @@
 export default function ResumePage() {
   return <main id="main-content" className="resume-page">
     <header className="resume-heading">
-      <p className="eyebrow">Resume / The story so far</p>
-      <h1>My work, <span className="serif-accent">at a glance.</span></h1>
+      <h1 className="eyebrow">Resume / The story so far</h1>
       <p className="resume-intro">My experience, education, and technical toolkit, all in one place.</p>
     </header>
     <div className="resume-actions">

@@ -33,8 +33,7 @@ export default function SkillsPage() {
     <main id="main-content" className="skills-page" ref={page}>
       <header className="skills-heading">
         <div>
-          <p className="eyebrow">Skills</p>
-          <h1>What grows here.</h1>
+          <h1 className="eyebrow">Skills</h1>
         </div>
         {/* <p>The languages, frameworks and tools I’ve used across my roles and projects.</p> */}
       </header>

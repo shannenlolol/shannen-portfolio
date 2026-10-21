@@ -1,6 +1,5 @@
 /* Projects: one featured live project, in-progress cards, then a compact list of earlier work. */
 .projects-heading{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px}
-.projects-heading h1{margin:12px 0 0}
 .projects-heading > .text-link{flex-shrink:0;display:inline-flex;align-items:center}
 
 .project-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0;font-size:15px;color:var(--muted)}

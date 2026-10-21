@@ -16,8 +16,7 @@ export default function Projects() {
     <main className="projects-page" id="main-content" ref={page}>
       <header className="projects-heading">
         <div>
-          <p className="eyebrow">Projects</p>
-          <h1>Things I built.</h1>
+          <h1 className="eyebrow">Projects</h1>
         </div>
         <a className="text-link" href="https://github.com/shannenlolol" target="_blank" rel="noreferrer">More on GitHub</a>
       </header>

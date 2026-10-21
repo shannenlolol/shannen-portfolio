@@ -1,6 +1,5 @@
 /* Education: a dashed trail of stops with scrapbook-style polaroids. */
 .edu-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px}
-.edu-heading h1{margin:12px 0 0}
 .edu-heading > p{max-width:360px;margin:0;font-size:20px;line-height:1.6;color:var(--muted)}
 
 .edu-trail{list-style:none;margin:0;padding:0 0 0 40px;border-left:2px dashed color-mix(in srgb,var(--accent) 45%,transparent);display:grid;gap:56px}
