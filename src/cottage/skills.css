@@ -1,0 +1,29 @@
+/* Skills: category rows of icon chips. */
+.skills-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:40px}
+.skills-heading h1{margin:12px 0 0}
+.skills-heading > p{max-width:380px;margin:0;font-size:19px;line-height:1.6;color:var(--muted)}
+
+.skill-groups{display:flex;flex-direction:column}
+.skill-group{display:flex;flex-wrap:wrap;gap:16px 40px;padding:26px 0;border-top:1px solid var(--line)}
+.skill-group:last-child{border-bottom:1px solid var(--line)}
+.skill-group h2{flex:0 0 200px;margin:6px 0 0;font-family:var(--sans);font-size:22px;font-weight:700;line-height:1.35}
+.skill-group ul{flex:999 1 460px;min-width:0;list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+
+.skill-chip{display:inline-flex;align-items:center;gap:9px;min-height:44px;box-sizing:border-box;padding:6px 14px 6px 7px;border-radius:999px;background:var(--surface);color:var(--ink);font:500 17px/1.2 var(--sans)}
+.skill-icon{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--tile);color:var(--glyph)}
+.skill-icon svg{width:16px;height:16px;fill:currentColor}
+.skill-monogram{font:700 11px/1 var(--sans);letter-spacing:-.02em}
+
+/* Scroll reveal (see useReveal): each row rises in, then its chips pop up one by one. */
+.reveal-ready .skill-group{opacity:0;translate:0 20px;transition:opacity .6s ease-out,translate .6s cubic-bezier(.22,1,.36,1)}
+.reveal-ready .skill-group.is-visible{opacity:1;translate:0 0}
+.reveal-ready .skill-group.is-visible li{animation:skill-pop .45s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(var(--i) * 40ms + .15s)}
+@keyframes skill-pop{from{opacity:0;transform:scale(.85)}}
+
+@media(max-width:700px){
+  .skill-group h2{flex-basis:100%;margin:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal-ready .skill-group{opacity:1;translate:none;transition:none}
+  .reveal-ready .skill-group.is-visible li{animation:none}
+}

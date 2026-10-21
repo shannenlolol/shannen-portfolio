@@ -1,27 +1,62 @@
-const skills = [
-  { category: "Languages", items: ["Python", "Java", "JavaScript", "Dart", "C", "C++", "SQL", "Bash", "HTML", "CSS"] },
-  { category: "Frameworks & libraries", items: ["React", "Flutter", "FastAPI", "Flask", "Django", "Dash", "PyTorch", "TensorFlow", "ROS2"] },
-  { category: "Data & storage", items: ["PostgreSQL", "MariaDB", "Firebase", "Kafka", "AWS Athena", "S3"] },
-  { category: "Cloud & tools", items: ["Docker", "Kubernetes", "OpenShift", "Helm", "Argo CD", "Git", "Linux", "AWS EC2", "Lambda", "ECR", "AWS SageMaker"] },
-];
+import { useRef } from "react";
+import type { CSSProperties } from "react";
+import { skillGroups } from "../data/skills";
+import type { Skill } from "../data/skills";
+import useReveal from "../hooks/useReveal";
+import "../cottage/skills.css";
+
+// Light brand colours (e.g. JavaScript yellow) need a dark glyph to stay legible on their tile.
+function inkFor(hex: string) {
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.6 ? "#1d1d1b" : "#ffffff";
+}
+
+function SkillIcon({ skill }: { skill: Skill }) {
+  const hex = skill.icon?.hex ?? skill.colour?.replace("#", "") ?? "526344";
+  const style = { "--tile": `#${hex}`, "--glyph": inkFor(hex) } as CSSProperties;
+  return (
+    <span className="skill-icon" style={style} aria-hidden="true">
+      {skill.icon ? (
+        <svg viewBox="0 0 24 24" focusable="false"><path d={skill.icon.path} /></svg>
+      ) : (
+        <span className="skill-monogram">{skill.monogram}</span>
+      )}
+    </span>
+  );
+}
 
 export default function SkillsPage() {
+  const page = useRef<HTMLElement>(null);
+  useReveal(page, ".skill-group");
+
   return (
-    <main id="main-content" className="skills-page">
-      <p className="eyebrow">Skills / Inside my toolkit</p>
-      <h1>What grows here.</h1>
-      <p className="skills-intro">The languages, frameworks, and tools I use to bring ideas to life.</p>
-      <dl className="garden-toolkit">
-        {skills.map((group) => (
-          <div className="toolkit-group" key={group.category}>
-            <dt>{group.category}</dt>
-            <dd><ul>{group.items.map((item) => <li key={item}>{item}</li>)}</ul></dd>
-          </div>
-        ))}
-      </dl>
-      <div className="skills-footnote">
-        <p>See these tools in practice.</p>
-        <a className="text-link" href="/experience">Explore my experience</a>
+    <main id="main-content" className="skills-page" ref={page}>
+      <header className="skills-heading">
+        <div>
+          <p className="eyebrow">Skills</p>
+          <h1>What grows here.</h1>
+        </div>
+        {/* <p>The languages, frameworks and tools I’ve used across my roles and projects.</p> */}
+      </header>
+
+      <div className="skill-groups">
+        {skillGroups.map((group) => {
+          // Spaces would split aria-labelledby into several ids, so use a slug.
+          const id = `skills-${group.title.toLowerCase().replace(/[^a-z]+/g, "-")}`;
+          return (
+            <section className="skill-group" key={group.title} aria-labelledby={id}>
+              <h2 id={id}>{group.title}</h2>
+              <ul>
+                {group.skills.map((skill, i) => (
+                  <li className="skill-chip" key={skill.name} style={{ "--i": i } as CSSProperties}>
+                    <SkillIcon skill={skill} />
+                    <span>{skill.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
       </div>
     </main>
   );
