@@ -150,14 +150,6 @@ button:focus-visible {
   margin: 28px 0;
 }
 
-.serif-accent {
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
-  color: var(--accent);
-  font-weight: 400;
-  letter-spacing: -0.05em;
-}
-
 .button {
   display: inline-flex;
   align-items: center;
@@ -431,11 +423,6 @@ a {
   }
 }
 
-/* Softer editorial hierarchy for the introduction. */
-.hero h1 .serif-accent {
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
 ::selection {
   background: #ead49c;
   color: #392c23;

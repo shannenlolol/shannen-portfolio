@@ -44,7 +44,6 @@ body{isolation:isolate}
 .cottage-footer{position:relative;z-index:1}
 .resume-page{max-width:880px;width:calc(100% - 48px);margin:40px auto 100px}
 .resume-page h1{margin:20px 0 24px}
-.resume-intro{max-width:42ch;font-size:20px;line-height:1.7;color:var(--muted)}
 .resume-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:28px 0 32px}
 /* Sized to the screen, not to A4, so the whole viewer is visible at once and the PDF scrolls
    inside it (fitted to width) instead of the page being taller than the window. */

@@ -46,7 +46,6 @@ h1,h2,h3,.wordmark {
   font-weight: 400;
   letter-spacing: -.025em;
 }
-.serif-accent { font: inherit; color: var(--accent); }
 .site-header {
   max-width: 1160px;
   padding: 24px clamp(20px,5vw,56px);
