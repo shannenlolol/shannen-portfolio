@@ -137,6 +137,11 @@ export const experiences = [
         alt: "Shannen during her Continental internship",
         // caption: "On site · Continental Automotive Singapore",
       },
+      {
+        src: "experience/continental/delivery-robot-poster.jpg",
+        loop: "experience/continental/delivery-robot.mp4",
+        alt: "A yellow autonomous delivery robot driving along a footpath on its route",
+      },
     ],
   },
   {

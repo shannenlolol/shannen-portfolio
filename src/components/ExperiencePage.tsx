@@ -9,8 +9,9 @@ import "../cottage/experience.css";
 /**
  * Captions are optional, so some or all entries in the data may leave them out.
  * `uncropped` is for group photos: shown whole as a wide print instead of cropped to 4:3.
+ * `loop` is a short muted video (under /assets/images) played on a loop, with `src` as its poster.
  */
-type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean };
+type ExperienceImage = { src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string };
 
 const shortPeriod = (period: string) => period.replace(" - Present", " – now").replace(" - ", " – ");
 
@@ -30,7 +31,7 @@ export default function ExperiencePage({ slug }: { slug: string }) {
       </main>
     );
   const next = experiences[(index + 1) % experiences.length];
-  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped }));
+  const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped, loop: img.loop && `/assets/images/${img.loop}` }));
   const leadPhoto: Photo | undefined = lead && { ...lead, deco: "tape", tilt: -2.5, width: 270 };
   // Uncropped (wide group) prints are a little wider so two still fit side by side in the ~660px column.
   const gallery: Photo[] = rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.uncropped ? 300 : 260 }));
