@@ -43,12 +43,12 @@
 
 /* Experience detail pages. */
 .experience-page .back-link{display:inline-flex;align-items:center;color:var(--ink)}
-.xd-hero{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px 48px;margin:36px 0 56px}
-.xd-hero-copy{flex:1 1 520px;min-width:0}
-.xd-badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 18px;font-size:17px;color:var(--muted)}
+.xd-hero{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:32px 48px;margin:36px 0 56px}
+.xd-badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;font-size:17px;color:var(--muted)}
 .xd-logo{display:flex;align-items:center;height:48px;padding:6px 12px;box-sizing:border-box;border-radius:12px;background:#f8f6e9;border:1px solid #d4d9c6}
 .xd-logo img{display:block;height:34px;width:auto;max-width:150px;object-fit:contain}
-.xd-hero h1{margin:0;max-width:18ch}
+/* Overrides the large serif page-heading style: here the heading is just the small role line. */
+.xd-hero h1{margin:0;font:inherit;letter-spacing:normal;color:inherit}
 /* Results as tilted rubber stamps: the first solid, the rest outlined. */
 .xd-stamps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
 .xd-stamps li{display:grid;gap:4px;min-width:150px;max-width:220px;padding:16px 20px;border-radius:20px;border:2px dashed var(--tint-ink);background:var(--tint);color:var(--tint-ink);transform:rotate(1.5deg)}

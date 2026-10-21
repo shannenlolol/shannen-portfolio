@@ -6,8 +6,6 @@ export const experiences = [
     role: "Software Engineer",
     period: "Sep 2025 - Present",
     field: "Platforms & infrastructure",
-    summary:
-      "Making complex applications easier to build, integrate, and deploy.",
     context:
       "Attached to The Digital and Intelligence Service, developing reusable application tooling and deployment infrastructure.",
     color: "blue",
@@ -68,8 +66,6 @@ export const experiences = [
     role: "Machine Learning Engineer Intern",
     period: "Jul 2024 - Dec 2024",
     field: "Applied machine learning",
-    summary:
-      "Teaching a team of agents to work together through reinforcement learning.",
     context:
       "Designed and implemented a hierarchical reinforcement learning system for a simulated multi-agent environment.",
     color: "purple",
@@ -105,8 +101,6 @@ export const experiences = [
     role: "Software Engineer Intern",
     period: "Jul 2023 - Dec 2023",
     field: "Robotics & connected systems",
-    summary:
-      "Connecting autonomous robots, from fleet dashboard to live delivery.",
     context:
       "Led development of a fleet management system for autonomous food delivery robots at Continental Automotive Singapore.",
     color: "orange",
@@ -147,8 +141,6 @@ export const experiences = [
     role: "Software Developer Intern",
     period: "Jul 2022 - Dec 2022",
     field: "Full-stack product development",
-    summary:
-      "Building a more reliable AI-powered paint visualisation experience.",
     context:
       "Worked across React interfaces and FastAPI backend features for a paint-visualisation platform serving customers across APAC.",
     color: "green",
