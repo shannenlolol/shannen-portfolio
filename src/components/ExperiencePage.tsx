@@ -32,8 +32,8 @@ export default function ExperiencePage({ slug }: { slug: string }) {
   const next = experiences[(index + 1) % experiences.length];
   const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped }));
   const leadPhoto: Photo | undefined = lead && { ...lead, deco: "tape", tilt: -2.5, width: 270 };
-  // Uncropped prints are wide enough to fill a row on their own, so the faces stay readable.
-  const gallery: Photo[] = rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.uncropped ? 560 : 260 }));
+  // Uncropped (wide group) prints are a little wider so two still fit side by side in the ~660px column.
+  const gallery: Photo[] = rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.uncropped ? 300 : 260 }));
 
   return (
     <main id="main-content" className="experience-page" data-color={job.color} ref={page}>
