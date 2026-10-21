@@ -10,7 +10,6 @@ export const experiences = [
     context:
       "Attached to The Digital and Intelligence Service, developing reusable application tooling and deployment infrastructure.",
     color: "blue",
-    headline: { value: "Days → hours", label: "to connect each new service" },
     // proud: "[Proudest moment: one sentence]",
     skills: [
       "Python",
@@ -66,7 +65,6 @@ export const experiences = [
     context:
       "Designed and implemented a hierarchical reinforcement learning system for a simulated multi-agent environment.",
     color: "purple",
-    headline: { value: "12 agents", label: "working as a team, with 95%+ task success" },
     // proud: "[Proudest moment: one sentence]",
     skills: ["Python", "PyTorch", "Hierarchical RL", "Multi-agent systems"],
     contributions: [
@@ -101,7 +99,6 @@ export const experiences = [
     context:
       "Led development of a fleet management system for autonomous food delivery robots at Continental Automotive Singapore.",
     color: "orange",
-    headline: { value: "3 robots", label: "running live deliveries across 6 waypoints" },
     // proud: "[Proudest moment: one sentence]",
     skills: ["Python", "FastAPI", "ROS2", "OpenRMF"],
     contributions: [
@@ -142,7 +139,6 @@ export const experiences = [
     context:
       "Worked across React interfaces and FastAPI backend features for a paint-visualisation platform serving customers across APAC.",
     color: "green",
-    headline: { value: "8 countries", label: "across APAC served by the platform" },
     // proud: "[Proudest moment: one sentence]",
     skills: ["React", "FastAPI", "Python", "JavaScript", "Backend testing"],
     contributions: [

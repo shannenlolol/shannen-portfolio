@@ -46,11 +46,9 @@ export default function ExperienceOverview() {
                   <span>{job.field}</span>
                 </p>
                 <h2>
-                  {job.company} <span>· {job.role}</span>
+                  {job.company}
+                  <span>{job.role}</span>
                 </h2>
-                <p className="xp-result">
-                  <strong>{job.headline.value}</strong> {job.headline.label}
-                </p>
                 <span className="xp-cta" aria-hidden="true">Read more →</span>
               </div>
             </a>

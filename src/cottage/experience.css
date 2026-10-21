@@ -29,9 +29,8 @@
 .xp-body{display:flex;flex-direction:column;gap:8px;padding:38px 28px 26px;flex:1}
 .xp-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;margin:0;font-size:15px;color:var(--muted)}
 .xp-body h2{margin:4px 0 0;font-family:var(--sans);font-size:23px;font-weight:700;line-height:1.35}
-.xp-result{margin:0;font-size:18px;line-height:1.5;color:var(--muted)}
-.xp-result strong{font-weight:700;color:var(--tint-ink)}
-.xp-body h2 span{font-weight:400;color:var(--muted)}
+/* The role sits on its own line under the company name. */
+.xp-body h2 span{display:block;margin-top:2px;font-size:18px;font-weight:400;color:var(--muted)}
 .xp-cta{margin-top:auto;padding-top:12px;font-size:17px;font-weight:500;color:var(--tint-ink);transition:transform .25s}
 .xp-card:hover .xp-cta{transform:translateX(5px)}
 
