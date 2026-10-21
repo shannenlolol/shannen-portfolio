@@ -1,16 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/experience",
-      "destination": "/experiences",
-      "permanent": true
-    },
-    {
-      "source": "/experience/:slug",
-      "destination": "/experiences/:slug",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
       "source": "/experiences",
