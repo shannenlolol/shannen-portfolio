@@ -13,6 +13,7 @@ type Stop = {
   name: string;
   summary: string;
   tags?: { label: string; highlight?: boolean }[];
+  specialisations?: string[];
   link?: { label: string; href: string };
   photos: Photo[];
   dot: string;
@@ -28,9 +29,8 @@ const stops: Stop[] = [
     summary: "Bachelor of Computing in Computer Science.",
     tags: [
       { label: "Honours with Distinction", highlight: true },
-      { label: "Artificial Intelligence" },
-      { label: "Data Science & Analytics" },
     ],
+    specialisations: ["Artificial Intelligence", "Data Science & Analytics"],
     photos: [
       {
         src: "/assets/images/education/ntu-friends.jpg",
@@ -123,6 +123,12 @@ export default function Education() {
                   ))}
                 </ul>
               )}
+              {stop.specialisations && (
+                <p className='edu-specialisations'>
+                  <span>Specialisations</span>
+                  {stop.specialisations.join(" · ")}
+                </p>
+              )}
               {stop.link && (
                 <a
                   className='text-link'
@@ -137,7 +143,7 @@ export default function Education() {
             {stop.photos.length > 0 && (
               <div className='edu-photos'>
                 {stop.photos.map((photo) => (
-                  <Polaroid photo={photo} key={photo.caption} />
+                  <Polaroid photo={photo} key={photo.src} />
                 ))}
               </div>
             )}

@@ -17,6 +17,8 @@
 .edu-tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .edu-tags li{padding:4px 14px;border-radius:999px;font-size:16px;background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
 .edu-tags li.is-highlight{background:var(--button);color:var(--page);font-weight:500}
+.edu-specialisations{margin:0;font-size:17px;line-height:1.5}
+.edu-specialisations span{display:block;font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 
 .edu-photos{flex:0 1 400px;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:28px 20px;padding-top:16px}
 .edu-photos .polaroid:nth-child(2){margin-top:28px}
