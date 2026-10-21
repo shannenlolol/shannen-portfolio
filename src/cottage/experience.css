@@ -21,7 +21,6 @@
 .xp-photo{position:relative;height:200px;background:var(--tint-deep)}
 .xp-photo > img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
 .xp-card:hover .xp-photo > img{transform:scale(1.04)}
-.xp-placeholder{display:grid;place-items:center;height:100%;font-size:15px;color:var(--muted);background:repeating-linear-gradient(45deg,transparent 0 12px,#ffffff2e 12px 24px)}
 /* The company logo sits on the photo like a sticker. A fixed image height makes square logos
    (e.g. DSO) scale down to fit rather than spilling out. */
 .xp-logo{position:absolute;left:20px;bottom:-22px;display:flex;align-items:center;height:48px;padding:6px 12px;box-sizing:border-box;border-radius:12px;background:#f8f6e9;box-shadow:0 4px 10px #0000002a;transform:rotate(-3deg)}

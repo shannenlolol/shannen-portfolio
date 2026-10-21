@@ -33,22 +33,10 @@ export default function ExperiencePage({ slug }: { slug: string }) {
   const next = experiences[(index + 1) % experiences.length];
   // Video thumbnails are portrait phone frames, so they stay uncropped to keep the on-screen name and title.
   const [lead, ...rest] = job.images.map((img: ExperienceImage) => ({ src: `/assets/images/${img.src}`, alt: img.alt, caption: img.caption, uncropped: img.uncropped || !!img.video, href: img.video, video: !!img.video }));
-  const leadPhoto: Photo = lead
-    ? { ...lead, deco: "tape", tilt: -2.5, width: 270 }
-    : { placeholder: "Photo to come", caption: "[caption]", deco: "tape", tilt: -2.5, width: 270 };
-  // Pad the gallery to two prints with placeholders until more images are added.
-  const gallery: Photo[] = [
-    // Uncropped prints are wide enough to fill a row on their own, so the faces stay readable.
-    // Portrait video thumbnails are narrower so they don't tower over the rest of the gallery.
-    ...rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.video ? 220 : img.uncropped ? 560 : 260 })),
-    ...Array.from({ length: Math.max(0, 2 - rest.length) }, (_, i): Photo => ({
-      placeholder: "Screenshot or photo to come",
-      caption: "[caption]",
-      deco: (rest.length + i) % 2 ? "pin" : "button",
-      tilt: (rest.length + i) % 2 ? 2 : -1.5,
-      width: 260,
-    })),
-  ];
+  const leadPhoto: Photo | undefined = lead && { ...lead, deco: "tape", tilt: -2.5, width: 270 };
+  // Uncropped prints are wide enough to fill a row on their own, so the faces stay readable.
+  // Portrait video thumbnails are narrower so they don't tower over the rest of the gallery.
+  const gallery: Photo[] = rest.map((img, i) => ({ ...img, deco: (i % 2 ? "pin" : "button") as Photo["deco"], tilt: i % 2 ? 2 : -1.5, width: img.video ? 220 : img.uncropped ? 560 : 260 }));
 
   return (
     <main id="main-content" className="experience-page" data-color={job.color} ref={page}>
@@ -95,9 +83,11 @@ export default function ExperiencePage({ slug }: { slug: string }) {
               ))}
             </ul>
           </section>
-          <div className="xd-lead-photo">
-            <Polaroid photo={leadPhoto} />
-          </div>
+          {leadPhoto && (
+            <div className="xd-lead-photo">
+              <Polaroid photo={leadPhoto} />
+            </div>
+          )}
           {/* <section className="xd-proud">
             <span className="deco deco-pin" aria-hidden="true" />
             <h2 className="xd-label">Proudest moment</h2>
@@ -126,11 +116,13 @@ export default function ExperiencePage({ slug }: { slug: string }) {
               </li>
             ))}
           </ol>
-          <div className="xd-gallery xd-reveal">
-            {gallery.map((photo, i) => (
-              <Polaroid photo={photo} key={`${photo.src ?? "placeholder"}-${i}`} />
-            ))}
-          </div>
+          {gallery.length > 0 && (
+            <div className="xd-gallery xd-reveal">
+              {gallery.map((photo) => (
+                <Polaroid photo={photo} key={photo.src} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

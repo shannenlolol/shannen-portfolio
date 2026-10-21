@@ -34,11 +34,8 @@ export default function ExperienceOverview() {
               style={{ "--i": index } as CSSProperties}
             >
               <div className="xp-photo">
-                {photo ? (
-                  <img src={`/assets/images/${photo.src}`} alt="" loading="lazy" />
-                ) : (
-                  <span className="xp-placeholder">Photo to come</span>
-                )}
+                {/* Roles without photos keep the plain colour block, so the cards stay the same height. */}
+                {photo && <img src={`/assets/images/${photo.src}`} alt="" loading="lazy" />}
                 <span className="xp-logo">
                   <img src={job.logo} alt="" loading="lazy" />
                 </span>
