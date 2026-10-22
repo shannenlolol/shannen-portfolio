@@ -31,6 +31,14 @@
 .deco-clip::before{content:"";position:absolute;top:18px;left:-3px;right:-3px;height:7px;border-radius:3px;background:repeating-linear-gradient(90deg,#9aa1a6 0 2px,#d5dadd 2px 3px)}
 .deco-clip::after{content:"";position:absolute;left:50%;top:26px;bottom:2px;width:1px;background:#8a6238}
 
+/* Two strips of tape across opposite corners, drawn by ::before/::after. */
+.deco-tape-corners{inset:0}
+.deco-tape-corners::before,.deco-tape-corners::after{content:"";position:absolute;width:64px;height:22px;background:repeating-linear-gradient(90deg,transparent 0 8px,#ffffff40 8px 12px),#c4c79ec9}
+.deco-tape-corners::before{top:2px;left:-22px;transform:rotate(-40deg)}
+.deco-tape-corners::after{right:-22px;bottom:2px;transform:rotate(-40deg)}
+/* A paper sticker over the top-right corner; its shape and colour are set by the page using it (see journal.css). */
+.deco-sticker{top:-17px;right:-15px;width:48px;height:48px;transform:rotate(14deg)}
+
 /* When a revealed section (see useReveal) comes into view, its polaroids drop in and settle.
    `backwards` fill hands the resting transform (and hover) back once the animation ends. */
 .reveal-ready .is-visible .polaroid{animation:polaroid-drop .8s cubic-bezier(.34,1.56,.64,1) backwards}

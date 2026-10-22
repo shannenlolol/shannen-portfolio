@@ -1,6 +1,37 @@
-export const experiences = [
+/** A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. */
+export type Keepsake =
+  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string }
+  | { kind: "embed"; src: string; title: string }
+  | { kind: "letter"; href: string; quote: string; from: string; title: string };
+
+/**
+ * One piece of a journal page: the role's introduction, its toolkit, some of its contributions
+ * (by index, so the numbering carries over between pages), or a keepsake.
+ */
+export type JournalBlock = { kind: "intro" } | { kind: "toolkit" } | { kind: "did"; items: number[] } | Keepsake;
+
+type Experience = {
+  slug: string;
+  /** Short label for the journal's bookmark tab. */
+  tab: string;
+  logo: string;
+  company: string;
+  attachedTo?: { name: string; logo: string };
+  role: string;
+  period: string;
+  field: string;
+  context: string;
+  color: "blue" | "purple" | "orange" | "green";
+  skills: string[];
+  contributions: { title: string; text: string }[];
+  /** The role's journal pages, each a list of blocks. Wide screens show two pages at once, so an even count fills whole spreads. */
+  pages: JournalBlock[][];
+};
+
+export const experiences: Experience[] = [
   {
     slug: "st-engineering",
+    tab: "ST Eng.",
     logo: "/assets/logos/st-engineering.png",
     company: "ST Engineering",
     attachedTo: { name: "The Digital and Intelligence Service", logo: "/assets/logos/dis.png" },
@@ -8,7 +39,7 @@ export const experiences = [
     period: "Sep 2025 - Present",
     field: "Platforms & infrastructure",
     context:
-      "Attached to The Digital and Intelligence Service, developing reusable application tooling and deployment infrastructure.",
+      "Attached to The Digital and Intelligence Service",
     color: "blue",
     // proud: "[Proudest moment: one sentence]",
     skills: [
@@ -34,29 +65,36 @@ export const experiences = [
         text: "Helm and Argo CD GitOps deploys across OpenShift staging, replacing a manual multi-step setup with one repeatable process.",
       },
     ],
-    // Unlike the other roles, these keep their captions: they explain the photographer role.
-    images: [
-      {
-        src: "experience/st-engineering/airshow-2026-photographers-1.jpg",
-        alt: "Shannen and a fellow photographer holding up their cameras at the ST Engineering booth",
-        caption: "Event photographer at Singapore Airshow 2026",
-      },
-      {
-        src: "experience/st-engineering/cny-dinner-2026.jpg",
-        alt: "Shannen with colleagues dressed in red at a Chinese New Year dinner",
-        caption: "Chinese New Year dinner, 2026",
-        uncropped: true,
-      },
-      {
-        src: "experience/st-engineering/mss-40th-anniversary.jpg",
-        alt: "Mission Software & Services team photo in front of the 40th anniversary screen",
-        caption: "Mission Software & Services turns 40",
-        uncropped: true,
-      },
+    pages: [
+      [
+        { kind: "intro" },
+        { kind: "toolkit" },
+        {
+          kind: "photo",
+          src: "experience/st-engineering/airshow-2026-photographers-1.jpg",
+          alt: "Shannen and a fellow photographer holding up their cameras at the ST Engineering booth",
+        },
+      ],
+      [
+        { kind: "did", items: [0, 1, 2] },
+        {
+          kind: "photo",
+          src: "experience/st-engineering/cny-dinner-2026.jpg",
+          alt: "Shannen with colleagues dressed in red at a Chinese New Year dinner",
+          uncropped: true,
+        },
+        {
+          kind: "photo",
+          src: "experience/st-engineering/mss-40th-anniversary.jpg",
+          alt: "Mission Software & Services team photo in front of the 40th anniversary screen",
+          uncropped: true,
+        },
+      ],
     ],
   },
   {
     slug: "dso",
+    tab: "DSO",
     logo: "/assets/logos/dso.png",
     company: "DSO National Laboratories",
     role: "Machine Learning Engineer Intern",
@@ -77,20 +115,29 @@ export const experiences = [
         text: "Tuned the state, observation and reward design, lifting the task success rate above 95%.",
       },
     ],
-    images: [
-      {
-        src: "experience/dso/team-outing-prawning.jpg",
-        alt: "Team outing during my DSO internship",
-        // caption: "Outside the lab · A team outing at DSO",
-      },
+    pages: [
+      [
+        { kind: "intro" },
+        { kind: "toolkit" },
+        {
+          kind: "photo",
+          src: "experience/dso/team-outing-prawning.jpg",
+          alt: "Team outing during my DSO internship",
+        },
+      ],
+      [
+        { kind: "did", items: [0, 1] },
+        {
+          kind: "embed",
+          src: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7275813594418528256?compact=1",
+          title: "LinkedIn post: DSO video featuring Shannen as an intern in the Information Division",
+        },
+      ],
     ],
-    embed: {
-      src: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7275813594418528256",
-      title: "LinkedIn post: DSO video featuring Shannen as an intern in the Information Division",
-    },
   },
   {
     slug: "continental",
+    tab: "Continental",
     logo: "/assets/logos/continental.png",
     company: "Continental Automotive",
     role: "Software Engineer Intern",
@@ -111,26 +158,35 @@ export const experiences = [
         text: "Deployed it to three robots running a six-waypoint delivery route at once, with live demos for key stakeholders.",
       },
     ],
-    images: [
-      {
-        src: "experience/continental/intern-cohort.jpg",
-        alt: "Shannen with colleagues at Continental",
-        // caption: "The people behind the project · Continental",
-      },
-      {
-        src: "experience/continental/office-lobby.jpg",
-        alt: "Shannen during her Continental internship",
-        // caption: "On site · Continental Automotive Singapore",
-      },
-      {
-        src: "experience/continental/delivery-robot-poster.jpg",
-        loop: "experience/continental/delivery-robot.mp4",
-        alt: "A yellow autonomous delivery robot driving along a footpath on its route",
-      },
+    pages: [
+      [
+        { kind: "intro" },
+        { kind: "toolkit" },
+        {
+          kind: "photo",
+          src: "experience/continental/delivery-robot-poster.jpg",
+          loop: "experience/continental/delivery-robot.mp4",
+          alt: "A yellow autonomous delivery robot driving along a footpath on its route",
+        },
+      ],
+      [
+        { kind: "did", items: [0, 1] },
+        {
+          kind: "photo",
+          src: "experience/continental/intern-cohort.jpg",
+          alt: "Shannen with colleagues at Continental",
+        },
+        {
+          kind: "photo",
+          src: "experience/continental/office-lobby.jpg",
+          alt: "Shannen during her Continental internship",
+        },
+      ],
     ],
   },
   {
     slug: "amaris-ai",
+    tab: "AMARIS.AI",
     logo: "/assets/logos/amaris-ai.png",
     company: "AMARIS.AI",
     role: "Software Developer Intern",
@@ -151,7 +207,20 @@ export const experiences = [
         text: "Fixed 30+ bugs across photo processing, billing and reports, and built a 70+ test backend suite to catch regressions before release.",
       },
     ],
-    images: [],
-    recommendation: "/assets/images/experience/amaris-ai/testimonial.pdf",
+    // No photos from this role, so its keepsake is the testimonial letter instead.
+    pages: [
+      [{ kind: "intro" }, { kind: "toolkit" }],
+      [
+        { kind: "did", items: [0, 1] },
+        {
+          kind: "letter",
+          href: "/assets/images/experience/amaris-ai/testimonial.pdf",
+          quote:
+            "She was able to make headway and even perform at a level beyond her original scope of work.",
+          from: "Prof Yu Chien Siang",
+          title: "Chief Innovation and Trust Officer, Amaris AI",
+        },
+      ],
+    ],
   },
 ];
