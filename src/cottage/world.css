@@ -61,7 +61,7 @@ body{isolation:isolate}
  .persistent-landscape .par{translate:0!important;transition:none!important}
 }
 
-@media(max-width:820px){.world-view{padding-top:166px}}
+@media(max-width:820px){.world-view{padding-top:92px}}
 
 @media(max-width:820px){
  .home-content .hero{min-height:max(700px,100svh)}
