@@ -4,6 +4,7 @@ import { projects } from "../data/projects";
 import useReveal from "../hooks/useReveal";
 import EditorPreview from "./EditorPreview";
 import { Links, Status, Technologies } from "./ProjectBits";
+import { socialIcons } from "../data/socialIcons";
 import "../cottage/projects.css";
 
 export default function Projects() {
@@ -18,13 +19,17 @@ export default function Projects() {
         <div>
           <h1 className="eyebrow">Projects</h1>
         </div>
-        <a className="text-link" href="https://github.com/shannenlolol" target="_blank" rel="noreferrer">More on GitHub</a>
+        <a className="text-link" href="https://github.com/shannenlolol" target="_blank" rel="noreferrer">
+          <svg className="projects-github" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={socialIcons.github} /></svg>
+          More on GitHub
+        </a>
       </header>
 
       {featured.map(project => (
         <article className="project-featured project-reveal" id={project.slug} key={project.slug} aria-labelledby={`${project.slug}-title`}>
           {project.slug === "image-editor" ? <EditorPreview /> :
-            <figure className="project-preview"><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></figure>}
+            project.image ? <figure className="project-preview"><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></figure>
+            : <div className="project-preview project-placeholder">{project.placeholder ?? "Screenshot to come"}</div>}
           <div className="project-featured-copy">
             <Status project={project} />
             <h2 id={`${project.slug}-title`}>{project.name}</h2>

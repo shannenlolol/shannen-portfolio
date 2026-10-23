@@ -24,6 +24,21 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    name: "Where to Touch Grass",
+    slug: "where-to-touch-grass",
+    kind: "Web app · in progress",
+    status: "live",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "MapLibre", "Supabase"],
+    description: "A guide to every park, nature reserve and trail in Singapore: which entrance to use, how to get there, how long it takes, and what it actually looks like.",
+    why: "I got curious about the nature spots in Singapore and found there was no one place to look them up. Many I only found through a lot of digging or word of mouth, and plenty are still barely known. So I’m gathering it all in one place, and making it something everyone can add to.",
+    detail: "An interactive map and searchable list of spots, filterable by region and type. Each place has its own page with photos, time to explore, getting there, entrances, tips and nearby spots. Anyone can browse without an account; logging in with Google or email to add tips and photos is coming soon.",
+    runsOn: "Vercel, with Supabase for logins, contributions and photo storage",
+    highlights: ["[One thing you’re proud of]"],
+    links: [{ label: "Visit the site", href: "https://wheretotouchgrass.com" }],
+    category: "Next.js · Maps · Supabase",
+    placeholder: "Map screenshot to come",
+  },
+  {
     name: "Image Editor",
     slug: "image-editor",
     kind: "Creative tool",

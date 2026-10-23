@@ -1,6 +1,7 @@
 /* Projects: one featured live project, in-progress cards, then a compact list of earlier work. */
 .projects-heading{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px}
-.projects-heading > .text-link{flex-shrink:0;display:inline-flex;align-items:center}
+.projects-heading > .text-link{flex-shrink:0;display:inline-flex;align-items:center;gap:8px}
+.projects-github{width:18px;height:18px;fill:currentColor}
 
 .project-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0;font-size:15px;color:var(--muted)}
 .project-status{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:999px;font-weight:500;font-size:15px}
@@ -22,12 +23,15 @@
 
 /* Featured project: preview and story side by side in one large card. */
 .project-featured{display:flex;flex-wrap:wrap;overflow:hidden;border-radius:28px;background:var(--surface);border:1px solid var(--line)}
+/* Featured projects stack with the same gap as the grid below. */
+.project-featured + .project-featured{margin-top:28px}
 .project-featured > .project-preview{flex:1 1 520px;min-width:0;margin:0;border-right:1px solid var(--line)}
 .project-featured-copy{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:14px;padding:36px 34px}
 .project-featured-copy h2{margin:0;font-size:clamp(30px,3.2vw,40px);line-height:1.15}
 
 .project-preview{background:color-mix(in srgb,var(--page) 55%,var(--surface))}
 .project-preview > img{display:block;width:100%;height:auto}
+.project-featured > .project-placeholder{aspect-ratio:16/10}
 .preview-topline{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;padding:8px 16px;color:var(--muted);font-size:14px;border-bottom:1px solid var(--line)}
 .preview-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
 .preview-switch button{font:500 14px var(--sans);color:var(--muted);background:transparent;border:0;border-radius:999px;padding:7px 12px;min-height:36px;cursor:pointer}
