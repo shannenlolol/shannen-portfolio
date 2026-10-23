@@ -153,11 +153,18 @@
 .cottage-home .about-polaroid img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 42%}
 .cottage-home .about-polaroid figcaption{margin-top:14px;text-align:center;font-size:15px;line-height:1.4;font-style:italic}
 .cottage-home .about-tape{position:absolute;z-index:1;top:-13px;left:calc(50% - 42px);width:84px;height:28px;background:#c4c79ec9;transform:rotate(5deg);box-shadow:0 1px 2px #0001}
+/* The cat snap is a smaller print tucked over the graduation photo's lower corner; the margin leaves room for the
+   part that hangs below it. */
+.cottage-home .about-snaps{position:relative;max-width:290px;margin:0 auto 14%}
+.cottage-home .about-polaroid-cat{position:absolute;right:-14%;bottom:-14%;width:44%;max-width:none;padding:8px 8px 24px;transform:rotate(6deg)}
+.cottage-home .about-polaroid-cat img{aspect-ratio:3/4;object-position:50% 30%}
+.cottage-home .about-polaroid-cat .about-tape{top:-10px;left:calc(50% - 26px);width:52px;height:20px;transform:rotate(-8deg)}
 .cottage-home .about-notes .about-location{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .cottage-home .about-notes h3{font-family:var(--serif);font-size:clamp(27px,3vw,36px);line-height:1.25;font-weight:400;margin:0 0 24px}
 .cottage-home .about-notes p:last-child{margin-bottom:0}
 @media(max-width:820px){
  .cottage-home .garden{grid-template-columns:1fr;gap:30px}
- .cottage-home .about-polaroid{width:calc(100% - 24px);max-width:270px;margin:8px auto 12px}
+ .cottage-home .about-snaps{width:calc(100% - 24px);max-width:270px}
+ .cottage-home .about-polaroid:not(.about-polaroid-cat){margin:8px auto 12px}
  .cottage-home .about-notes{max-width:none}
 }
