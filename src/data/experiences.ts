@@ -1,9 +1,10 @@
 /**
  * A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. A photo's
- * `fastener` (washi tape, corner tapes, or a flower or star sticker) overrides the one the journal would pick.
+ * `fastener` (washi tape, corner tapes, or a flower, daisy, tulip or star sticker) overrides the one the journal would pick.
  */
+export type Sticker = "flower" | "daisy" | "tulip" | "star";
 export type Keepsake =
-  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | "flower" | "star" }
+  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | Sticker }
   | { kind: "embed"; src: string; title: string }
   | { kind: "letter"; href: string; quote: string; from: string; title: string };
 
@@ -77,7 +78,7 @@ export const experiences: Experience[] = [
           kind: "photo",
           src: "experience/st-engineering/airshow-2026-photographers-1.jpg",
           alt: "Shannen and a fellow photographer holding up their cameras at the ST Engineering booth",
-          fastener: "flower",
+          fastener: "daisy",
         },
       ],
       [
@@ -174,6 +175,7 @@ export const experiences: Experience[] = [
           src: "experience/continental/delivery-robot-poster.jpg",
           loop: "experience/continental/delivery-robot.mp4",
           alt: "A yellow autonomous delivery robot driving along a footpath on its route",
+          fastener: "tulip",
         },
       ],
       [

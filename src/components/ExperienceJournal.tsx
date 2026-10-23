@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode, TouchEvent } from "react";
 import { experiences } from "../data/experiences";
-import type { JournalBlock, Keepsake } from "../data/experiences";
+import type { JournalBlock, Keepsake, Sticker } from "../data/experiences";
 import { navigate } from "../cottage/navigate";
 import Polaroid from "./Polaroid";
 import type { Photo } from "./Polaroid";
@@ -201,7 +201,8 @@ function Contributions({ job, items }: { job: Job; items: number[] }) {
 // Each print gets its own fastener, washi colour (from its role's palette) and pattern, sticker shape, and tilt. They're picked from the first print's path
 // and stepped through for the rest, so prints in a group always differ yet look the same on every visit.
 const FASTENERS: Photo["deco"][] = ["tape", "tape-corners", "sticker"];
-const STICKERS = ["stk-flower", "stk-star"];
+const STICKERS = ["stk-flower", "stk-daisy", "stk-tulip", "stk-star"];
+const STICKER_SHAPES: readonly string[] = ["flower", "daisy", "tulip", "star"] satisfies Sticker[];
 const WASHI = ["wt-a", "wt-b", "wt-c"];
 const WASHI_PRINTS = ["wt-stripe", "wt-dots", "wt-grid", "wt-plain"];
 const PRINT_TILTS = [-3, 2.2, -1.4, 3.2, -2.4, 1.2];
@@ -218,15 +219,15 @@ function Photos({ items, still }: { items: PhotoBlock[]; still: boolean }) {
     <div className={`j-prints ${wide ? "j-prints-wide" : ""} ${items.length > 1 ? "j-prints-pair" : ""}`}>
       {items.map((item, i) => {
         const key = items[0].src;
-        // A photo can ask for its fastener; a flower or star is a sticker of that shape.
+        // A photo can ask for its fastener; a flower, daisy, tulip or star is a sticker of that shape.
         const { fastener } = item;
-        const sticker = fastener === "flower" || fastener === "star" ? `stk-${fastener}` : undefined;
+        const sticker = fastener && STICKER_SHAPES.includes(fastener) ? `stk-${fastener}` : undefined;
         const photo: Photo = {
           src: image(item.src),
           alt: item.alt,
           uncropped: item.uncropped,
           loop: item.loop && !still ? image(item.loop) : undefined,
-          deco: fastener === "flower" || fastener === "star" ? "sticker" : (fastener ?? pick(key, FASTENERS, 7, i)),
+          deco: fastener === "tape" || fastener === "tape-corners" ? fastener : sticker ? "sticker" : pick(key, FASTENERS, 7, i),
           tilt: pick(key, PRINT_TILTS, 3, i),
           className: `${pick(key, WASHI, 11, i)} ${pick(key, WASHI_PRINTS, 5, i)} ${sticker ?? pick(key, STICKERS, 13, i)}`,
         };
