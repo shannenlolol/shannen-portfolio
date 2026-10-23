@@ -198,11 +198,11 @@ function Contributions({ job, items }: { job: Job; items: number[] }) {
   );
 }
 
-// Each print gets its own fastener, washi colour and pattern, sticker shape, and tilt. They're picked from the first print's path
+// Each print gets its own fastener, washi colour (from its role's palette) and pattern, sticker shape, and tilt. They're picked from the first print's path
 // and stepped through for the rest, so prints in a group always differ yet look the same on every visit.
 const FASTENERS: Photo["deco"][] = ["tape", "tape-corners", "sticker"];
-const STICKERS = ["stk-flower", "stk-star", "stk-leaf", "stk-dot"];
-const WASHI = ["wt-sage", "wt-rose", "wt-butter", "wt-sky", "wt-lilac", "wt-kraft"];
+const STICKERS = ["stk-flower", "stk-star"];
+const WASHI = ["wt-a", "wt-b", "wt-c"];
 const WASHI_PRINTS = ["wt-stripe", "wt-dots", "wt-grid", "wt-plain"];
 const PRINT_TILTS = [-3, 2.2, -1.4, 3.2, -2.4, 1.2];
 function pick<T>(key: string, list: readonly T[], salt: number, step = 0) {
@@ -218,14 +218,17 @@ function Photos({ items, still }: { items: PhotoBlock[]; still: boolean }) {
     <div className={`j-prints ${wide ? "j-prints-wide" : ""} ${items.length > 1 ? "j-prints-pair" : ""}`}>
       {items.map((item, i) => {
         const key = items[0].src;
+        // A photo can ask for its fastener; a flower or star is a sticker of that shape.
+        const { fastener } = item;
+        const sticker = fastener === "flower" || fastener === "star" ? `stk-${fastener}` : undefined;
         const photo: Photo = {
           src: image(item.src),
           alt: item.alt,
           uncropped: item.uncropped,
           loop: item.loop && !still ? image(item.loop) : undefined,
-          deco: item.fastener ?? pick(key, FASTENERS, 7, i),
+          deco: fastener === "flower" || fastener === "star" ? "sticker" : (fastener ?? pick(key, FASTENERS, 7, i)),
           tilt: pick(key, PRINT_TILTS, 3, i),
-          className: `${pick(key, WASHI, 11, i * 2)} ${pick(key, WASHI_PRINTS, 5, i)} ${pick(key, STICKERS, 13, i)}`,
+          className: `${pick(key, WASHI, 11, i)} ${pick(key, WASHI_PRINTS, 5, i)} ${sticker ?? pick(key, STICKERS, 13, i)}`,
         };
         return <Polaroid key={item.src} photo={photo} />;
       })}
@@ -258,7 +261,7 @@ function FittedEmbed({ src, title, still }: { src: string; title: string; still:
   const size = { width: EMBED.width * scale, height: EMBED.height * scale };
   return (
     <div className="j-embed" ref={box}>
-      <div className="j-embed-card wt-kraft wt-stripe" style={size}>
+      <div className="j-embed-card wt-a wt-stripe" style={size}>
         <span className="deco deco-tape-corners" aria-hidden="true" />
         <div className="j-embed-frame">
           {still ? <div className="j-embed-still">LinkedIn post</div> : <iframe src={src} title={title} width={EMBED.width} height={EMBED.height} style={{ transform: `scale(${scale})` }} scrolling="no" loading="lazy" allowFullScreen />}
@@ -268,8 +271,8 @@ function FittedEmbed({ src, title, still }: { src: string; title: string; still:
   );
 }
 
-const FLOWERS = ["fern", "lavender", "daisy"] as const;
-const BUTTONS = ["butter", "sage", "rose"] as const;
+// The pressed flower that best suits each role's palette.
+const FLOWERS = { brick: "fern", blue: "lavender", mustard: "daisy", rose: "daisy" } as const;
 
 /** One of a role's pages: text and keepsakes in the order the role's data lays them out. */
 function RolePage({ job, blocks, page, still }: { job: Job; blocks: JournalBlock[]; page: number; still: boolean }) {
@@ -317,7 +320,7 @@ function RolePage({ job, blocks, page, still }: { job: Job; blocks: JournalBlock
             );
         }
       })}
-      {!hasKeepsake && <DecoStrip flower={FLOWERS[page % 3]} button={page % 2 ? BUTTONS[page % 3] : undefined} star={page % 2 === 0} />}
+      {!hasKeepsake && <DecoStrip flower={FLOWERS[job.color]} button={page % 2 ? "role" : undefined} star={page % 2 === 0} />}
     </div>
   );
 }

@@ -2,11 +2,15 @@
 
 /* Experience journal: a leather-bound scrapbook with bookmark tabs, turned a spread (or, on phones, a page) at a time. */
 
-/* Each role's colour, as a tint and a darker ink. The paper stays light in dark mode, so these do too. */
-[data-color="blue"]{--tint:#e6ecf3;--tint-deep:#d3deec;--tint-ink:#2f4a6e}
-[data-color="purple"]{--tint:#ece6f2;--tint-deep:#ddd2ea;--tint-ink:#57427a}
-[data-color="orange"]{--tint:#f6e9da;--tint-deep:#efd6b9;--tint-ink:#8a4d1f}
-[data-color="green"]{--tint:#e4efdc;--tint-deep:#cfe1c1;--tint-ink:#3d6a2f}
+/* Each role's palette, muted from its company's logo to sit with the brown leather: ST Engineering's red as brick,
+   DSO's blue, Continental's yellow as mustard and AMARIS.AI's pinkish red as dusty rose. A tint, a deeper tint and
+   a dark ink (tabs, chips, the summary, the date stamp, the seal), plus three washi colours for tapes and stickers:
+   two from the palette and a neutral. --stk-eye is a flower sticker's centre. The paper stays light in dark mode,
+   so these do too. */
+[data-color="brick"]{--tint:#f6e6de;--tint-deep:#ebc7b5;--tint-ink:#94432a;--wt-a:#e3ad97;--wt-b:#eed0c1;--wt-c:#cfb68c}
+[data-color="blue"]{--tint:#e3ebf4;--tint-deep:#c8d9ec;--tint-ink:#285683;--wt-a:#a3bfdc;--wt-b:#cbdbea;--wt-c:#cfb68c}
+[data-color="mustard"]{--tint:#f8eed3;--tint-deep:#f0d896;--tint-ink:#7f5608;--wt-a:#ebc35e;--wt-b:#f2dfa6;--wt-c:#b3a690;--stk-eye:#fff4d6}
+[data-color="rose"]{--tint:#f6e3e8;--tint-deep:#ecc4d0;--tint-ink:#923f5c;--wt-a:#e2a7b8;--wt-b:#efcdd7;--wt-c:#cfb68c}
 
 .journal{
   --paper:#fbf6e6;--j-ink:#2f2a20;--j-muted:#5f5646;--j-accent:#5a6c3a;
@@ -158,29 +162,23 @@
   -webkit-mask:conic-gradient(from 45deg at left,#000 90deg,#0000 0) left/var(--z) calc(var(--z) * 2) repeat-y,conic-gradient(from 225deg at right,#000 90deg,#0000 0) right/var(--z) calc(var(--z) * 2) repeat-y,linear-gradient(#000 0 0) center/calc(100% - 2 * var(--z)) 100% no-repeat;
   mask:conic-gradient(from 45deg at left,#000 90deg,#0000 0) left/var(--z) calc(var(--z) * 2) repeat-y,conic-gradient(from 225deg at right,#000 90deg,#0000 0) right/var(--z) calc(var(--z) * 2) repeat-y,linear-gradient(#000 0 0) center/calc(100% - 2 * var(--z)) 100% no-repeat}
 
-/* Washi colours and prints, set on a photo (see Photos) and picked up by its tape. */
-.wt-sage{--wt:#b9c9a0}
-.wt-rose{--wt:#e8b9b1}
-.wt-butter{--wt:#ecd590}
-.wt-sky{--wt:#b7cce0}
-.wt-lilac{--wt:#cbbde0}
-.wt-kraft{--wt:#cfb68c}
+/* Washi colours (from the role's palette) and prints, set on a photo (see Photos) and picked up by its tape or sticker. */
+.wt-a{--wt:var(--wt-a)}
+.wt-b{--wt:var(--wt-b)}
+.wt-c{--wt:var(--wt-c)}
 .wt-stripe{--wt-print:repeating-linear-gradient(45deg,#ffffff70 0 4px,transparent 4px 9px)}
 .wt-dots{--wt-print:radial-gradient(circle,#ffffffa6 1.5px,transparent 2px) 0 0/8px 8px}
 .wt-grid{--wt-print:linear-gradient(#ffffff66 1px,transparent 1px) 0 0/7px 7px,linear-gradient(90deg,#ffffff66 1px,transparent 1px) 0 0/7px 7px}
 
 /* Paper stickers (the "sticker" fastener on a print): a die-cut shape in matte coloured paper on a slightly larger
    white backing, with a faint grain, a soft sheen where it lifts, and a shadow that follows the cut outline.
-   The shape comes from the print's stk-* class, the colour from its washi class. */
+   The shape comes from the print's stk-* class, the colour from its role's main washi colour. */
 .j-page .deco-sticker{filter:drop-shadow(0 1.5px 1.5px #3b2a1a45) drop-shadow(0 0 .5px #3b2a1a59)}
 .j-page .deco-sticker::before,.j-page .deco-sticker::after{content:"";position:absolute;inset:0;-webkit-mask:var(--shape) center/contain no-repeat;mask:var(--shape) center/contain no-repeat}
 .j-page .deco-sticker::before{background:#fffdf6;transform:scale(1.18)}
-.j-page .deco-sticker::after{background:linear-gradient(135deg,#ffffff59,transparent 45%,#00000012),var(--grain),var(--stk-centre,linear-gradient(transparent,transparent)),color-mix(in srgb,var(--wt,#e8b9b1) 80%,#7a4a2a)}
-.stk-flower{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Ccircle cx='50' cy='26' r='22'/%3E%3Ccircle cx='72.8' cy='42.6' r='22'/%3E%3Ccircle cx='64.1' cy='69.4' r='22'/%3E%3Ccircle cx='35.9' cy='69.4' r='22'/%3E%3Ccircle cx='27.2' cy='42.6' r='22'/%3E%3Ccircle cx='50' cy='50' r='22'/%3E%3C/g%3E%3C/svg%3E");--stk-centre:radial-gradient(circle,#f0c763 0 17%,#e0ac3f 18%,transparent 19%)}
+.j-page .deco-sticker::after{background:linear-gradient(135deg,#ffffff59,transparent 45%,#00000012),var(--grain),var(--stk-centre,linear-gradient(transparent,transparent)),color-mix(in srgb,var(--wt-a,var(--wt,#e8b9b1)) 80%,#7a4a2a)}
+.stk-flower{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Ccircle cx='50' cy='26' r='22'/%3E%3Ccircle cx='72.8' cy='42.6' r='22'/%3E%3Ccircle cx='64.1' cy='69.4' r='22'/%3E%3Ccircle cx='35.9' cy='69.4' r='22'/%3E%3Ccircle cx='27.2' cy='42.6' r='22'/%3E%3Ccircle cx='50' cy='50' r='22'/%3E%3C/g%3E%3C/svg%3E");--stk-centre:radial-gradient(circle,var(--stk-eye,#f0c763) 0 17%,color-mix(in srgb,var(--stk-eye,#f0c763) 82%,#7a4a2a) 18%,transparent 19%)}
 .stk-star{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 9L61.2 37.6 91.9 39.4 68.1 58.9 75.9 88.6 50 72 24.1 88.6 31.9 58.9 8.1 39.4 38.8 37.6Z' fill='black' stroke='black' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E")}
-/* A pointed leaf with a faint midrib down its centre. */
-.stk-leaf{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 4C78 20 90 50 72 78 64 90 50 96 50 96S36 90 28 78C10 50 22 20 50 4Z' fill='black'/%3E%3C/svg%3E");--stk-centre:linear-gradient(90deg,transparent 48.5%,#3b2a1a2e 49% 51%,transparent 51.5%) center 18%/100% 70% no-repeat}
-.stk-dot{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='black'/%3E%3C/svg%3E")}
 
 /* Journal headings (see JournalTitle): typewriter text on a torn strip of paper, taped across one corner.
    The shadow sits on the wrapper so it follows the strip's torn outline. */
@@ -212,6 +210,7 @@
 .sewn-sage{--button-colour:#9fb38a}
 .sewn-rose{--button-colour:#e3a5a0}
 .sewn-butter{--button-colour:#efd27a}
+.sewn-role{--button-colour:var(--wt-a)}
 .pressed-flower{position:relative;display:block;width:64px;height:128px;opacity:.95;pointer-events:none}
 .pressed-flower svg{display:block;width:100%;height:100%}
 .pressed-tape{position:absolute;left:6px;right:6px;bottom:28%;height:16px;background:repeating-linear-gradient(90deg,#f7f1df00 0 6px,#ffffff66 6px 9px),#e6dcc2d9;transform:rotate(-9deg);box-shadow:0 1px 2px #0001}
@@ -331,7 +330,7 @@
 .j-letter figcaption span{font-size:14.5px;line-height:1.4;color:var(--j-muted)}
 .j-letter-link{display:inline-block;margin-top:10px;font-weight:600;color:var(--tint-ink);text-decoration:underline;text-underline-offset:4px}
 .j-letter-link:focus-visible{outline:2px solid var(--j-accent);outline-offset:3px}
-.j-seal{position:absolute;z-index:3;right:11%;bottom:22px;display:grid;place-items:center;width:54px;height:54px;border-radius:48% 52% 50% 46%;background:radial-gradient(circle at 35% 30%,#d8695c,#a63a30 70%);color:#f6cdc2;font-size:20px;box-shadow:0 3px 6px #0003}
+.j-seal{position:absolute;z-index:3;right:11%;bottom:22px;display:grid;place-items:center;width:54px;height:54px;border-radius:48% 52% 50% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--tint-ink,#a63a30) 70%,#fff),var(--tint-ink,#a63a30) 70%);color:var(--tint,#f6cdc2);font-size:20px;box-shadow:0 3px 6px #0003}
 
 .j-filler{display:flex;justify-content:center;align-items:center;gap:20px;height:100%;min-height:400px}
 

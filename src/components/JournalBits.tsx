@@ -67,13 +67,13 @@ export function Star({ label, className = "" }: { label?: string; className?: st
   );
 }
 
-/** A sewing button in one of the journal's colours. */
+/** A sewing button in one of the journal's colours (`sewn-role` takes the page's role colour). */
 export function SewnButton({ className = "" }: { className?: string }) {
   return <span className={`sewn-button ${className}`} aria-hidden="true" />;
 }
 
 /** A row of keepsake bits that settles at the foot of a page, filling the space under shorter content. */
-export function DecoStrip({ flower, button, star }: { flower: "lavender" | "daisy" | "fern"; button?: "sage" | "rose" | "butter"; star?: boolean }) {
+export function DecoStrip({ flower, button, star }: { flower: "lavender" | "daisy" | "fern"; button?: "sage" | "rose" | "butter" | "role"; star?: boolean }) {
   return (
     <div className="deco-strip" aria-hidden="true">
       {button && <SewnButton className={`sewn-${button}`} />}

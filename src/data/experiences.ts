@@ -1,9 +1,9 @@
 /**
  * A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. A photo's
- * `fastener` overrides the one the journal would otherwise pick for it.
+ * `fastener` (washi tape, corner tapes, or a flower or star sticker) overrides the one the journal would pick.
  */
 export type Keepsake =
-  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | "sticker" }
+  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | "flower" | "star" }
   | { kind: "embed"; src: string; title: string }
   | { kind: "letter"; href: string; quote: string; from: string; title: string };
 
@@ -24,7 +24,8 @@ type Experience = {
   period: string;
   field: string;
   context: string;
-  color: "blue" | "purple" | "orange" | "green";
+  /** The role's palette in the journal, taken from its company's logo (see journal.css). Each role's is distinct. */
+  color: "brick" | "blue" | "mustard" | "rose";
   skills: string[];
   contributions: { title: string; text: string }[];
   /** The role's journal pages, each a list of blocks. Wide screens show two pages at once, so an even count fills whole spreads. */
@@ -43,7 +44,7 @@ export const experiences: Experience[] = [
     field: "Platforms & infrastructure",
     context:
       "Attached to The Digital and Intelligence Service",
-    color: "blue",
+    color: "brick",
     // proud: "[Proudest moment: one sentence]",
     skills: [
       "Python",
@@ -76,6 +77,7 @@ export const experiences: Experience[] = [
           kind: "photo",
           src: "experience/st-engineering/airshow-2026-photographers-1.jpg",
           alt: "Shannen and a fellow photographer holding up their cameras at the ST Engineering booth",
+          fastener: "flower",
         },
       ],
       [
@@ -106,7 +108,7 @@ export const experiences: Experience[] = [
     field: "Applied machine learning",
     context:
       "Designed and implemented a hierarchical reinforcement learning system for a simulated multi-agent environment.",
-    color: "purple",
+    color: "blue",
     // proud: "[Proudest moment: one sentence]",
     skills: ["Python", "PyTorch", "Hierarchical RL", "Multi-agent systems"],
     contributions: [
@@ -127,6 +129,7 @@ export const experiences: Experience[] = [
           kind: "photo",
           src: "experience/dso/team-outing-prawning.jpg",
           alt: "Team outing during my DSO internship",
+          fastener: "flower",
         },
       ],
       [
@@ -149,7 +152,7 @@ export const experiences: Experience[] = [
     field: "Robotics & connected systems",
     context:
       "Led development of a fleet management system for autonomous food delivery robots at Continental Automotive Singapore.",
-    color: "orange",
+    color: "mustard",
     // proud: "[Proudest moment: one sentence]",
     skills: ["Python", "FastAPI", "ROS2", "OpenRMF"],
     contributions: [
@@ -199,7 +202,7 @@ export const experiences: Experience[] = [
     field: "Full-stack product development",
     context:
       "Worked across React interfaces and FastAPI backend features for a paint-visualisation platform serving customers across APAC.",
-    color: "green",
+    color: "rose",
     // proud: "[Proudest moment: one sentence]",
     skills: ["React", "FastAPI", "Python", "JavaScript", "Backend testing"],
     contributions: [
