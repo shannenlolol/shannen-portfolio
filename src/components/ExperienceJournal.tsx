@@ -27,11 +27,10 @@ const TURN_MS = 780;
 let leftClosed = false;
 
 const OPEN_MS = 1000;
-const UNTIE_MS = 650;
-const TIE_MS = 700;
-// Closing is slower, and the shut book rests a moment before the site travels on, so the ending can be seen.
-const CLOSE_MS = 1600;
-const CLOSED_REST_MS = 1400;
+// Closing is a little slower than opening, and the shut book rests briefly before the site travels on, so the
+// ending registers without holding the visitor up.
+const CLOSE_MS = 1150;
+const CLOSED_REST_MS = 650;
 
 function useMedia(query: string) {
   const [matches, setMatches] = useState(() => matchMedia(query).matches);
@@ -56,73 +55,16 @@ function FrontCover() {
   );
 }
 
-// The cord's two loose wraps down the cover near its fore-edge, crossing halfway (in a 90×560 box stretched to the
-// cover's height only), and its loose end: out from under the crossing and draped down the cover, staying within
-// the fore-edge so it never covers the tabs (drawn at 1:1 from the crossing).
-const CORD_WRAPS = ["M22 0C18 120 40 220 46 280 52 340 70 440 68 560", "M70 0C74 110 52 220 46 280 40 340 18 450 24 560"];
-const CORD_TAIL = "M0 0C12 8 24 18 26 36 28 56 16 72 12 94 8 114 16 132 10 156";
-
-/**
- * A flat suede lace wrapped loosely twice round the shut book, top to bottom near the fore-edge, with no knot: the
- * wraps cross halfway and disappear over the top and bottom edges, and the loose end comes out from under the
- * crossing and rests draped down the cover. Each strand is a darker edge with a lighter face, shaded darker where it bends
- * over the top and bottom edges; the suede filter roughens it, adds a matte nap and drops a soft shadow. Before the
- * cover opens it loosens and slides off over the fore-edge ("untying"); it slides back on when the book is shut
- * again ("tying").
- */
-function SuedeCord({ state }: { state?: "untying" | "tying" }) {
-  return (
-    <span className={`j-cord ${state ? `is-${state}` : ""}`} aria-hidden="true">
-      {/* Drawn first, so the loose end starts out from under the wraps. */}
-      <svg className="j-cord-tail" viewBox="0 0 120 200" focusable="false">
-        <path className="j-cord-edge" d={CORD_TAIL} />
-        <path className="j-cord-face" d={CORD_TAIL} />
-      </svg>
-      <svg className="j-cord-wraps" viewBox="0 0 90 560" preserveAspectRatio="none" focusable="false">
-        <defs>
-          <filter id="j-suede" filterUnits="userSpaceOnUse" x="-20" y="-20" width="240" height="620">
-            <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="5" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="fuzzy" />
-            <feColorMatrix in="noise" values="0 0 0 0 .12  0 0 0 0 .07  0 0 0 0 .04  0 0 0 1.1 -.35" result="nap" />
-            <feComposite in="nap" in2="fuzzy" operator="in" result="napped" />
-            <feMerge result="cord">
-              <feMergeNode in="fuzzy" />
-              <feMergeNode in="napped" />
-            </feMerge>
-            <feDropShadow in="cord" dx="0" dy="2.5" stdDeviation="1.6" floodColor="#000" floodOpacity=".5" />
-          </filter>
-          {/* Darker at the very top and bottom, where the lace turns over the cover's edges. */}
-          <linearGradient id="j-cord-face" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="560">
-            <stop offset="0" stopColor="#4f311e" />
-            <stop offset=".03" stopColor="#a87550" />
-            <stop offset=".97" stopColor="#a87550" />
-            <stop offset="1" stopColor="#4f311e" />
-          </linearGradient>
-          <linearGradient id="j-cord-edge" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="560">
-            <stop offset="0" stopColor="#331d10" />
-            <stop offset=".03" stopColor="#6b4127" />
-            <stop offset=".97" stopColor="#6b4127" />
-            <stop offset="1" stopColor="#331d10" />
-          </linearGradient>
-        </defs>
-        {CORD_WRAPS.map((d) => (
-          <g key={d}>
-            <path className="j-cord-edge" d={d} />
-            <path className="j-cord-face" d={d} />
-          </g>
-        ))}
-      </svg>
-    </span>
-  );
-}
-
 /** The outside of the back cover: plain leather. */
 function BackCover() {
   return <div className="j-outer j-outer-back" />;
 }
 
-/** A page as it looks inside the book: on its half of the leather, for the covers to carry while they swing. */
-function HalfBook({ page, side }: { page: Leaf; side: "left" | "right" }) {
+/**
+ * A page as it looks inside the book: on its half of the leather, for the covers to carry while they swing.
+ * Without a page it is blank paper (phones only ever show a sliver of the left-hand page).
+ */
+function HalfBook({ page, side }: { page?: Leaf; side: "left" | "right" }) {
   return (
     <div className={`j-half j-half-${side}`}>
       <PageSheet page={page} side={side} still />
@@ -259,7 +201,7 @@ function Contributions({ job, items }: { job: Job; items: number[] }) {
 // Each print gets its own fastener, washi colour and pattern, sticker shape, and tilt. They're picked from the first print's path
 // and stepped through for the rest, so prints in a group always differ yet look the same on every visit.
 const FASTENERS: Photo["deco"][] = ["tape", "tape-corners", "sticker"];
-const STICKERS = ["stk-flower", "stk-star", "stk-heart", "stk-dot"];
+const STICKERS = ["stk-flower", "stk-star", "stk-leaf", "stk-dot"];
 const WASHI = ["wt-sage", "wt-rose", "wt-butter", "wt-sky", "wt-lilac", "wt-kraft"];
 const WASHI_PRINTS = ["wt-stripe", "wt-dots", "wt-grid", "wt-plain"];
 const PRINT_TILTS = [-3, 2.2, -1.4, 3.2, -2.4, 1.2];
@@ -281,7 +223,7 @@ function Photos({ items, still }: { items: PhotoBlock[]; still: boolean }) {
           alt: item.alt,
           uncropped: item.uncropped,
           loop: item.loop && !still ? image(item.loop) : undefined,
-          deco: pick(key, FASTENERS, 7, i),
+          deco: item.fastener ?? pick(key, FASTENERS, 7, i),
           tilt: pick(key, PRINT_TILTS, 3, i),
           className: `${pick(key, WASHI, 11, i * 2)} ${pick(key, WASHI_PRINTS, 5, i)} ${pick(key, STICKERS, 13, i)}`,
         };
@@ -392,24 +334,9 @@ function FillerPage() {
 
 /**
 /**
- * Phones split each page into smaller ones so the book stays about a screen tall: the introduction keeps its
- * toolkit, neighbouring photos stay together, and everything else gets a page of its own.
- */
-function phonePages(blocks: JournalBlock[]) {
-  const split: JournalBlock[][] = [];
-  blocks.forEach((block, i) => {
-    const previous = blocks[i - 1];
-    const joins = previous && ((previous.kind === "intro" && block.kind === "toolkit") || (previous.kind === "photo" && block.kind === "photo"));
-    if (joins) split[split.length - 1].push(block);
-    else split.push([block]);
-  });
-  return split;
-}
-
-/**
  * Lays the journal out as a flat list of pages. On wide screens pages are shown in pairs (spreads), so every role
- * is padded to an even number of pages to start on a left-hand page. Phones show one page at a time, from smaller
- * pages (see phonePages) and with no padding.
+ * is padded to an even number of pages to start on a left-hand page. Phones show the same pages one at a time
+ * (at most two per role), with no padding.
  */
 function buildPages(single: boolean) {
   const firstPage: Record<string, number> = {};
@@ -419,8 +346,7 @@ function buildPages(single: boolean) {
   ];
   experiences.forEach((job) => {
     firstPage[job.slug] = pages.length;
-    const rolePages = single ? job.pages.flatMap(phonePages) : job.pages;
-    rolePages.forEach((blocks, p) => {
+    job.pages.forEach((blocks, p) => {
       // Pages listing contributions are on lined notebook paper.
       const tone = blocks.some((block) => block.kind === "did") ? "lined" : undefined;
       pages.push({ key: `${job.slug}-${p}`, owner: job.slug, tone, render: (still) => <RolePage job={job} blocks={blocks} page={p} still={still} /> });
@@ -445,9 +371,9 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   const reduced = useMedia("(prefers-reduced-motion: reduce)");
   const { pages, firstPage } = single ? LAYOUTS.single : LAYOUTS.spread;
   /**
-   * Phones show one page of the open book at a time and pan across each spread: turning within a spread slides the
-   * view to the other page; turning to another spread flips the leaf, and the view follows it. So the book always
-   * works in spreads (`unit` is a page's spread), but phones step a page at a time (`pos` is where they are).
+   * Wide screens turn a spread at a time (`unit` is a page's spread). Phones show one page and turn it like a
+   * notepad: every turn lifts the page off the spine at the left edge and swings it away, revealing the next one
+   * underneath (turning back lays the previous page down over it). So phones step a page at a time (`pos`).
    */
   const step = single ? 1 : 2;
   const unit = (index: number) => index - (index % 2);
@@ -457,7 +383,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
    * again, with `shutting`, when turning back from the first spread); it opens at the page the address asks for.
    * "back" is the book closing at the end before travelling on to Projects.
    */
-  const [board, setBoard] = useState<{ kind: "front" | "back"; moving: boolean; shutting?: boolean; cord?: "untying" | "tying" } | null>(() => {
+  const [board, setBoard] = useState<{ kind: "front" | "back"; moving: boolean; shutting?: boolean } | null>(() => {
     const kind = leftClosed ? "back" : "front";
     leftClosed = false;
     return { kind, moving: false };
@@ -492,10 +418,9 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   }, [single]);
   const job = experiences.find((item) => item.slug === slug);
 
-  // Opening first slips the cord off, then swings the cover (see the effect below).
   function openBook() {
-    if (board?.cord === "untying") return;
-    setBoard(reduced ? null : { kind: "front", moving: false, cord: "untying" });
+    if (board?.moving) return;
+    setBoard(reduced ? null : { kind: "front", moving: true });
   }
   function shutBook() {
     setBoard({ kind: "front", moving: !reduced, shutting: true });
@@ -526,8 +451,9 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
     // Bring the top of the book into view so the turn is seen, e.g. after reading a long page on a phone.
     const top = book.current?.getBoundingClientRect().top ?? 0;
     if (top < 0) window.scrollBy({ top: top - 130, behavior: reduced ? "instant" : "smooth" });
-    // Only moving to another spread turns a leaf; on phones, moving within one just pans (see `pan` below).
-    if (unit(to) !== unit(page)) setTurn(reduced ? null : { from: unit(page), to: unit(to) });
+    // Wide screens only turn a leaf when moving to another spread; phones turn one for every page.
+    if (single) setTurn(reduced ? null : { from: page, to });
+    else if (unit(to) !== unit(page)) setTurn(reduced ? null : { from: unit(page), to: unit(to) });
     setPage(to);
     const owner = pages[to].owner;
     if (syncRoute && owner !== (job?.slug ?? "")) {
@@ -566,16 +492,8 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
       leftClosed = true;
       navigate("/projects");
     };
-    const done = board.kind === "back" ? leave : board.shutting ? () => setBoard({ kind: "front", moving: false, cord: "tying" }) : () => setBoard(null);
+    const done = board.kind === "back" ? leave : board.shutting ? () => setBoard({ kind: "front", moving: false }) : () => setBoard(null);
     const timer = setTimeout(done, board.kind === "back" ? CLOSE_MS + CLOSED_REST_MS : OPEN_MS);
-    return () => clearTimeout(timer);
-  }, [board]);
-
-  // The cord's own steps: once it has slipped off, the cover swings open; once it has wrapped back on, it rests.
-  useEffect(() => {
-    if (!board?.cord) return;
-    const next = board.cord === "untying" ? { kind: "front" as const, moving: true } : { kind: "front" as const, moving: false };
-    const timer = setTimeout(() => setBoard(next), board.cord === "untying" ? UNTIE_MS : TIE_MS);
     return () => clearTimeout(timer);
   }, [board]);
 
@@ -608,10 +526,6 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   const leftIndex = turn && forward ? turn.from : current;
   const rightIndex = (turn && !forward ? turn.from : current) + 1;
   const closed = board && !(board.kind === "front" && board.moving && !board.shutting) ? board.kind : undefined;
-  // Which half of the spread a phone shows: the page being read, or whichever half a shut cover lies on. The view
-  // follows a turning leaf or cover over the same time it takes to swing.
-  const pan = !single ? 0 : closed === "front" ? 1 : closed === "back" ? 0 : page % 2;
-  const panMs = turn ? TURN_MS : board?.moving ? (board.kind === "back" ? CLOSE_MS : OPEN_MS) : 450;
   function touchStart(event: TouchEvent) {
     swipe.current = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
   }
@@ -642,8 +556,15 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
         </nav>
         {/* Swipes inside the book turn its pages rather than travelling to the next part of the site (see App). */}
         <div className={`j-book ${turn ? "is-turning" : ""}`} data-local-swipe onTouchStart={touchStart} onTouchEnd={touchEnd}>
-          <div className="j-pan" style={{ "--pan": pan ? "-50%" : "0%", "--pan-ms": `${panMs}ms` } as CSSProperties}>
+          <div className="j-pan">
             <div className="j-cover" inert={!!board}>
+              {/* Phones: a sliver of the left-hand page beside the spine, running off the screen's edge, where
+                  turned pages land. The spine can't curl, so tapping this page turns back instead. */}
+              {single && (
+                <button type="button" className="j-verso" onClick={() => turnTo(pos - step)} aria-label={pos > 0 ? "Turn back" : "Close the journal"}>
+                  <span />
+                </button>
+              )}
               <div className="j-spread">
                 {single && (
                   <div className="j-measure" ref={measure} aria-hidden="true" inert>
@@ -652,12 +573,34 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
                     ))}
                   </div>
                 )}
-                <PageSheet page={pages[leftIndex]} side="left" key={pages[leftIndex].key} />
-                <PageSheet page={pages[rightIndex]} side="right" key={pages[rightIndex]?.key ?? "blank"} />
+                {single ? (
+                  // The page underneath: the new one while the old swings away, or the old one until the previous
+                  // page has been laid back over it.
+                  <PageSheet page={pages[turn && !forward ? turn.from : page]} side="single" key={pages[turn && !forward ? turn.from : page].key} />
+                ) : (
+                  <>
+                    <PageSheet page={pages[leftIndex]} side="left" key={pages[leftIndex].key} />
+                    <PageSheet page={pages[rightIndex]} side="right" key={pages[rightIndex]?.key ?? "blank"} />
+                  </>
+                )}
                 {turn && (
                   <div className={`j-leaf ${forward ? "j-leaf-forward" : "j-leaf-back"}`} style={{ "--turn": `${TURN_MS}ms` } as CSSProperties} aria-hidden="true" inert key={`${turn.from}-${turn.to}`}>
-                    <div className="j-face j-front">{forward ? <PageSheet page={pages[turn.from + 1]} side="right" still /> : <PageSheet page={pages[turn.from]} side="left" still />}</div>
-                    <div className="j-face j-back">{forward ? <PageSheet page={pages[turn.to]} side="left" still /> : <PageSheet page={pages[turn.to + 1]} side="right" still />}</div>
+                    {single ? (
+                      <>
+                        {/* The page carried away (or back); its reverse is only glimpsed past the edge, so it is blank. */}
+                        <div className="j-face j-front">
+                          <PageSheet page={pages[forward ? turn.from : turn.to]} side="single" still />
+                        </div>
+                        <div className="j-face j-back">
+                          <PageSheet side="single" />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="j-face j-front">{forward ? <PageSheet page={pages[turn.from + 1]} side="right" still /> : <PageSheet page={pages[turn.from]} side="left" still />}</div>
+                        <div className="j-face j-back">{forward ? <PageSheet page={pages[turn.to]} side="left" still /> : <PageSheet page={pages[turn.to + 1]} side="right" still />}</div>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -672,17 +615,18 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
                       <FrontCover />
                     </button>
                     <div className="j-face j-back" aria-hidden="true" inert>
-                      <HalfBook page={pages[current]} side="left" />
+                      <HalfBook page={single ? undefined : pages[current]} side="left" />
                     </div>
-                    {!board.moving && <SuedeCord state={board.cord} />}
                   </>
                 ) : (
                   <>
+                    {/* Phones close by turning their last page away, uncovering the inside of the back cover. */}
                     <div className="j-face j-front" aria-hidden="true" inert>
-                      <HalfBook page={pages[current + 1]} side="right" />
+                      <HalfBook page={pages[single ? page : current + 1]} side="right" />
                     </div>
+                    {/* On phones the last page lands on the left, beside the open back cover. */}
                     <div className="j-face j-back" aria-hidden="true" inert>
-                      <BackCover />
+                      {single ? <HalfBook side="left" /> : <BackCover />}
                     </div>
                   </>
                 )}
@@ -692,7 +636,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
           {/* Curled page corners at the book's own corners turn the pages (swipes and the tabs also work). */}
           {!board && (
             <>
-              <button type="button" className="j-corner j-corner-back" onClick={() => turnTo(pos - step)} aria-label={pos > 0 ? "Turn back" : "Close the journal"} />
+              {!single && <button type="button" className="j-corner j-corner-back" onClick={() => turnTo(pos - step)} aria-label={pos > 0 ? "Turn back" : "Close the journal"} />}
               {!atEnd ? (
                 // Keyed on the page so the corner peeks out again after every turn.
                 <button type="button" className="j-corner j-corner-next" onClick={() => turnTo(pos + step)} aria-label={`Turn page: ${nextNote}`} key={`next-${pos}`}>

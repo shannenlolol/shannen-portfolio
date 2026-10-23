@@ -1,6 +1,9 @@
-/** A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. */
+/**
+ * A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. A photo's
+ * `fastener` overrides the one the journal would otherwise pick for it.
+ */
 export type Keepsake =
-  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string }
+  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | "sticker" }
   | { kind: "embed"; src: string; title: string }
   | { kind: "letter"; href: string; quote: string; from: string; title: string };
 
@@ -88,6 +91,7 @@ export const experiences: Experience[] = [
           src: "experience/st-engineering/mss-40th-anniversary.jpg",
           alt: "Mission Software & Services team photo in front of the 40th anniversary screen",
           uncropped: true,
+          fastener: "tape",
         },
       ],
     ],
@@ -175,6 +179,7 @@ export const experiences: Experience[] = [
           kind: "photo",
           src: "experience/continental/intern-cohort.jpg",
           alt: "Shannen with colleagues at Continental",
+          fastener: "tape",
         },
         {
           kind: "photo",
