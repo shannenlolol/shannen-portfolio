@@ -243,7 +243,7 @@
     radial-gradient(circle at 11px 14px,#fffefa 0 10px,transparent 10.6px) 0 0/22px 26px repeat-x,
     linear-gradient(#fffefa,#fffefa) 0 0/100% 13px no-repeat}
 .j-cover-deco{position:absolute;inset:0;pointer-events:none}
-.j-cover-deco .pressed-flower,.j-cover-deco .sewn-button,.j-cover-deco .star{position:absolute}
+.j-cover-deco .pressed-flower,.j-cover-deco .sewn-button{position:absolute}
 .deco-strip{display:flex;align-items:flex-end;justify-content:flex-end;gap:16px;margin-top:auto;padding:28px 4px 0}
 .deco-strip .pressed-flower{transform:rotate(12deg)}
 .deco-strip .star{margin-bottom:46px;transform:rotate(-10deg)}
@@ -253,8 +253,11 @@
 .j-flower-b{right:94px;bottom:34px;width:54px;height:108px;transform:rotate(-14deg)}
 .j-button-a{left:44px;bottom:64px}
 .j-button-b{left:84px;bottom:50px;width:24px;height:24px}
-.j-star-a{top:80px;right:48px;transform:rotate(12deg)}
-.j-star-b{top:132px;right:96px}
+/* Stickers on the inside cover note's corners: the large star overlapping its top-right corner, the small one its
+   bottom-left. The note is turned slightly, which makes it their containing block. */
+.j-cover-page .j-snippet .star{position:absolute;z-index:1}
+.j-star-a{top:-26px;right:-14px;transform:rotate(12deg)}
+.j-star-b{bottom:-14px;left:-10px}
 
 /* Inside cover. Bottom padding keeps the text clear of the flowers and buttons. */
 /* The inside cover's heading and note sit in the middle of the page, clear of the keepsakes at its foot. */
@@ -426,7 +429,10 @@
 .journal[data-single="true"] .j-tab{flex:0 1 auto;min-width:0;min-height:0;padding:9px 7px 22px;writing-mode:horizontal-tb;border-radius:12px 12px 0 0;font-size:12px;transform:translateY(10px)}
 .journal[data-single="true"] .j-tab:not(.j-tab-index){overflow:hidden}
 .journal[data-single="true"] .j-tab span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.journal[data-single="true"] .j-tab-index{flex:none}
+/* Its star is a little smaller and higher than on wide screens, so the raised tab (46px) fits the tab strip, which
+   clips anything taller. */
+.journal[data-single="true"] .j-tab-index{flex:none;padding-top:7px}
+.journal[data-single="true"] .j-tab-index .star{width:17px;height:17px}
 .journal[data-single="true"] .j-tab:hover,.journal[data-single="true"] .j-tab[aria-current="page"]{transform:translateY(0)}
 .journal[data-single="true"] .j-tab-index>span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* The open book's spine is at the left edge: the right-hand page meets the left-hand one there, with no leather
@@ -473,14 +479,22 @@
 .journal[data-single="true"][data-board="back"] .j-verso::before{inset:4px 0 4px 4px;border:2px dashed #ecd6acc4;border-right:0;border-radius:12px 0 0 12px}
 .journal[data-single="true"] .j-outer-back{border-radius:16px 6px 6px 16px}
 
-/* On phones the post's space follows the page width, in the embed's own proportions. */
-.journal[data-single="true"] .j-embed{aspect-ratio:504/399;max-height:399px}
-/* Phones keep every page whole (nothing scrolls inside the book), and every page is as tall as the tallest, so the
-   book keeps one height as pages turn. The pages are laid out once, hidden, to measure (see ExperienceJournal). */
-.journal[data-single="true"] .j-page{min-height:var(--page-h,500px);padding:26px 20px 48px}
-/* Phone sizes. Each role fits on two pages and the book is as tall as its tallest page, so every page is kept
-   compact: the logo card and date stamp share one row, and type, chips, photos, the video and the letter are all
-   scaled down. */
+/* On phones the post takes the rest of the page below the text, as on spreads, and grows to fill it (up to its usual
+   size), centred. A fixed shape with a height cap would also cap its width in Safari, leaving a small post at the
+   left. If the page has less than 200px left, the page shrinks to fit (see useFitPage). The padding below keeps the
+   post clear of the curled page corner. */
+.journal[data-single="true"] .j-embed{flex:1 1 0;min-height:200px;align-items:center;padding-bottom:12px}
+/* Phones: the whole book fits the screen, so the tabs, page corner and dots are always in reach, and a page longer
+   than the book scrolls inside it. The book's height is the screen less the site header (--header), the gap above
+   the book (6px), the tabs (32px), the cover's border (18px) and the dots below (30px), with 12px to spare. A copy
+   on a turning leaf or cover is scrolled to match instead (see ExperienceJournal). */
+.journal[data-single="true"] .j-spread{height:max(150px,calc(100svh - var(--header) - 98px));grid-template-rows:minmax(0,1fr)}
+.journal[data-single="true"] .j-page{height:100%;min-height:0;padding:26px 20px 48px;overflow-y:auto;overscroll-behavior:contain}
+.journal[data-single="true"] .j-face .j-page{overflow-y:hidden}
+/* A page shrunk to fit (see useFitPage) never scrolls. */
+.journal[data-single="true"] .j-page.is-fitted{overflow:hidden}
+/* Phone sizes. Each role fits on two pages, kept compact so as little as possible scrolls inside the book: the logo
+   card and date stamp share one row, and type, chips, photos, the video and the letter are all scaled down. */
 .journal[data-single="true"] .j-title-top{flex-wrap:nowrap;align-items:center;gap:12px}
 .journal[data-single="true"] .j-logo{height:50px;min-width:0;padding:8px 12px}
 .journal[data-single="true"] .j-logo img{height:30px;max-width:130px}
@@ -501,13 +515,14 @@
 .journal[data-single="true"] .j-notes p{font-size:14.5px;line-height:1.45}
 .journal[data-single="true"] .mark{width:34px;height:34px;font-size:22px}
 .journal[data-single="true"] .j-prints{padding:8px 4px}
-.journal[data-single="true"] .j-prints .polaroid{width:min(220px,72%)}
-.journal[data-single="true"] .j-prints-wide .polaroid{width:min(300px,92%)}
-.journal[data-single="true"] .j-prints-pair .polaroid:first-child{width:66%}
-.journal[data-single="true"] .j-prints-pair .polaroid:last-child{width:58%;margin-top:-14px}
-.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:first-child{width:84%}
-.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:last-child{width:74%}
-.journal[data-single="true"] .j-embed{max-height:210px}
+/* A page shrunk to fit the screen (see useFitPage) is laid out wider by 1/scale, so shares of its width would come
+   out as wide as ever once scaled down; --fit (the scale) keeps the photos in proportion with the text. */
+.journal[data-single="true"] .j-prints .polaroid{width:min(220px,calc(72% * var(--fit,1)))}
+.journal[data-single="true"] .j-prints-wide .polaroid{width:min(300px,calc(92% * var(--fit,1)))}
+.journal[data-single="true"] .j-prints-pair .polaroid:first-child{width:calc(66% * var(--fit,1))}
+.journal[data-single="true"] .j-prints-pair .polaroid:last-child{width:calc(58% * var(--fit,1));margin-top:-14px}
+.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:first-child{width:calc(84% * var(--fit,1))}
+.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:last-child{width:calc(74% * var(--fit,1))}
 .journal[data-single="true"] .j-letter-paper{padding:16px 16px 52px}
 .journal[data-single="true"] .j-letter blockquote p{font-size:16px}
 .journal[data-single="true"] .j-envelope{height:120px}
@@ -519,12 +534,10 @@
 .journal[data-single="true"] .j-toc-name .j-toc-period{font-size:13px}
 .journal[data-single="true"] .deco-strip{padding-top:16px}
 .journal[data-single="true"] .deco-strip .pressed-flower{width:48px;height:96px}
-/* Measures the phone pages at one page's width. */
-.j-measure{position:absolute;top:0;left:0;right:0;height:0;visibility:hidden;pointer-events:none}
-.journal[data-single="true"] .j-measure .j-page{min-height:0}
 /* Keeps the star clear of the name label and the cut-out title on narrow pages. */
-.journal[data-single="true"] .j-star-a{top:auto;bottom:190px;right:44px}
-.journal[data-single="true"] .j-star-b{top:auto;bottom:250px;right:110px}
+/* On phones the lace is sewn along the page's top edge (across the padding around the inside cover), rather than
+   floating a little below it. */
+.journal[data-single="true"] .j-lace{top:-26px;left:-20px;right:-20px}
 .journal[data-single="true"] + .j-dots{padding-right:0}
 @media(max-width:860px),(orientation:landscape) and (max-height:500px){
   /* The left gutter matches the sliver of the left page (--verso), so it reaches the screen's edge. */
