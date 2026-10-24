@@ -1,6 +1,8 @@
 /* Scrapbook polaroids and their fasteners, shared by the Education, experience and project pages. */
 .polaroid{position:relative;margin:0;width:var(--w);max-width:100%;padding:10px 10px 14px;box-sizing:border-box;background:#faf5e8;color:#514b3b;box-shadow:0 10px 22px #10202026;transform:rotate(var(--tilt));transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
-.polaroid:hover{transform:rotate(0) translateY(-6px) scale(1.03)}
+/* A print straightens and lifts under the pointer. Only where it can really hover: iOS leaves :hover stuck on whatever
+   a finger touched, so swiping across a photo to turn the journal's page straightened it just as the page turned. */
+@media(hover:hover){.polaroid:hover{transform:rotate(0) translateY(-6px) scale(1.03)}}
 .polaroid a{display:block}
 .polaroid img,.polaroid video,.polaroid-placeholder{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 .polaroid-uncropped img{aspect-ratio:auto;height:auto}
@@ -25,7 +27,7 @@
     repeating-radial-gradient(circle at 30% 40%,#c08a55 0 2px,#b07a47 2px 4px)}
 .deco-button::before,.deco-button::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;border-radius:1px;background:#f3ead2;transform:translate(-50%,-50%) rotate(45deg)}
 .deco-button::after{transform:translate(-50%,-50%) rotate(-45deg)}
-.polaroid:hover .deco-button{transform:rotate(35deg)}
+@media(hover:hover){.polaroid:hover .deco-button{transform:rotate(35deg)}}
 /* Wooden clothes peg with a metal spring. */
 .deco-clip{top:-30px;left:calc(50% - 9px);width:18px;height:52px;border-radius:4px 4px 6px 6px;box-shadow:0 2px 3px #0003;background:linear-gradient(90deg,#c99a63,#dcb27c 45%,#b88752)}
 .deco-clip::before{content:"";position:absolute;top:18px;left:-3px;right:-3px;height:7px;border-radius:3px;background:repeating-linear-gradient(90deg,#9aa1a6 0 2px,#d5dadd 2px 3px)}
