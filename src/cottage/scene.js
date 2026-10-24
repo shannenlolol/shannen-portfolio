@@ -50,9 +50,14 @@ export function initializeScene(){
   }
 
   var r=rng(7), i;
+  // Each star keeps its place as a fraction of the sky, so phones can spread the stars over the narrower sky they
+  // show (see layout) instead of showing only the few that fall in their slice of the wide scene.
+  var starSpots=[];
   for(i=0;i<46;i++){
-    var c=el('circle',{cx:(r()*1440).toFixed(0),cy:(110+r()*320).toFixed(0),r:(.8+r()*1.1).toFixed(2),fill:'#F6F2DE'},stars);
+    var sx=r(), sy=r();
+    var c=el('circle',{cx:(sx*1440).toFixed(0),cy:(110+sy*320).toFixed(0),r:(.8+r()*1.1).toFixed(2),fill:'#F6F2DE'},stars);
     c.setAttribute('class','tw');c.style.animationDelay=(r()*3).toFixed(2)+'s';
+    starSpots.push({el:c,x:sx,y:sy});
   }
   var pines=document.getElementById('pines');
   [[70,691,1],[104,689,.8],[388,694,1.1],[428,692,.85],[700,654,1.2],[740,646,.9],[770,640,1],[930,600,1],[966,592,.8],[1200,560,1.1],[1245,557,.9],[1290,558,1.2],[1385,556,1],[1424,552,.8]].forEach(function(p){
@@ -106,6 +111,12 @@ export function initializeScene(){
     document.getElementById('cloud-left').setAttribute('transform',compact?'translate('+(mobileLeft+mobileWidth*.15)+' '+(mobileSkyY+45)+') scale(.6)':'translate(720 320) scale(.6)');
     document.getElementById('cloud-middle').setAttribute('transform',compact?'translate('+(mobileLeft+mobileWidth*.92)+' '+(mobileSkyY+10)+') scale(.55)':'translate(1160 280) scale(.75)');
     ['cloud-right','cloud-low-left','cloud-low-middle'].forEach(function(id){document.getElementById(id).style.display=compact?'none':''});
+    // Phones: every other star, spread over the visible width and down to just above the hills.
+    starSpots.forEach(function(star,index){
+      star.el.setAttribute('cx',(compact?mobileLeft+star.x*mobileWidth:star.x*1440).toFixed(0));
+      star.el.setAttribute('cy',(compact?60+star.y*400:110+star.y*320).toFixed(0));
+      star.el.style.display=compact&&index%2?'none':'';
+    });
     signPlanks.forEach(function(plank,index){
       var y=628+index*34;
       plank.polygon.setAttribute('points',compact?(index%2===0

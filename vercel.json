@@ -1,11 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/experience",
+      "source": "/experiences",
       "destination": "/index.html"
     },
     {
-      "source": "/experience/:path*",
+      "source": "/experiences/:path*",
       "destination": "/index.html"
     },
     {
@@ -22,6 +22,10 @@
     },
     {
       "source": "/projects",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/projects/:path*",
       "destination": "/index.html"
     },
     {

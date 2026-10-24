@@ -1,0 +1,518 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Special+Elite&display=swap");
+
+/* Experience journal: a leather-bound scrapbook with bookmark tabs, turned a spread (or, on phones, a page) at a time. */
+
+/* Each role's palette, muted from its company's logo to sit with the brown leather: ST Engineering's red as brick,
+   DSO's blue, Continental's yellow as mustard and AMARIS.AI's pinkish red as dusty rose. A tint, a deeper tint and
+   a dark ink (tabs, chips, the summary, the date stamp, the seal), plus three washi colours for tapes and stickers:
+   two from the palette and a neutral. --stk-eye is a flower sticker's centre. The paper stays light in dark mode,
+   so these do too. */
+[data-color="brick"]{--tint:#f6e6de;--tint-deep:#ebc7b5;--tint-ink:#94432a;--wt-a:#e3ad97;--wt-b:#eed0c1;--wt-c:#cfb68c}
+[data-color="blue"]{--tint:#e3ebf4;--tint-deep:#c8d9ec;--tint-ink:#285683;--wt-a:#a3bfdc;--wt-b:#cbdbea;--wt-c:#cfb68c}
+[data-color="mustard"]{--tint:#f8eed3;--tint-deep:#f0d896;--tint-ink:#7f5608;--wt-a:#ebc35e;--wt-b:#f2dfa6;--wt-c:#b3a690;--stk-eye:#fff4d6}
+[data-color="rose"]{--tint:#f6e3e8;--tint-deep:#ecc4d0;--tint-ink:#923f5c;--wt-a:#e2a7b8;--wt-b:#efcdd7;--wt-c:#cfb68c}
+
+.journal{
+  --paper:#fbf6e6;--j-ink:#2f2a20;--j-muted:#5f5646;--j-accent:#5a6c3a;
+  /* Fine paper grain: SVG noise, tinted brown and kept very faint. */
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .34 0 0 0 0 .2 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  position:relative;padding-right:48px
+}
+[data-theme="dark"] .journal{--paper:#ece4cc}
+
+.world-view>.journal-page{width:min(1120px,calc(100% - 48px));margin:20px auto 110px;padding:0;background:none;border:0;border-radius:0;box-shadow:none}
+
+/* Bookmark tabs: felt strips tucked under the right-hand edge (along the top on phones). */
+.j-tabs{position:absolute;top:64px;right:0;z-index:0;display:flex;flex-direction:column;gap:8px;width:62px}
+.j-tab{display:flex;align-items:center;justify-content:center;gap:8px;min-height:100px;padding:16px 8px 16px 20px;writing-mode:vertical-rl;border-radius:0 12px 12px 0;background:var(--tint-deep);color:var(--tint-ink);font:600 15px/1 var(--sans);letter-spacing:.03em;text-decoration:none;box-shadow:2px 3px 6px #10202026;outline:1.5px dashed #ffffffb0;outline-offset:-5px;transform:translateX(-12px);transition:transform .25s cubic-bezier(.34,1.56,.64,1),background-color .2s}
+.j-tab:hover,.j-tab[aria-current="page"]{transform:translateX(0)}
+.j-tab[aria-current="page"]{background:var(--tint-ink);color:#fdf8ea}
+.j-tab-index{min-height:120px;background:#f3ead0;color:#5d4a2c}
+.j-tab-index[aria-current="page"]{background:#5d4a2c;color:#fdf8ea}
+.j-tab-index .star{width:20px;height:20px}
+.j-tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Smooth, warm dark brown leather that has softened with use. One broad, low noise field is the surface: lit diffusely
+   (soft-light) it becomes faint tonal waves, lit specularly the same waves catch a soft sheen. A fine, faint pore
+   grain keeps it from looking airbrushed. A broad sheen near the top, a darker rim, and (via --wear in each
+   box-shadow) edges rubbed slightly paler.
+   The textures stretch over the whole open book; the halves and covers show their half of it, so the leather lines
+   up as a cover swings. Cream saddle stitching runs round the edge. */
+.j-cover,.j-outer,.j-half,.j-verso{--hide:#2f1e14;--wear:inset 0 0 0 1px #00000059,inset 0 0 24px -8px #b98a5c3d;background-color:var(--hide);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800' preserveAspectRatio='none'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0045' numOctaves='2' seed='3'/%3E%3CfeSpecularLighting surfaceScale='2.4' specularConstant='.7' specularExponent='22' lighting-color='%23fff1e2'%3E%3CfeDistantLight azimuth='235' elevation='38'/%3E%3C/feSpecularLighting%3E%3CfeColorMatrix values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 55% 35% at 30% 14%,#ffffff12,transparent 70%),
+    radial-gradient(ellipse at 50% 45%,transparent 55%,#0c0704 140%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 -.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800' preserveAspectRatio='none'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0045' numOctaves='2' seed='3'/%3E%3CfeDiffuseLighting surfaceScale='2.4' lighting-color='%23fff'%3E%3CfeDistantLight azimuth='235' elevation='38'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  /* The pore grain (fourth layer) tiles at its own size; everything else stretches over the book. */
+  background-size:100% 100%,100% 100%,100% 100%,180px 180px,100% 100%;background-repeat:no-repeat,no-repeat,no-repeat,repeat,no-repeat;background-blend-mode:normal,normal,normal,normal,soft-light}
+:is(.j-outer-front,.j-half-right){background-size:200% 100%,200% 100%,200% 100%,180px 180px,200% 100%;background-position:right}
+:is(.j-outer-back,.j-half-left){background-size:200% 100%,200% 100%,200% 100%,180px 180px,200% 100%;background-position:left}
+[data-theme="dark"] :is(.j-cover,.j-outer,.j-half,.j-verso){--hide:#27180f}
+.j-cover{position:relative;z-index:1;padding:14px;border-radius:20px;box-shadow:var(--wear),0 20px 42px #2a17092e,0 3px 0 #3f2412}
+.j-cover::before,.j-outer::before,.j-half::before{content:"";position:absolute;inset:6px;border:2px dashed #ecd6acc4;border-radius:15px;pointer-events:none}
+
+/* Front and back covers (see the board in ExperienceJournal). Closed, the book is one half of the open one: the
+   other half is clipped away and the whole journal slides over so the closed book sits centred. The cover swings
+   about the spine, carrying on its other face the half page it lands as (or lifts off). */
+.j-book{position:relative}
+/* The open book and its covers. */
+.j-pan{position:relative;perspective:2600px}
+.journal{transition:translate var(--cover) cubic-bezier(.45,.05,.35,1)}
+.journal[data-single="false"][data-closed="front"]{translate:calc(36px - 25%) 0}
+.journal[data-single="false"][data-closed="back"]{translate:calc(25% + 12px) 0}
+/* While shut, only the cover casts a shadow: the open book's own is cut off at the spine and would show a hard edge
+   and a doubled, darker band beneath the closed book. It fades back in as the cover opens. */
+.j-cover{transition:box-shadow .4s ease}
+.journal[data-closed] .j-cover{box-shadow:var(--wear)}
+.journal[data-board="front"] .j-cover{clip-path:inset(-60px -60px -60px 50%)}
+.journal[data-board="back"] .j-cover{clip-path:inset(-60px 50% -60px -60px)}
+.j-tabs{transition:opacity .3s}
+.journal[data-closed="back"] .j-tabs{opacity:0}
+.j-board{position:absolute;z-index:3;top:0;bottom:0;left:50%;width:50%;transform-style:preserve-3d;transform-origin:left center}
+.j-board>button.j-face{display:block;padding:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer}
+.j-board>button.j-face:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.j-board:not(.is-moving) .j-face::after{display:none}
+.j-board .j-face::after{animation:j-shade var(--cover) ease both}
+.j-board.is-moving{animation:j-board-swing var(--cover) cubic-bezier(.45,.05,.35,1) both}
+/* A back cover that is already shut (the copy of the journal drawn while travelling on) rests where the swing ends. */
+.j-board-back:not(.is-moving){transform:rotateY(-180deg)}
+.j-board.is-shutting.is-moving{animation-name:j-board-shut}
+/* The shut cover lifts a little on hover, to hint that it opens. */
+.j-board-front:not(.is-moving){transition:transform .4s ease}
+.j-board-front:not(.is-moving):hover{transform:rotateY(-12deg)}
+@keyframes j-board-swing{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+@keyframes j-board-shut{from{transform:rotateY(-180deg)}to{transform:rotateY(0)}}
+/* The covers' outsides. The inset shadow is the crease along the spine. */
+.j-outer{position:absolute;inset:0;display:grid;place-items:center;border-radius:4px 18px 18px 4px;box-shadow:var(--wear),0 20px 42px #2a17092e}
+.j-outer-back{border-radius:18px 4px 4px 18px}
+/* The spine: a narrow band along the bound edge, shaded like a rounded leather wrap (dark at the very edge, a soft
+   highlight, then darker into the hinge), ending in a groove where the cover folds. The stitching starts after it. */
+.j-outer::after{content:"";position:absolute;top:0;bottom:0;left:0;width:28px;border-radius:4px 0 0 4px;pointer-events:none;
+  background:linear-gradient(90deg,#00000080,#00000026 18%,#ffffff14 42%,#00000014 70%,#00000059 94%,#0000008c);
+  box-shadow:1px 0 0 #ffffff17}
+.j-outer-back::after{left:auto;right:0;border-radius:0 4px 4px 0;transform:scaleX(-1);box-shadow:-1px 0 0 #ffffff17}
+.j-outer-front::before{left:36px}
+.j-outer-back::before{right:36px}
+.journal[data-single="true"] .j-outer{border-radius:6px 16px 16px 6px}
+.journal[data-single="true"] .j-outer::before{inset:4px;border-radius:12px}
+/* Engraving: the title cut into the leather in the inside cover's typewriter face, with no colour. The letters are darker than the
+   hide, shadowed along their top edges and catching a little light along the bottom, so they read as recessed.
+   A small tan line sits beneath. The title is centred. */
+.j-cover-title{display:grid;justify-items:center;gap:12px}
+.j-deboss{color:#0000007a;text-shadow:0 1px 0 #ffffff26,0 -1px 1px #00000099;font:400 clamp(38px,4vw,54px)/1.1 "Special Elite","Courier New",monospace;letter-spacing:.03em}
+.j-cover-sub{font:400 14px/1 "Special Elite","Courier New",monospace;letter-spacing:.14em;color:#a8835a;text-shadow:0 1px 0 #0000008c}
+
+/* The shut book shows a sliver of page edges along its fore-edge: the cover is drawn a little narrower than the
+   book, uncovering a strip of stacked page edges on the leather beneath. */
+.journal[data-closed="front"] .j-cover::after{content:"";position:absolute;top:10px;bottom:10px;right:2px;width:9px;border-radius:0 3px 3px 0;background:repeating-linear-gradient(90deg,#f2ead3 0 1px,#d4c6a2 1px 2px);box-shadow:inset -1px 0 2px #0003}
+.journal[data-closed="front"] .j-board{width:calc(50% - 9px)}
+
+/* The covers' stitching is quieter than the open book's, to keep them plain. */
+.j-outer::before{border-color:#e9d6b05c}
+
+/* Half of the open book, carried by a moving cover. Its stitching stops at the spine, as the open book's does. */
+.j-half{position:absolute;inset:0;box-sizing:border-box}
+.j-half>.j-page{height:100%;min-height:0}
+.j-half-left{padding:14px 0 14px 14px;border-radius:20px 0 0 20px}
+.j-half-left::before{right:0;border-right:0;border-radius:15px 0 0 15px}
+.j-half-right{padding:14px 14px 14px 0;border-radius:0 20px 20px 0}
+.j-half-right::before{left:0;border-left:0;border-radius:0 15px 15px 0}
+
+/* The paper block. Stacked shadows underneath suggest the thickness of the pages. */
+.j-spread{position:relative;display:grid;grid-template-columns:1fr 1fr;perspective:2600px;border-radius:6px;box-shadow:0 1px 0 #ece3c9,0 2px 0 #d9ceb0,0 3px 0 #ece3c9,0 4px 0 #d3c7a6,0 8px 10px #0000002e}
+/* Stitched spine between the two pages. */
+.j-spread::after{content:"";position:absolute;top:14px;bottom:14px;left:50%;z-index:2;border-left:2px dashed #b9a98a;pointer-events:none}
+
+.j-page{position:relative;display:flex;flex-direction:column;min-width:0;min-height:700px;padding:50px 46px 60px;overflow:clip;background-color:var(--paper);background-image:var(--grain);color:var(--j-ink);font-size:18px}
+/* Shading where each page curves into the spine. */
+.j-left{border-radius:6px 0 0 6px;background-image:linear-gradient(to left,#5a4a2a2e,transparent 52px),var(--grain)}
+.j-right{border-radius:0 6px 6px 0;background-image:linear-gradient(to right,#5a4a2a2e,transparent 52px),var(--grain)}
+.j-single{border-radius:4px 6px 6px 4px;background-image:linear-gradient(to right,#5a4a2a26,transparent 26px),var(--grain)}
+/* Lined notebook paper with a red margin, for the "What I did" pages. */
+.j-page.j-lined{background-image:linear-gradient(to right,#5a4a2a2e,transparent 52px),linear-gradient(90deg,transparent 30px,#d98b8b55 30px 32px,transparent 32px),repeating-linear-gradient(to bottom,transparent 0 35px,#8fb1cb45 35px 36px),var(--grain)}
+.j-page.j-left.j-lined{background-image:linear-gradient(to left,#5a4a2a2e,transparent 52px),linear-gradient(90deg,transparent 30px,#d98b8b55 30px 32px,transparent 32px),repeating-linear-gradient(to bottom,transparent 0 35px,#8fb1cb45 35px 36px),var(--grain)}
+.j-page>div{display:flex;flex:1;flex-direction:column}
+
+/* The turning leaf: two faces back to back, rotated around the spine (or the left edge on phones). */
+.j-leaf{position:absolute;top:0;bottom:0;z-index:3;width:50%;transform-style:preserve-3d;animation:var(--turn) cubic-bezier(.45,.05,.35,1) both}
+.j-leaf-forward{left:50%;transform-origin:left center;animation-name:j-turn-forward}
+.j-leaf-back{left:0;transform-origin:right center;animation-name:j-turn-back}
+.j-face{position:absolute;inset:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.j-back{transform:rotateY(180deg)}
+.j-face>.j-page{height:100%;min-height:0}
+/* A shadow that deepens as the leaf stands upright, then fades as it lands. */
+.j-face::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#00000000,#0000002a);animation:j-shade var(--turn) ease both;pointer-events:none}
+@keyframes j-turn-forward{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+@keyframes j-turn-back{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes j-shade{0%,100%{opacity:0}50%{opacity:1}}
+
+/* Shared journal type. */
+.j-page h2,.j-page h3,.j-page h4{letter-spacing:0;color:var(--j-ink)}
+.j-label{margin:0 0 14px;font:600 14px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--j-accent)}
+/* Embroidered running-stitch underline. */
+.j-stitched{display:inline-block;align-self:flex-start;margin:0;padding-bottom:8px;background:repeating-linear-gradient(90deg,currentColor 0 8px,transparent 8px 13px) left bottom/100% 2px no-repeat}
+.j-page .text-link{color:var(--j-ink);border-color:#2f2a2040}
+.j-page .text-link:hover{background:#efe6cc;border-color:var(--j-accent)}
+
+/* Washi tape: translucent paper multiplied over whatever it sticks to (so a photo shows through), with a faint
+   fibre grain, a soft sheen, and both ends torn into small zigzags by the mask. */
+.j-tape,.j-page .deco-tape,.j-page .deco-tape-corners::before,.j-page .deco-tape-corners::after{--z:4px;background:linear-gradient(#ffffff45,transparent 40%,#0000000f),var(--wt-print,linear-gradient(transparent,transparent)),var(--grain),var(--wt,var(--tint-deep,#d4d6ac));opacity:.9;mix-blend-mode:multiply;box-shadow:none;
+  -webkit-mask:conic-gradient(from 45deg at left,#000 90deg,#0000 0) left/var(--z) calc(var(--z) * 2) repeat-y,conic-gradient(from 225deg at right,#000 90deg,#0000 0) right/var(--z) calc(var(--z) * 2) repeat-y,linear-gradient(#000 0 0) center/calc(100% - 2 * var(--z)) 100% no-repeat;
+  mask:conic-gradient(from 45deg at left,#000 90deg,#0000 0) left/var(--z) calc(var(--z) * 2) repeat-y,conic-gradient(from 225deg at right,#000 90deg,#0000 0) right/var(--z) calc(var(--z) * 2) repeat-y,linear-gradient(#000 0 0) center/calc(100% - 2 * var(--z)) 100% no-repeat}
+
+/* Washi colours (from the role's palette) and prints, set on a photo (see Photos) and picked up by its tape or sticker. */
+.wt-a{--wt:var(--wt-a)}
+.wt-b{--wt:var(--wt-b)}
+.wt-c{--wt:var(--wt-c)}
+.wt-stripe{--wt-print:repeating-linear-gradient(45deg,#ffffff70 0 4px,transparent 4px 9px)}
+.wt-dots{--wt-print:radial-gradient(circle,#ffffffa6 1.5px,transparent 2px) 0 0/8px 8px}
+.wt-grid{--wt-print:linear-gradient(#ffffff66 1px,transparent 1px) 0 0/7px 7px,linear-gradient(90deg,#ffffff66 1px,transparent 1px) 0 0/7px 7px}
+
+/* Paper stickers (the "sticker" fastener on a print): a die-cut shape in matte coloured paper on a slightly larger
+   white backing, with a faint grain, a soft sheen where it lifts, and a shadow that follows the cut outline.
+   The shape comes from the print's stk-* class, the colour from its role's main washi colour. */
+.j-page .deco-sticker{filter:drop-shadow(0 1.5px 1.5px #3b2a1a45) drop-shadow(0 0 .5px #3b2a1a59)}
+.j-page .deco-sticker::before,.j-page .deco-sticker::after{content:"";position:absolute;inset:0;-webkit-mask:var(--shape) center/contain no-repeat;mask:var(--shape) center/contain no-repeat}
+.j-page .deco-sticker::before{background:#fffdf6;transform:scale(1.18)}
+.j-page .deco-sticker::after{background:linear-gradient(135deg,#ffffff59,transparent 45%,#00000012),var(--grain),var(--stk-centre,linear-gradient(transparent,transparent)),var(--stk-fill,color-mix(in srgb,var(--wt-a,var(--wt,#e8b9b1)) 80%,#7a4a2a))}
+.stk-flower{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Ccircle cx='50' cy='26' r='22'/%3E%3Ccircle cx='72.8' cy='42.6' r='22'/%3E%3Ccircle cx='64.1' cy='69.4' r='22'/%3E%3Ccircle cx='35.9' cy='69.4' r='22'/%3E%3Ccircle cx='27.2' cy='42.6' r='22'/%3E%3Ccircle cx='50' cy='50' r='22'/%3E%3C/g%3E%3C/svg%3E");--stk-centre:radial-gradient(circle,var(--stk-eye,#f0c763) 0 17%,color-mix(in srgb,var(--stk-eye,#f0c763) 82%,#7a4a2a) 18%,transparent 19%)}
+/* A daisy: cream petals round a centre in the role's colour. */
+.stk-daisy{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%280 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%2830 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%2860 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%2890 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28120 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28150 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28180 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28210 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28240 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28270 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28300 50 50%29'/%3E%3Cellipse cx='50' cy='23' rx='8.5' ry='19' transform='rotate%28330 50 50%29'/%3E%3Ccircle cx='50' cy='50' r='15'/%3E%3C/g%3E%3C/svg%3E");--stk-fill:color-mix(in srgb,var(--wt-b,#efe6d6) 30%,#fffaf0);--stk-centre:radial-gradient(circle,var(--wt-a,#e0ac3f) 0 13%,color-mix(in srgb,var(--wt-a,#e0ac3f) 75%,#7a4a2a) 14.5%,transparent 15.5%)}
+/* A tulip in the role's colour on a green stem and leaves (the green is painted over the lower part of the shape). */
+.stk-tulip{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Cpath d='M27 18L39 34 50 12 61 34 73 18C80 44 74 64 50 68 26 64 20 44 27 18Z'/%3E%3Cpath d='M47 66h6v30h-6z'/%3E%3Cpath d='M50 90C40 88 30 80 27 70 38 70 47 77 50 90Z'/%3E%3Cpath d='M50 84C58 80 66 74 70 64 60 64 52 70 50 84Z'/%3E%3C/g%3E%3C/svg%3E");--stk-centre:linear-gradient(transparent 67%,#8aa165 67%)}
+.stk-star{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 9L61.2 37.6 91.9 39.4 68.1 58.9 75.9 88.6 50 72 24.1 88.6 31.9 58.9 8.1 39.4 38.8 37.6Z' fill='black' stroke='black' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E")}
+
+/* Journal headings (see JournalTitle): typewriter text on a torn strip of paper, taped across one corner.
+   The shadow sits on the wrapper so it follows the strip's torn outline. */
+.jt{position:relative;display:inline-block;filter:drop-shadow(0 2px 2px #3b2f1a2e);transform:rotate(-1deg)}
+.jt-strip{display:inline-block;padding:.32em .9em .26em;background:var(--grain),#fffdf6;color:#2b2620;font:400 .72em/1.25 "Special Elite","Courier New",monospace;clip-path:polygon(0 6%,2% 0,40% 4%,70% 0,99% 5%,100% 40%,98% 70%,100% 100%,60% 96%,30% 100%,1% 95%,2% 60%)}
+.jt-tape{position:absolute;z-index:1;top:-6px;left:-18px;width:62px;height:22px;transform:rotate(-32deg)}
+.j-title.j-contents-title{margin:10px 0 18px;font-size:34px}
+.j-title{margin:10px 0 24px;font-size:clamp(34px,3.8vw,46px);line-height:1.3}
+
+/* A note on paper cut with pinking shears: zigzag top and bottom edges, shadow following the cut. */
+.j-snippet{margin:20px 0 24px;filter:drop-shadow(0 3px 4px #3b2f1a26);transform:rotate(-.6deg)}
+.j-snippet p{margin:0;padding:20px 22px;background:var(--tint,#fffdf6);font-size:17px;line-height:1.55;color:var(--j-ink);
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 51% repeat-x,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 51% repeat-x;
+  mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 51% repeat-x,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 51% repeat-x}
+
+/* Decorations: star stickers, sewing buttons, pressed flowers, lace. All ignore the pointer. */
+/* Star stickers (see Star). The drop shadows lift the sticker off the page and outline its white edge. */
+.star{--star-hi:#fff3c4;--star-mid:#e9b949;--star-lo:#c48a20;position:relative;display:inline-grid;flex:none;place-items:center;width:46px;height:46px;filter:drop-shadow(0 1.5px 1px #3b2a1240) drop-shadow(0 0 .6px #3b2a1266);pointer-events:none}
+.star svg{position:absolute;inset:0;width:100%;height:100%}
+.star-label{position:relative;padding-top:5px;color:#5b3d0a;font:700 15px/1 var(--sans);text-shadow:0 1px 0 #ffffff8c}
+.star-small{width:26px;height:26px}
+.star-rose{--star-hi:#ffe1dc;--star-mid:#e59a90;--star-lo:#bf665a}
+.star-rose .star-label{color:#5a2019}
+.star-sage{--star-hi:#eef6dd;--star-mid:#a9c086;--star-lo:#7d985a}
+.star-sage .star-label{color:#2c3d17}
+.sewn-button{position:relative;display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 62% 38%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 38% 62%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 62% 62%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle,transparent 0 10px,#00000020 10.5px 11.5px,transparent 12px),var(--button-colour,#9fb38a);box-shadow:0 2px 3px #0003,inset 0 -2px 2px #0002;pointer-events:none}
+.sewn-button::before,.sewn-button::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:2px;border-radius:1px;background:#fbf4e0;transform:translate(-50%,-50%) rotate(45deg)}
+.sewn-button::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.sewn-sage{--button-colour:#9fb38a}
+.sewn-rose{--button-colour:#e3a5a0}
+.sewn-butter{--button-colour:#efd27a}
+.sewn-role{--button-colour:var(--wt-a)}
+.pressed-flower{position:relative;display:block;width:64px;height:128px;opacity:.95;pointer-events:none}
+.pressed-flower svg{display:block;width:100%;height:100%}
+.pressed-tape{position:absolute;left:6px;right:6px;bottom:28%;height:16px;background:repeating-linear-gradient(90deg,#f7f1df00 0 6px,#ffffff66 6px 9px),#e6dcc2d9;transform:rotate(-9deg);box-shadow:0 1px 2px #0001}
+/* Lace trim: a solid band with scalloped edge and punched holes. */
+.j-lace{position:absolute;top:0;left:0;right:0;height:26px;filter:drop-shadow(0 1px 1px #0000001f);pointer-events:none;
+  background:
+    radial-gradient(circle at 11px 8px,var(--paper) 0 2.2px,transparent 2.7px) 0 0/22px 26px repeat-x,
+    radial-gradient(circle at 11px 14px,#fffefa 0 10px,transparent 10.6px) 0 0/22px 26px repeat-x,
+    linear-gradient(#fffefa,#fffefa) 0 0/100% 13px no-repeat}
+.j-cover-deco{position:absolute;inset:0;pointer-events:none}
+.j-cover-deco .pressed-flower,.j-cover-deco .sewn-button,.j-cover-deco .star{position:absolute}
+.deco-strip{display:flex;align-items:flex-end;justify-content:flex-end;gap:16px;margin-top:auto;padding:28px 4px 0}
+.deco-strip .pressed-flower{transform:rotate(12deg)}
+.deco-strip .star{margin-bottom:46px;transform:rotate(-10deg)}
+.deco-strip .sewn-button{margin-bottom:22px}
+.j-right .deco-strip,.j-single .deco-strip{padding-right:36px}
+.j-flower-a{right:34px;bottom:48px;transform:rotate(16deg)}
+.j-flower-b{right:94px;bottom:34px;width:54px;height:108px;transform:rotate(-14deg)}
+.j-button-a{left:44px;bottom:64px}
+.j-button-b{left:84px;bottom:50px;width:24px;height:24px}
+.j-star-a{top:80px;right:48px;transform:rotate(12deg)}
+.j-star-b{top:132px;right:96px}
+
+/* Inside cover. Bottom padding keeps the text clear of the flowers and buttons. */
+/* The inside cover's heading and note sit in the middle of the page, clear of the keepsakes at its foot. */
+.j-cover-page{justify-content:center;padding-bottom:150px}
+.j-cover-page .j-snippet{max-width:380px}
+
+/* Contents. */
+.j-toc{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.j-toc li{border-left:6px solid var(--tint-ink);border-radius:4px}
+.j-toc a{display:flex;gap:12px;padding:12px 14px;border-radius:0 12px 12px 0;color:var(--j-ink);text-decoration:none;transition:background-color .2s}
+.j-toc a:hover{background:var(--tint)}
+.j-toc a:focus-visible{outline:2px solid var(--j-accent);outline-offset:2px}
+.j-toc-name{display:grid;flex:1;gap:1px;min-width:0}
+.j-toc-name strong{font:700 19px/1.3 var(--sans)}
+.j-toc-name span{font-size:16px;line-height:1.4;color:var(--j-muted)}
+.j-toc-name .j-toc-period{font-size:14px}
+
+/* A role's pages: blocks of text and keepsakes, spaced evenly, with the deco strip pushed to the foot. */
+.j-role-page>:not(:first-child,.deco-strip){margin-top:28px}
+.j-intro .j-snippet{margin-bottom:0}
+
+/* A role's introduction. */
+.j-title-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px}
+.j-logo{position:relative;display:flex;align-items:center;justify-content:center;height:70px;min-width:150px;padding:12px 18px;border-radius:6px;background:#fffdf6;box-shadow:0 6px 14px #10202022;transform:rotate(-2.5deg)}
+.j-logo img{height:44px;width:auto;max-width:190px;object-fit:contain}
+/* Postage stamp: a dotted border drawn in the paper's colour punches the perforations. */
+.j-stamp{display:block;padding:4px;border:6px dotted var(--paper);background:var(--tint-ink);transform:rotate(4deg)}
+.j-stamp span{display:block;white-space:nowrap;padding:10px 12px;border:1.5px solid #fdf8ea80;color:#fdf8ea;font:600 14px/1.35 var(--sans);letter-spacing:.04em;text-align:center}
+.j-role{margin:22px 0 0;font:400 clamp(24px,2.4vw,29px)/1.3 var(--serif)}
+.j-attached{display:flex;align-items:center;gap:10px;margin:12px 0 0;font-size:15px;color:var(--j-muted)}
+.j-attached img{height:34px;width:auto;padding:4px 8px;border-radius:6px;background:#fffdf6;box-shadow:0 2px 6px #10202018}
+/* Toolkit as stitched felt patches. */
+.j-felt{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:9px}
+.j-felt li{padding:6px 14px;border-radius:11px 14px 10px 13px;background:var(--grain),var(--tint-deep);color:var(--tint-ink);font:600 15px/1.4 var(--sans);box-shadow:0 1px 0 #00000022;outline:1.5px dashed #ffffffb8;outline-offset:-5px}
+
+/* Contribution numbers (see NumberMark): a handwritten numeral inside a loose pen circle. */
+.mark{position:relative;display:inline-grid;flex:none;place-items:center;width:40px;height:40px;font:700 26px/1 "Caveat",cursive;color:#33291e}
+.mark svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:#3b2f22;stroke-width:3.4;stroke-linecap:round;transform:rotate(-8deg)}
+
+/* "What I did". */
+.j-notes ol{list-style:none;margin:0;padding:0;display:grid;gap:20px}
+.j-notes li{display:flex;gap:16px;align-items:flex-start}
+.j-notes h4{margin:0 0 4px;font:700 20px/1.35 var(--sans)}
+.j-notes p{margin:0;font-size:17px;line-height:1.55;color:var(--j-muted)}
+
+/* Keepsakes: prints stuck into the book (see Photos), embeds and letters. */
+.j-prints{position:relative;display:flex;align-items:flex-start;justify-content:center;padding:18px 8px}
+.j-page .polaroid{padding:8px}
+.j-prints .polaroid{width:min(340px,90%)}
+.j-prints-wide .polaroid{width:min(420px,100%)}
+/* A pair as a collage: a bigger print up top, a smaller one lower down and overlapping it a little. */
+.j-prints-pair{flex-direction:column}
+.j-prints-pair .polaroid:first-child{width:72%;align-self:flex-start}
+.j-prints-pair .polaroid:last-child{z-index:1;width:62%;margin:-18px 0 0;align-self:flex-end}
+/* The LinkedIn post (see FittedEmbed): the card takes the scaled size; the iframe inside keeps LinkedIn's. */
+.j-embed{position:relative;display:flex;justify-content:center;align-items:flex-start;padding-top:8px}
+.j-embed-card{position:relative;flex:none}
+.j-embed-frame{width:100%;height:100%;overflow:hidden;border-radius:8px;background:#fff;box-shadow:0 8px 18px #10202022}
+.j-embed-frame iframe{display:block;border:0;transform-origin:0 0}
+.j-embed-still{display:grid;place-items:center;height:100%;color:#6b604c}
+/* Solid paper tape across two corners, laid over the card. Washi's see-through blend sinks behind LinkedIn's player. */
+.j-embed .deco-tape-corners{z-index:3}
+/* Upright strips running along the card's left and right edges (half on the card, half on the page), over the dark
+   bars beside the portrait video, clear of the post's title along the top and its details along the bottom.
+   Each 64×22 strip is turned on end, so -32px centres it on the edge. */
+.j-embed .deco-tape-corners::before{top:26%;left:-32px;transform:rotate(-87deg)}
+.j-embed .deco-tape-corners::after{top:48%;right:-32px;bottom:auto;transform:rotate(93deg)}
+.j-embed .deco-tape-corners::before,.j-embed .deco-tape-corners::after{mix-blend-mode:normal;opacity:1}
+
+/* The Amaris testimonial: a letter tucked into an envelope sealed with wax. The paper sits between the envelope's
+   back and its front pocket, and the slot clips it at the envelope's bottom edge. Only the tucked part takes up
+   room on the page: on hover (or when its link has focus) the letter slides up out of the envelope, over the text
+   above it. Touch screens can't hover, so there the letter sits out in the normal flow instead. */
+.j-letter{position:relative;display:flex;flex-direction:column;justify-content:flex-end;margin:12px 0 0}
+.j-envelope{position:absolute;left:2%;right:2%;bottom:0;height:150px;border-radius:4px;background:#d8bf92;box-shadow:0 8px 18px #00000026,inset 0 2px 6px #0000001f}
+.j-letter-slot{position:relative;z-index:1;flex:none;height:200px;clip-path:inset(-100vh -60px 0 -60px)}
+.j-letter-paper{--inset:7%;position:absolute;top:0;left:var(--inset);right:var(--inset);padding:20px 24px 60px;background:repeating-linear-gradient(to bottom,transparent 0 31px,#8fb1cb33 31px 32px),#fffdf8;box-shadow:0 4px 12px #00000024;transition:transform .8s cubic-bezier(.22,.9,.3,1)}
+/* Lifted until the paper's bottom sits 144px into the slot, just inside the pocket. */
+.j-letter:hover .j-letter-paper,.j-letter:focus-within .j-letter-paper{transform:translateY(calc(144px - 100%)) rotate(-1.5deg)}
+/* On spreads the letter takes the rest of the page, envelope at the foot, and rises no higher than the top of that
+   space (the slot is 200px; 100cqh is the space), so it never covers the text above. */
+.journal[data-single="false"] .j-letter{flex:1 0 0;min-height:220px;container-type:size}
+.journal[data-single="false"] .j-letter:is(:hover,:focus-within) .j-letter-paper{transform:translateY(max(calc(144px - 100%),calc(200px - 100cqh))) rotate(-1.5deg)}
+@media(hover:none){
+  .j-letter-slot{height:auto;padding-bottom:56px}
+  .j-letter-paper{position:relative;left:auto;right:auto;margin:0 var(--inset);transform:rotate(-1.5deg)}
+}
+/* Front pocket with a V-shaped mouth and its two side folds. */
+.j-pocket{position:absolute;z-index:2;left:2%;right:2%;bottom:0;height:112px;border-radius:0 0 4px 4px;background:linear-gradient(to top right,#ead6b1 49.5%,#dcc398 50%) left/50% 100% no-repeat,linear-gradient(to top left,#ead6b1 49.5%,#dcc398 50%) right/50% 100% no-repeat;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
+.j-letter-kicker{margin:0 0 8px;font:600 13px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--j-accent)}
+.j-letter blockquote{margin:0}
+.j-letter blockquote p{margin:0;font:italic 18px/1.55 Georgia,"Times New Roman",serif;color:var(--j-ink)}
+.j-letter figcaption{display:grid;margin-top:10px}
+.j-letter figcaption strong{font:700 16px/1.4 var(--sans)}
+.j-letter figcaption span{font-size:14.5px;line-height:1.4;color:var(--j-muted)}
+.j-letter-link{display:inline-block;margin-top:10px;font-weight:600;color:var(--tint-ink);text-decoration:underline;text-underline-offset:4px}
+.j-letter-link:focus-visible{outline:2px solid var(--j-accent);outline-offset:3px}
+.j-seal{position:absolute;z-index:3;right:11%;bottom:22px;display:grid;place-items:center;width:54px;height:54px;border-radius:48% 52% 50% 46%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--tint-ink,#a63a30) 70%,#fff),var(--tint-ink,#a63a30) 70%);color:var(--tint,#f6cdc2);font-size:20px;box-shadow:0 3px 6px #0003}
+
+.j-filler{display:flex;justify-content:center;align-items:center;gap:20px;height:100%;min-height:400px}
+
+/* Curled page corners. The flap is the folded paper, rounded at its tip; the triangle it uncovers is the page beneath.
+   The next corner peeks out twice after each turn, and grows on hover. */
+.j-corner{--edge:14px;position:absolute;bottom:var(--edge);z-index:2;width:var(--curl);height:var(--curl);padding:0;border:0;background:none;cursor:pointer;transition:width .25s ease,height .25s ease;--curl:46px}
+.j-corner::before{content:"";position:absolute;inset:0;border-radius:65% 0 0 0;background:linear-gradient(315deg,#e6d9b8 0 50%,#c9b88f 50%,#efe5ca 62%,#fffaf0);filter:drop-shadow(-2px -2px 3px #3b2a1a33)}
+.j-corner-next{right:var(--edge);border-bottom-right-radius:6px;animation:j-peek 1.4s ease .8s 2}
+.j-corner-back{left:var(--edge);--curl:30px}
+.j-corner-back::before{transform:scaleX(-1)}
+.j-corner:hover{--curl:64px}
+.j-corner-back:hover{--curl:44px}
+.j-corner-note{position:absolute;right:calc(100% + 4px);bottom:12px;white-space:nowrap;font:italic 400 16px/1 var(--serif);color:var(--j-muted)}
+.j-corner-note::after{content:" →"}
+.is-turning .j-corner{visibility:hidden}
+@keyframes j-peek{0%,100%{width:46px;height:46px}45%{width:66px;height:66px}}
+
+/* Controls under the book. */
+/* Progress through the open role, under the book: one dot per spread, the current one drawn long. */
+.j-dots{display:flex;justify-content:center;gap:6px;margin:22px 0 0;padding-right:48px}
+.j-dots>span:not(.visually-hidden){width:8px;height:8px;border-radius:4px;background:var(--line);transition:width .25s ease,background-color .25s}
+.j-dots>.is-current{width:22px!important;background:var(--accent)!important}
+
+/* Two-page spreads fit the window: the book's height is the viewport less the site header (see .world-view),
+   the gap above the book, the cover's border and the controls below. Keepsakes then take whatever height
+   their page has left (sized with container queries), and a page only scrolls inside itself on very short windows.
+   Phones instead keep every page whole, at the height of the tallest (see below). */
+.journal-page{--header:110px}
+@media(max-width:1100px){.journal-page{--header:150px}}
+@media(max-width:820px){.journal-page{--header:92px}}
+.journal[data-single="false"] .j-spread{height:max(540px,calc(100svh - var(--header) - 20px - 28px - 30px - 20px))}
+.journal[data-single="false"] .j-page{min-height:0;padding:36px 44px 40px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#cdbf9c transparent}
+.journal[data-single="false"] .j-right{padding-bottom:52px}
+.j-page>div>*{flex-shrink:0}
+.journal[data-single="false"] .j-prints{flex:1 1 0;min-height:200px;container-type:size}
+/* Prints are as wide as fits but no taller than their share of the space: width = (height - 16px border) × aspect
+   + 16px. Prints are 4:3; the wide group photos are about 2:1. A pair is staggered down the space: the bigger print
+   at the top left takes up to 66% of the height, the smaller at the bottom right up to 58%, overlapping by 24% of
+   the height (and, being on opposite sides, only at one corner). The 42px is a print's border above and below. */
+.journal[data-single="false"] .j-prints .polaroid{width:min(340px,90cqw,calc((100cqh - 24px) * 4 / 3 + 16px))}
+.journal[data-single="false"] .j-prints-wide .polaroid{width:min(420px,100cqw,calc((100cqh - 24px) * 2 + 16px))}
+.journal[data-single="false"] .j-prints-pair .polaroid:first-child{width:min(66cqw,calc((66cqh - 42px) * 4 / 3 + 16px))}
+.journal[data-single="false"] .j-prints-pair .polaroid:last-child{width:min(56cqw,calc((58cqh - 42px) * 4 / 3 + 16px));margin-top:-24cqh}
+.journal[data-single="false"] .j-prints-wide.j-prints-pair .polaroid:first-child{width:min(72cqw,calc((66cqh - 42px) * 2 + 16px))}
+.journal[data-single="false"] .j-prints-wide.j-prints-pair .polaroid:last-child{width:min(62cqw,calc((58cqh - 42px) * 2 + 16px))}
+.journal[data-single="false"] .j-embed{flex:1 1 0;min-height:300px}
+
+/* On spreads each contents entry sits level with its bookmark tab: tabs and entries share one height (104px) and
+   gap (8px), and the list starts where the first role's tab does. The tabs start 42px down the journal; the page
+   starts 14px down (inside the cover's border), so the Contents tab spans 42–146px, the first role's tab starts at
+   154px, and the list starts 140px down the page. */
+.journal[data-single="false"] .j-tabs{top:42px}
+.journal[data-single="false"] .j-tab{min-height:0;height:104px;padding-top:8px;padding-bottom:8px;box-sizing:border-box}
+.journal[data-single="false"] .j-toc{position:absolute;top:140px;left:44px;right:44px;gap:8px}
+/* The Contents heading sits just above the list (its top at 70px; the list starts at 140px). */
+.journal[data-single="false"] .j-title.j-contents-title{margin:34px 0 0}
+.journal[data-single="false"] .j-toc li{display:flex;height:104px;box-sizing:border-box}
+.journal[data-single="false"] .j-toc a{flex:1;align-items:center}
+
+/* Phones and narrow tablets: one page at a time, tabs along the top. */
+.journal[data-single="true"]{padding-right:0;padding-top:32px}
+/* Phone tabs: compact enough that all five fit side by side on a typical phone; on very narrow ones a long name
+   shortens with an ellipsis rather than being cut off. */
+.journal[data-single="true"] .j-tabs{top:0;left:12px;right:12px;width:auto;height:46px;flex-direction:row;align-items:flex-end;gap:5px;overflow:hidden}
+.journal[data-single="true"] .j-tab{flex:0 1 auto;min-width:0;min-height:0;padding:9px 7px 22px;writing-mode:horizontal-tb;border-radius:12px 12px 0 0;font-size:12px;transform:translateY(10px)}
+.journal[data-single="true"] .j-tab:not(.j-tab-index){overflow:hidden}
+.journal[data-single="true"] .j-tab span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.journal[data-single="true"] .j-tab-index{flex:none}
+.journal[data-single="true"] .j-tab:hover,.journal[data-single="true"] .j-tab[aria-current="page"]{transform:translateY(0)}
+.journal[data-single="true"] .j-tab-index>span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* The open book's spine is at the left edge: the right-hand page meets the left-hand one there, with no leather
+   between them, and the stitching runs on into the sliver of the left page (see .j-verso). */
+.journal[data-single="true"]{--verso:22px}
+.journal[data-single="true"] .j-cover{padding:9px 9px 9px 0;border-radius:0 16px 16px 0}
+.journal[data-single="true"] .j-cover::before{inset:4px 4px 4px 0;border-left:0;border-radius:0 12px 12px 0}
+.j-verso{display:none}
+.journal[data-single="true"] .j-verso{display:block;position:absolute;top:0;bottom:0;right:100%;width:var(--verso);padding:9px 0;box-sizing:border-box;border:0;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.j-verso:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.j-verso>span{transition:filter .2s}
+.j-verso:is(:hover,:active)>span{filter:brightness(1.04)}
+.j-verso::before{content:"";position:absolute;inset:4px 0;border-block:2px dashed #ecd6acc4;pointer-events:none}
+.j-verso>span{display:block;height:100%;background-color:var(--paper);background-image:linear-gradient(to left,#5a4a2a2e,transparent 26px),var(--grain)}
+/* A shut front cover hides the left side; the cover's inside lands over it as it opens. */
+.journal[data-board="front"] .j-verso{visibility:hidden}
+/* A page (or cover) turned past the spine lands on the left-hand page and runs off the screen's edge, where it is
+   clipped (top and bottom are left open for shadows). */
+.journal[data-single="true"] .j-book{clip-path:inset(-60px 0 -60px calc(-1 * var(--verso)))}
+.journal[data-single="true"][data-board] .j-cover{clip-path:none}
+.journal[data-single="true"] .j-spread{grid-template-columns:1fr}
+.journal[data-single="true"] .j-spread::after{display:none}
+.journal[data-single="true"] .j-corner{--edge:9px}
+/* Turning leaves and covers hinge on the left edge and cover the whole page. */
+.journal[data-single="true"] :is(.j-leaf,.j-board){left:0;width:100%;transform-origin:left center}
+.journal[data-single="true"] .j-leaf-back{animation-name:j-turn-in}
+.journal[data-single="true"][data-closed="front"] .j-board{width:calc(100% - 9px)}
+@keyframes j-turn-in{from{transform:rotateY(-180deg)}to{transform:rotateY(0)}}
+.journal[data-single="true"] .j-half-left{padding:9px 0 9px 9px;border-radius:16px 0 0 16px}
+.journal[data-single="true"] .j-half-right{padding:9px 9px 9px 0;border-radius:0 16px 16px 0}
+.journal[data-single="true"] .j-half::before{top:4px;bottom:4px}
+.journal[data-single="true"] .j-half-left::before{left:4px}
+.journal[data-single="true"] .j-half-right::before{right:4px}
+/* Closing at the end: the back cover swings over the spine carrying the last page, while the book slides right by
+   its own width so the shut book ends up where the page was. The open book's right side is now the cover itself,
+   so the leather and pages beneath are hidden; the sliver of the left page widens into the whole left half the
+   cover lands on, and nothing is clipped at the screen's edge any more. */
+.journal[data-single="true"][data-closed="back"]{translate:100% 0}
+.journal[data-single="true"][data-board="back"] .j-book{clip-path:none}
+.journal[data-single="true"][data-board="back"] .j-cover{background:none;box-shadow:none}
+.journal[data-single="true"][data-board="back"] .j-cover::before{display:none}
+.journal[data-single="true"][data-board="back"] .j-spread{visibility:hidden}
+.journal[data-single="true"][data-board="back"] .j-verso{width:100%;padding:9px 0 9px 9px;border-radius:16px 0 0 16px}
+.journal[data-single="true"][data-board="back"] .j-verso::before{inset:4px 0 4px 4px;border:2px dashed #ecd6acc4;border-right:0;border-radius:12px 0 0 12px}
+.journal[data-single="true"] .j-outer-back{border-radius:16px 6px 6px 16px}
+
+/* On phones the post's space follows the page width, in the embed's own proportions. */
+.journal[data-single="true"] .j-embed{aspect-ratio:504/399;max-height:399px}
+/* Phones keep every page whole (nothing scrolls inside the book), and every page is as tall as the tallest, so the
+   book keeps one height as pages turn. The pages are laid out once, hidden, to measure (see ExperienceJournal). */
+.journal[data-single="true"] .j-page{min-height:var(--page-h,500px);padding:26px 20px 48px}
+/* Phone sizes. Each role fits on two pages and the book is as tall as its tallest page, so every page is kept
+   compact: the logo card and date stamp share one row, and type, chips, photos, the video and the letter are all
+   scaled down. */
+.journal[data-single="true"] .j-title-top{flex-wrap:nowrap;align-items:center;gap:12px}
+.journal[data-single="true"] .j-logo{height:50px;min-width:0;padding:8px 12px}
+.journal[data-single="true"] .j-logo img{height:30px;max-width:130px}
+.journal[data-single="true"] .j-stamp{flex:none;padding:3px;border-width:4px}
+.journal[data-single="true"] .j-stamp span{padding:6px 8px;font-size:12px}
+.journal[data-single="true"] .j-role{margin-top:16px;font-size:21px}
+.journal[data-single="true"] .j-attached{margin-top:8px}
+.journal[data-single="true"] .j-attached img{height:28px}
+.journal[data-single="true"] .j-snippet{margin:12px 0 0}
+.journal[data-single="true"] .j-snippet p{padding:12px 14px;font-size:15px;line-height:1.45}
+.journal[data-single="true"] .j-role-page>:not(:first-child,.deco-strip){margin-top:18px}
+.journal[data-single="true"] .j-felt{margin-top:10px;gap:7px}
+.journal[data-single="true"] .j-felt li{padding:4px 11px;font-size:13.5px}
+.journal[data-single="true"] .j-label{margin-bottom:10px}
+.journal[data-single="true"] .j-notes ol{gap:12px}
+.journal[data-single="true"] .j-notes li{gap:12px}
+.journal[data-single="true"] .j-notes h4{font-size:16.5px}
+.journal[data-single="true"] .j-notes p{font-size:14.5px;line-height:1.45}
+.journal[data-single="true"] .mark{width:34px;height:34px;font-size:22px}
+.journal[data-single="true"] .j-prints{padding:8px 4px}
+.journal[data-single="true"] .j-prints .polaroid{width:min(220px,72%)}
+.journal[data-single="true"] .j-prints-wide .polaroid{width:min(300px,92%)}
+.journal[data-single="true"] .j-prints-pair .polaroid:first-child{width:66%}
+.journal[data-single="true"] .j-prints-pair .polaroid:last-child{width:58%;margin-top:-14px}
+.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:first-child{width:84%}
+.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:last-child{width:74%}
+.journal[data-single="true"] .j-embed{max-height:210px}
+.journal[data-single="true"] .j-letter-paper{padding:16px 16px 52px}
+.journal[data-single="true"] .j-letter blockquote p{font-size:16px}
+.journal[data-single="true"] .j-envelope{height:120px}
+.journal[data-single="true"] .j-pocket{height:90px}
+.journal[data-single="true"] .j-cover-page{padding-bottom:110px}
+.journal[data-single="true"] .j-toc a{padding:9px 12px}
+.journal[data-single="true"] .j-toc-name strong{font-size:17px}
+.journal[data-single="true"] .j-toc-name span{font-size:14.5px}
+.journal[data-single="true"] .j-toc-name .j-toc-period{font-size:13px}
+.journal[data-single="true"] .deco-strip{padding-top:16px}
+.journal[data-single="true"] .deco-strip .pressed-flower{width:48px;height:96px}
+/* Measures the phone pages at one page's width. */
+.j-measure{position:absolute;top:0;left:0;right:0;height:0;visibility:hidden;pointer-events:none}
+.journal[data-single="true"] .j-measure .j-page{min-height:0}
+/* Keeps the star clear of the name label and the cut-out title on narrow pages. */
+.journal[data-single="true"] .j-star-a{top:auto;bottom:190px;right:44px}
+.journal[data-single="true"] .j-star-b{top:auto;bottom:250px;right:110px}
+.journal[data-single="true"] + .j-dots{padding-right:0}
+@media(max-width:860px){
+  /* The left gutter matches the sliver of the left page (--verso), so it reaches the screen's edge. */
+  .world-view>.journal-page{width:calc(100% - 38px);margin:6px 16px 110px 22px}
+  .j-title{font-size:clamp(30px,9vw,40px)}
+  .j-company{font-size:clamp(22px,6.4vw,28px)}
+  .j-snippet p{padding:22px 18px;font-size:17px}
+  .j-letter-paper{--inset:2%;padding:24px 20px 64px}
+  .j-letter blockquote p{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  .j-tab,.j-toc a,.j-corner,.j-dots>span{transition:none}
+  .j-corner-next{animation:none}
+  .j-letter-paper{transition:none}
+}

@@ -2,17 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import LightboxHost from "./components/Lightbox";
 import Landscape from "./components/Landscape";
 import CottageHome from "./components/CottageHome";
-import ExperienceOverview from "./components/ExperienceOverview";
-import ExperiencePage from "./components/ExperiencePage";
+import ExperienceJournal from "./components/ExperienceJournal";
 import Education from "./components/Education";
 import SkillsPage from "./components/SkillsPage";
 import Projects from "./components/Projects";
+import ProjectPage from "./components/ProjectPage";
 import ContactPage from "./components/ContactPage";
 import ResumePage from "./components/ResumePage";
 import { experiences } from "./data/experiences";
+import { projects } from "./data/projects";
 import { travelDirection, worldPosition, worldRoutes } from "./cottage/worldRoutes";
+import { isJournalPath, setNavigator } from "./cottage/navigate";
 import "./index.css";
 import "./cottage/pages.css";
 import "./cottage/world.css";
@@ -22,13 +25,15 @@ const readLocation = (): Location => ({ path: window.location.pathname.replace(/
 function Page({ route }: { route: Location }) {
   switch (route.path) {
     case "/": return <CottageHome />;
-    case "/experience": return <ExperienceOverview />;
+    case "/experiences": return <ExperienceJournal slug="" />;
     case "/projects": return <Projects />;
     case "/education": return <Education />;
     case "/skills": return <SkillsPage />;
     case "/contact": return <ContactPage />;
     case "/resume": return <ResumePage />;
-    default: return <ExperiencePage slug={route.path.startsWith("/experience/") ? route.path.slice(12) : ""} />;
+    default:
+      if (route.path.startsWith("/projects/")) return <ProjectPage slug={route.path.slice(10)} />;
+      return <ExperienceJournal slug={route.path.startsWith("/experiences/") ? route.path.slice("/experiences/".length) : ""} />;
   }
 }
 export default function App() {
@@ -61,6 +66,13 @@ export default function App() {
       }
       const next = { path: url.pathname.replace(/\/$/, "") || "/", search: url.search, key: Date.now() };
       if (next.path === current.current.path && next.search === current.current.search) return;
+      // Within the experience journal the page stays put and turns its own pages instead of travelling.
+      if (isJournalPath(next.path) && isJournalPath(current.current.path)) {
+        if (!pop) history.pushState({ worldScroll: window.scrollY }, "", url.pathname + url.search + url.hash);
+        current.current = next;
+        setRoute(next);
+        return;
+      }
       departureScroll.current = window.scrollY;
       arrivalScroll.current = scroll;
       if (!pop) {
@@ -99,7 +111,8 @@ export default function App() {
       go(url);
     }
     function pop(event: PopStateEvent) { go(new URL(location.href), true, event.state?.worldScroll ?? 0); }
-    const interactive = (target: EventTarget | null) => target instanceof Element && !!target.closest('input,textarea,select,button,a,[role="slider"],[role="button"],[contenteditable="true"],object,iframe');
+    // [data-local-swipe] marks areas with their own swipe handling, such as the experience journal.
+    const interactive = (target: EventTarget | null) => target instanceof Element && !!target.closest('input,textarea,select,button,a,[role="slider"],[role="button"],[contenteditable="true"],object,iframe,[data-local-swipe]');
     function neighbor(step: number) {
       const index = worldPosition(current.current.path), target = worldRoutes[index + step];
       if (index >= 0 && target) go(new URL(target.path, location.origin));
@@ -118,6 +131,7 @@ export default function App() {
       if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 1.7 && Date.now() - touch.time < 650 && !window.getSelection()?.toString()) neighbor(dx < 0 ? 1 : -1);
       touch = null;
     }
+    setNavigator((path) => go(new URL(path, location.origin)));
     document.addEventListener("click", click);
     document.addEventListener("keydown", key);
     window.addEventListener("popstate", pop);
@@ -126,12 +140,13 @@ export default function App() {
     return () => {
       document.removeEventListener("click", click);document.removeEventListener("keydown", key);window.removeEventListener("popstate", pop);
       document.removeEventListener("touchstart", touchStart);document.removeEventListener("touchend", touchEnd);
+      setNavigator(null);
       if (timer.current) clearTimeout(timer.current);
     };
   }, []);
 
   useEffect(() => {
-    const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experience/${job.slug}`)?.company ?? "Page not found";
+    const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experiences/${job.slug}`)?.company ?? projects.find(project => route.path === `/projects/${project.slug}`)?.name ?? "Page not found";
     document.title = route.path === "/" ? "Shannen Lee - Software Engineer" : `${title} - Shannen Lee`;
     if (outgoing.current) outgoing.current.inert = true;
   }, [route]);
@@ -142,9 +157,10 @@ export default function App() {
     <Landscape path={route.path} reduced={reduced} />
     <div ref={stage} className={`world-stage ${previous ? "is-travelling" : ""} ${reduced || direction === 0 ? "fade-travel" : ""}`} style={{ "--direction": direction || 1, "--departure-scroll": `${departureScroll.current}px` } as CSSProperties}>
       {previous && <div ref={outgoing} key={previous.key} className={`world-view world-outgoing ${previous.path === "/" ? "at-home" : ""}`} aria-hidden="true"><Page route={previous} /></div>}
-      <div key={route.key} className={`world-view world-current ${route.path === "/" ? "at-home" : ""}`}><Page route={route} /></div>
+      <div key={isJournalPath(route.path) ? "journal" : route.key} className={`world-view world-current ${route.path === "/" ? "at-home" : ""}`}><Page route={route} /></div>
     </div>
     <Footer />
-    <span className="world-announcement" role="status" aria-live="polite">{previous ? "" : `${worldRoutes.find(item => item.path === route.path)?.label ?? "Experience details"} page`}</span>
+    <LightboxHost />
+    <span className="world-announcement" role="status" aria-live="polite">{previous ? "" : `${worldRoutes.find(item => item.path === route.path)?.label ?? (route.path.startsWith("/projects/") ? "Project details" : "Experience details")} page`}</span>
   </>;
 }

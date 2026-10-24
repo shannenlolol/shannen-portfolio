@@ -1,57 +1,82 @@
-import { useState } from "react";
+import { useRef } from "react";
+import type { CSSProperties } from "react";
 import { projects } from "../data/projects";
+import useReveal from "../hooks/useReveal";
+import EditorPreview from "./EditorPreview";
+import { Links, Status, Technologies } from "./ProjectBits";
+import { socialIcons } from "../data/socialIcons";
 import "../cottage/projects.css";
 
-function EditorPreview() {
-  const [after, setAfter] = useState(true);
-  return <figure className="project-preview editor-preview">
-    <div className="preview-topline">
-      <span>Background removal</span>
-      <div className="preview-switch" role="group" aria-label="Image Editor preview">
-        <button type="button" aria-pressed={!after} onClick={() => setAfter(false)}>Before</button>
-        <button type="button" aria-pressed={after} onClick={() => setAfter(true)}>After</button>
-      </div>
-    </div>
-    <div className="editor-preview-canvas">
-      <img src={`/assets/images/image-editor/${after ? "after" : "before"}.png`} alt={after ? "Image Editor with an apple isolated on a transparent background" : "Image Editor with the original apple photo on a green background"} loading="lazy" width="1920" height="960" />
-    </div>
-    <figcaption>One photo. A whole new background.</figcaption>
-  </figure>;
-}
-
 export default function Projects() {
+  const page = useRef<HTMLElement>(null);
+  useReveal(page, ".project-reveal");
+  const featured = projects.filter(p => p.status === "live");
+  const inProgress = projects.filter(p => p.status === "polishing");
+  const earlier = projects.filter(p => p.status === "earlier");
   return (
-    <main className="projects-page" id="main-content">
+    <main className="projects-page" id="main-content" ref={page}>
       <header className="projects-heading">
         <div>
-          <p className="eyebrow">Projects / Outside the day job</p>
-          <h1>Ideas, <span className="serif-accent">made real.</span></h1>
-          <p className="projects-intro">Small ideas, useful tools. A few things I’ve built to make everyday tasks a little easier.</p>
+          <h1 className="eyebrow">Projects</h1>
         </div>
-        <a className="text-link" href="https://github.com/shannenlolol" target="_blank" rel="noreferrer">More on GitHub</a>
+        <a className="text-link" href="https://github.com/shannenlolol" target="_blank" rel="noreferrer">
+          <svg className="projects-github" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={socialIcons.github} /></svg>
+          More on GitHub
+        </a>
       </header>
-      <div className="project-list">
-        {projects.map((project, index) => (
-          <article className={`project-story project-story-${project.slug}`} id={`project-${index + 1}`} key={project.slug} aria-labelledby={`${project.slug}-title`}>
-            {project.slug === "image-editor" ? <EditorPreview /> :
-              <figure className="project-preview">
-                <div className="preview-topline"><span>{project.kind}</span><span className="preview-number">0{index + 1}</span></div>
-                <div className="project-preview-image"><img src={`/assets/images/${project.image}`} alt={`${project.name} app screens`} loading="lazy" /></div>
-              </figure>
-            }
-            <div className="project-story-copy">
-              <p className="eyebrow">{project.kind}</p>
+
+      {featured.map(project => (
+        <article className="project-featured project-reveal" id={project.slug} key={project.slug} aria-labelledby={`${project.slug}-title`}>
+          {project.slug === "image-editor" ? <EditorPreview /> :
+            project.image ? <figure className="project-preview"><a href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></a></figure>
+            : <div className="project-preview project-placeholder">{project.placeholder ?? "Screenshot to come"}</div>}
+          <div className="project-featured-copy">
+            <Status project={project} />
+            <h2 id={`${project.slug}-title`}>{project.name}</h2>
+            <p className="project-description">{project.description}</p>
+            <Technologies project={project} />
+            <Links project={project} />
+            <a className="project-story-link" href={`/projects/${project.slug}`}>Read the story →</a>
+          </div>
+        </article>
+      ))}
+
+      <div className="project-grid">
+        {inProgress.map((project, i) => (
+          <article className="project-card project-reveal" id={project.slug} key={project.slug} style={{ "--i": i } as CSSProperties} aria-labelledby={`${project.slug}-title`}>
+            {project.image
+              ? <a className="project-card-image" href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></a>
+              : <div className="project-card-image project-placeholder">{project.placeholder}</div>}
+            <div className="project-card-copy">
+              <Status project={project} />
               <h2 id={`${project.slug}-title`}>{project.name}</h2>
               <p className="project-description">{project.description}</p>
-              <p className="project-detail">{project.detail}</p>
-              {project.technologies.length > 0 && <ul className="project-technologies" aria-label="Built with">{project.technologies.map(item => <li key={item}>{item}</li>)}</ul>}
-              <div className="project-links">
-                {project.links.map((link, i) => <a key={link.href} className={i === 0 ? "button button-primary" : "text-link"} href={link.href} target="_blank" rel="noreferrer" aria-label={`${link.label}: ${project.name}`}>{link.label}</a>)}
-              </div>
+              <Technologies project={project} />
+              <Links project={project} />
+              <a className="project-story-link" href={`/projects/${project.slug}`}>Read the story →</a>
             </div>
           </article>
         ))}
       </div>
+
+      {earlier.length > 0 && (
+        <section className="project-earlier project-reveal" aria-labelledby="earlier-title">
+          <h2 className="eyebrow" id="earlier-title">Earlier work</h2>
+          <ul>
+            {earlier.map(project => (
+              <li key={project.slug} id={project.slug}>
+                <div>
+                  <h3><a href={`/projects/${project.slug}`}>{project.name}</a></h3>
+                  <p>{project.description}</p>
+                </div>
+                <p className="project-earlier-links">
+                  {project.links.map(link => <a key={link.href} href={link.href} target="_blank" rel="noreferrer" aria-label={`${link.label}: ${project.name}`}>{link.label} →</a>)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

@@ -1,0 +1,39 @@
+/* Education: a dashed trail of stops with scrapbook-style polaroids. */
+.edu-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px}
+.edu-heading > p{max-width:360px;margin:0;font-size:20px;line-height:1.6;color:var(--muted)}
+
+.edu-trail{list-style:none;margin:0;padding:0 0 0 40px;border-left:2px dashed color-mix(in srgb,var(--accent) 45%,transparent);display:grid;gap:56px}
+.edu-stop{position:relative;display:flex;flex-wrap:wrap;gap:32px 40px;align-items:center}
+.edu-stop:nth-child(even){flex-direction:row-reverse}
+/* Centre the 26px dot (20px + 3px ring) on the 2px dashed line: -(padding + 2px border) + 1px - 13px. */
+.edu-stop::before{content:"";position:absolute;left:-54px;top:30px;width:20px;height:20px;border-radius:50%;background:var(--dot);border:3px solid var(--page);box-sizing:content-box}
+
+.edu-card{flex:1 1 420px;min-width:0;display:grid;gap:14px;justify-items:start;padding:28px 30px;background:var(--surface);border:1px solid var(--line);border-radius:22px}
+.edu-card-head{display:flex;align-items:center;gap:16px}
+.edu-card-head img{flex:none;width:56px;height:56px;object-fit:contain;padding:6px;box-sizing:border-box;background:#fff;border-radius:14px}
+.edu-when{margin:0;font-size:16px;color:var(--muted)}
+.edu-card h2{margin:0;font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.2}
+.edu-summary{margin:0;font-size:20px;line-height:1.5}
+.edu-tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.edu-tags li{padding:4px 14px;border-radius:999px;font-size:16px;background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.edu-tags li.is-highlight{background:var(--button);color:var(--page);font-weight:500}
+.edu-specialisations{margin:0;font-size:17px;line-height:1.5}
+.edu-specialisations span{display:block;font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+
+.edu-photos{flex:0 1 400px;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:28px 20px;padding-top:16px}
+.edu-photos .polaroid:nth-child(2){margin-top:28px}
+
+/* Scroll reveal (see useReveal): stops rise in; polaroid.css drops the photos in. */
+.reveal-ready .edu-stop{opacity:0;transform:translateY(24px);transition:opacity .7s ease-out,transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-ready .edu-stop.is-visible{opacity:1;transform:none}
+
+@media(max-width:700px){
+  .edu-heading{margin-bottom:40px}
+  .edu-trail{padding-left:28px;gap:44px}
+  .edu-stop::before{left:-42px}
+  .edu-card{padding:22px 20px}
+  .edu-card h2{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal-ready .edu-stop{opacity:1;transform:none;transition:none}
+}

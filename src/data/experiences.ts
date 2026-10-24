@@ -1,20 +1,52 @@
-export const experiences = [
+/**
+ * A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. A photo's
+ * `fastener` (washi tape, corner tapes, or a flower, daisy, tulip or star sticker) overrides the one the journal would pick.
+ */
+export type Sticker = "flower" | "daisy" | "tulip" | "star";
+export type Keepsake =
+  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | Sticker }
+  | { kind: "embed"; src: string; title: string }
+  | { kind: "letter"; href: string; quote: string; from: string; title: string };
+
+/**
+ * One piece of a journal page: the role's introduction, its toolkit, some of its contributions
+ * (by index, so the numbering carries over between pages), or a keepsake.
+ */
+export type JournalBlock = { kind: "intro" } | { kind: "toolkit" } | { kind: "did"; items: number[] } | Keepsake;
+
+type Experience = {
+  slug: string;
+  /** Short label for the journal's bookmark tab. */
+  tab: string;
+  logo: string;
+  company: string;
+  attachedTo?: { name: string; logo: string };
+  role: string;
+  period: string;
+  field: string;
+  context: string;
+  /** The role's palette in the journal, taken from its company's logo (see journal.css). Each role's is distinct. */
+  color: "brick" | "blue" | "mustard" | "rose";
+  skills: string[];
+  contributions: { title: string; text: string }[];
+  /** The role's journal pages, each a list of blocks. Wide screens show two pages at once, so an even count fills whole spreads. */
+  pages: JournalBlock[][];
+};
+
+export const experiences: Experience[] = [
   {
     slug: "st-engineering",
+    tab: "ST Eng.",
     logo: "/assets/logos/st-engineering.png",
     company: "ST Engineering",
+    attachedTo: { name: "The Digital and Intelligence Service", logo: "/assets/logos/dis.png" },
     role: "Software Engineer",
     period: "Sep 2025 - Present",
     field: "Platforms & infrastructure",
-    summary:
-      "Making complex applications easier to build, integrate, and deploy.",
     context:
-      "Attached to The Digital and Intelligence Service, developing reusable application tooling and deployment infrastructure.",
-    color: "blue",
-    metrics: [
-      { value: "6", label: "use cases adopted" },
-      { value: "Days → hours", label: "integration effort" },
-    ],
+      "Attached to The Digital and Intelligence Service",
+    color: "brick",
+    // proud: "[Proudest moment: one sentence]",
     skills: [
       "Python",
       "Dash",
@@ -27,122 +59,178 @@ export const experiences = [
     contributions: [
       {
         title: "A reusable application foundation",
-        text: "Developed a low-code web application builder in Dash that lets non-technical teams dynamically generate custom forms and data visualisations from JSON/YAML configuration. Adopted across six use cases without writing new application code.",
+        text: "A low-code Dash builder that turns JSON/YAML config into forms and charts for non-technical teams. Adopted across six use cases with no new code.",
       },
       {
         title: "Integrations through configuration",
-        text: "Designed configurable Kafka and PostgreSQL integrations so new services can connect to event-driven messaging and persistent storage through configuration alone, reducing integration effort for each new use case from days to hours.",
+        text: "Kafka and PostgreSQL integrations set up through config alone, cutting the effort for each new use case from days to hours.",
       },
       {
         title: "Repeatable deployment",
-        text: "Automated deployment across multiple OpenShift staging environments using Helm charts and Argo CD GitOps, replacing a manual, multi-step setup with a single repeatable process.",
+        text: "Helm and Argo CD GitOps deploys across OpenShift staging, replacing a manual multi-step setup with one repeatable process.",
       },
     ],
-    images: [],
+    pages: [
+      [
+        { kind: "intro" },
+        { kind: "toolkit" },
+        {
+          kind: "photo",
+          src: "experience/st-engineering/airshow-2026-photographers-1.jpg",
+          alt: "Shannen and a fellow photographer holding up their cameras at the ST Engineering booth",
+          fastener: "daisy",
+        },
+      ],
+      [
+        { kind: "did", items: [0, 1, 2] },
+        {
+          kind: "photo",
+          src: "experience/st-engineering/cny-dinner-2026.jpg",
+          alt: "Shannen with colleagues dressed in red at a Chinese New Year dinner",
+          uncropped: true,
+        },
+        {
+          kind: "photo",
+          src: "experience/st-engineering/mss-40th-anniversary.jpg",
+          alt: "Mission Software & Services team photo in front of the 40th anniversary screen",
+          uncropped: true,
+          fastener: "tape",
+        },
+      ],
+    ],
   },
   {
     slug: "dso",
+    tab: "DSO",
     logo: "/assets/logos/dso.png",
     company: "DSO National Laboratories",
     role: "Machine Learning Engineer Intern",
     period: "Jul 2024 - Dec 2024",
     field: "Applied machine learning",
-    summary:
-      "Teaching a team of agents to work together through reinforcement learning.",
     context:
       "Designed and implemented a hierarchical reinforcement learning system for a simulated multi-agent environment.",
-    color: "purple",
-    metrics: [
-      { value: "12", label: "coordinated agents" },
-      { value: "95+%", label: "task success rate" },
-    ],
+    color: "blue",
+    // proud: "[Proudest moment: one sentence]",
     skills: ["Python", "PyTorch", "Hierarchical RL", "Multi-agent systems"],
     contributions: [
       {
         title: "Coordinating multiple agents",
-        text: "Designed and implemented a hierarchical reinforcement learning system in PyTorch for coordinating 12 agents in a simulated multi-agent environment.",
+        text: "A hierarchical reinforcement learning system in PyTorch that coordinates 12 agents in a simulated environment.",
       },
       {
         title: "Refining the learning environment",
-        text: "Tuned the state, observation, and reward configurations for the system, improving task success rate to over 95%.",
+        text: "Tuned the state, observation and reward design, lifting the task success rate above 95%.",
       },
     ],
-    images: [
-      {
-        src: "DSO-prawning.jpg",
-        alt: "Team outing during my DSO internship",
-        caption: "Outside the lab · A team outing at DSO",
-      },
+    pages: [
+      [
+        { kind: "intro" },
+        { kind: "toolkit" },
+        {
+          kind: "photo",
+          src: "experience/dso/team-outing-prawning.jpg",
+          alt: "Team outing during my DSO internship",
+          fastener: "flower",
+        },
+      ],
+      [
+        { kind: "did", items: [0, 1] },
+        {
+          kind: "embed",
+          src: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7275813594418528256?compact=1",
+          title: "LinkedIn post: DSO video featuring Shannen as an intern in the Information Division",
+        },
+      ],
     ],
   },
   {
     slug: "continental",
+    tab: "Continental",
     logo: "/assets/logos/continental.png",
     company: "Continental Automotive",
     role: "Software Engineer Intern",
     period: "Jul 2023 - Dec 2023",
     field: "Robotics & connected systems",
-    summary:
-      "Connecting autonomous robots, from fleet dashboard to live delivery.",
     context:
       "Led development of a fleet management system for autonomous food delivery robots at Continental Automotive Singapore.",
-    color: "orange",
-    metrics: [
-      { value: "3", label: "robots operating concurrently" },
-      { value: "6", label: "delivery waypoints" },
-    ],
+    color: "mustard",
+    // proud: "[Proudest moment: one sentence]",
     skills: ["Python", "FastAPI", "ROS2", "OpenRMF"],
     contributions: [
       {
         title: "Real-time fleet visibility",
-        text: "Led development of a fleet management system using FastAPI, ROS2, and OpenRMF, including a real-time dashboard tracking robot battery levels, task states, and locations.",
+        text: "Led a fleet management system on FastAPI, ROS2 and OpenRMF, with a live dashboard of each robot's battery, task and location.",
       },
       {
         title: "From development to live delivery",
-        text: "Deployed the system to a fleet of three robots operating concurrently along a six-waypoint delivery route, demonstrating live deliveries to key stakeholders.",
+        text: "Deployed it to three robots running a six-waypoint delivery route at once, with live demos for key stakeholders.",
       },
     ],
-    images: [
-      {
-        src: "conti_group.jpeg",
-        alt: "Shannen with colleagues at Continental",
-        caption: "The people behind the project · Continental",
-      },
-      {
-        src: "Conti_solo.jpeg",
-        alt: "Shannen during her Continental internship",
-        caption: "On site · Continental Automotive Singapore",
-      },
+    pages: [
+      [
+        { kind: "intro" },
+        { kind: "toolkit" },
+        {
+          kind: "photo",
+          src: "experience/continental/delivery-robot-poster.jpg",
+          loop: "experience/continental/delivery-robot.mp4",
+          alt: "A yellow autonomous delivery robot driving along a footpath on its route",
+          fastener: "tulip",
+        },
+      ],
+      [
+        { kind: "did", items: [0, 1] },
+        {
+          kind: "photo",
+          src: "experience/continental/intern-cohort.jpg",
+          alt: "Shannen with colleagues at Continental",
+          fastener: "tape",
+        },
+        {
+          kind: "photo",
+          src: "experience/continental/office-lobby.jpg",
+          alt: "Shannen during her Continental internship",
+        },
+      ],
     ],
   },
   {
     slug: "amaris-ai",
+    tab: "AMARIS.AI",
     logo: "/assets/logos/amaris-ai.png",
     company: "AMARIS.AI",
     role: "Software Developer Intern",
     period: "Jul 2022 - Dec 2022",
     field: "Full-stack product development",
-    summary:
-      "Building a more reliable AI-powered paint visualisation experience.",
     context:
       "Worked across React interfaces and FastAPI backend features for a paint-visualisation platform serving customers across APAC.",
-    color: "green",
-    metrics: [
-      { value: "8", label: "APAC countries served" },
-      { value: "70+", label: "backend tests" },
-    ],
+    color: "rose",
+    // proud: "[Proudest moment: one sentence]",
     skills: ["React", "FastAPI", "Python", "JavaScript", "Backend testing"],
     contributions: [
       {
         title: "Reusable, multilingual interfaces",
-        text: "Built reusable, multilingual React components and extended FastAPI backend features for an AI-powered paint-visualisation platform used by customers across eight APAC countries.",
+        text: "Reusable, multilingual React components and FastAPI features for a paint-visualisation platform used in eight APAC countries.",
       },
       {
         title: "Reliability across the product",
-        text: "Resolved more than 30 bugs across photo processing, billing, and report downloads. Built a backend suite of over 70 tests to catch regressions before release and improve platform reliability for production users.",
+        text: "Fixed 30+ bugs across photo processing, billing and reports, and built a 70+ test backend suite to catch regressions before release.",
       },
     ],
-    images: [],
-    recommendation: "/assets/images/Testimonial%20Amaris%20AI.pdf",
+    // No photos from this role, so its keepsake is the testimonial letter instead.
+    pages: [
+      [{ kind: "intro" }, { kind: "toolkit" }],
+      [
+        { kind: "did", items: [0, 1] },
+        {
+          kind: "letter",
+          href: "/assets/images/experience/amaris-ai/testimonial.pdf",
+          quote:
+            "She was able to make headway and even perform at a level beyond her original scope of work.",
+          from: "Prof Yu Chien Siang",
+          title: "Chief Innovation and Trust Officer, Amaris AI",
+        },
+      ],
+    ],
   },
 ];

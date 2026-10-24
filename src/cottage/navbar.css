@@ -15,16 +15,34 @@ html{scroll-padding-top:110px}
  .cottage-nav-links{flex-basis:100%;gap:14px}
  .cottage-nav-inner>.time-control-host{margin-left:auto}
 }
+/* The menu button only appears on phones. */
+.cottage-menu{display:none}
+/* Phones: one short bar (name, time control, menu button). The six links fold into a panel under it, shown while
+   the menu is open. */
 @media(max-width:820px){
- .cottage-nav-inner{position:relative;padding:16px 20px 12px;gap:0}
+ html{scroll-padding-top:90px}
+ .cottage-nav-inner{position:relative;padding:12px 20px;gap:0}
  .cottage-nav-links{gap:0 12px;grid-template-columns:repeat(3,minmax(0,1fr));font-size:16px}
  .cottage-nav-links a{min-height:44px;display:flex;align-items:center;justify-content:center}
- .cottage-nav-links .cottage-brand{grid-row:1;grid-column:1/-1;justify-content:flex-start;margin:0 0 8px;font-size:22px;padding-right:125px}
+ .cottage-nav-links a.plain{display:none}
+ .cottage-navbar.is-open .cottage-nav-links a.plain{display:flex}
+ .cottage-navbar.is-open{background:var(--surface);border-bottom-color:var(--line);box-shadow:0 10px 24px #10202014}
+ .cottage-navbar.is-open .cottage-nav-links .cottage-brand{margin-bottom:6px}
+ .cottage-nav-links .cottage-brand{grid-row:1;grid-column:1/-1;justify-content:flex-start;margin:0;font-size:22px;padding-right:180px}
  .cottage-brand svg{display:block;width:20px;height:20px}
- .cottage-nav-inner>.time-control-host{position:absolute;right:20px;top:22px}
+ .cottage-nav-inner>.time-control-host{position:absolute;right:72px;top:16px}
+ /* Three bars that turn into a cross while the menu is open. */
+ .cottage-menu{position:absolute;right:16px;top:12px;display:grid;place-content:center;gap:5px;width:44px;height:44px;padding:0;border:0;border-radius:12px;background:none;color:inherit;cursor:pointer}
+ .cottage-menu span{display:block;width:22px;height:2px;border-radius:1px;background:currentColor;transition:transform .2s,opacity .2s}
+ .cottage-navbar.is-open .cottage-menu span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+ .cottage-navbar.is-open .cottage-menu span:nth-child(2){opacity:0}
+ .cottage-navbar.is-open .cottage-menu span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+ .cottage-menu:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 }
 @media(max-width:380px){
  .cottage-nav-inner{padding-left:16px;padding-right:16px}
- .cottage-nav-links .cottage-brand{font-size:19px;gap:5px}
- .cottage-nav-inner>.time-control-host{right:16px}
+ .cottage-nav-links .cottage-brand{font-size:19px;gap:5px;padding-right:164px}
+ .cottage-nav-inner>.time-control-host{right:64px}
+ .cottage-menu{right:12px}
 }
+@media(prefers-reduced-motion:reduce){.cottage-menu span{transition:none}}

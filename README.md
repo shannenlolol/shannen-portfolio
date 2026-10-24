@@ -24,8 +24,8 @@ The production build is written to `dist/`.
 ## Pages and content
 
 - `/` - illustrated cottage homepage, interactive garden robot, time-of-day slider, skills, and contact links.
-- `/experience` - work experience overview.
-- `/experience/:slug` - individual role details.
+- `/experiences` - work experience overview.
+- `/experiences/:slug` - individual role details.
 - `/projects` - project descriptions and external demo/source links.
 - `/skills` - garden-style toolkit grouped by purpose.
 - `/education` - education, AWS certification, and original education images.

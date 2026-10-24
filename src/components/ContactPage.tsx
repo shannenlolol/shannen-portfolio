@@ -1,3 +1,5 @@
+import SocialLinks from "./SocialLinks";
+
 export default function ContactPage() {
   const submitted =
     new URLSearchParams(window.location.search).get("sent") === "1";
@@ -5,27 +7,15 @@ export default function ContactPage() {
   return (
     <main id="main-content" className="contact-page">
       <div className="contact-page-intro">
-        <p className="eyebrow">Contact / Say hello</p>
-        <h1>
-          Let’s start a<br />
-          <span className="serif-accent">conversation.</span>
-        </h1>
+        <h1 className="eyebrow">Contact</h1>
         <p>
           Have an interesting idea, a question, or an opportunity? Leave me a
           message here.
         </p>
         <div className="contact-address">
-          <span className="eyebrow">My email</span>
-          <p>shannenlee0211@gmail.com</p>
+          <span className="eyebrow">Or find me here</span>
+          <SocialLinks />
         </div>
-        <a
-          className="text-link"
-          href="https://www.linkedin.com/in/shannen-lee-4b7301216/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Find me on LinkedIn
-        </a>
       </div>
       {submitted ? (
         <section
