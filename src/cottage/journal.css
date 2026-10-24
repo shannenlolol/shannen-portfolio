@@ -314,12 +314,18 @@
 .j-envelope{position:absolute;left:2%;right:2%;bottom:0;height:150px;border-radius:4px;background:#d8bf92;box-shadow:0 8px 18px #00000026,inset 0 2px 6px #0000001f}
 .j-letter-slot{position:relative;z-index:1;flex:none;height:200px;clip-path:inset(-100vh -60px 0 -60px)}
 .j-letter-paper{--inset:7%;position:absolute;top:0;left:var(--inset);right:var(--inset);padding:20px 24px 60px;background:repeating-linear-gradient(to bottom,transparent 0 31px,#8fb1cb33 31px 32px),#fffdf8;box-shadow:0 4px 12px #00000024;transition:transform .8s cubic-bezier(.22,.9,.3,1)}
-/* Lifted until the paper's bottom sits 144px into the slot, just inside the pocket. */
-.j-letter:hover .j-letter-paper,.j-letter:focus-within .j-letter-paper{transform:translateY(calc(144px - 100%)) rotate(-1.5deg)}
-/* On spreads the letter takes the rest of the page, envelope at the foot, and rises no higher than the top of that
-   space (the slot is 200px; 100cqh is the space), so it never covers the text above. */
+/* On spreads the letter takes the rest of the page, envelope at the foot. */
 .journal[data-single="false"] .j-letter{flex:1 0 0;min-height:220px;container-type:size}
-.journal[data-single="false"] .j-letter:is(:hover,:focus-within) .j-letter-paper{transform:translateY(max(calc(144px - 100%),calc(200px - 100cqh))) rotate(-1.5deg)}
+/* Only where the pointer can really hover. A touch leaves iOS Safari's :hover stuck on whatever was touched, and these
+   selectors outrank the touch rules below, so swiping across the letter to turn the page would slide it up over the
+   text, and it would snap back on the copy the turning page or closing cover carries: a flicker. */
+@media(hover:hover){
+  /* Lifted until the paper's bottom sits 144px into the slot, just inside the pocket. */
+  .j-letter:hover .j-letter-paper,.j-letter:focus-within .j-letter-paper{transform:translateY(calc(144px - 100%)) rotate(-1.5deg)}
+  /* On spreads it rises no higher than the top of its space (the slot is 200px; 100cqh is the space), so it never
+     covers the text above. */
+  .journal[data-single="false"] .j-letter:is(:hover,:focus-within) .j-letter-paper{transform:translateY(max(calc(144px - 100%),calc(200px - 100cqh))) rotate(-1.5deg)}
+}
 @media(hover:none){
   .j-letter-slot{height:auto;padding-bottom:56px}
   .j-letter-paper{position:relative;left:auto;right:auto;margin:0 var(--inset);transform:rotate(-1.5deg)}
