@@ -28,7 +28,7 @@ export default function Projects() {
       {featured.map(project => (
         <article className="project-featured project-reveal" id={project.slug} key={project.slug} aria-labelledby={`${project.slug}-title`}>
           {project.slug === "image-editor" ? <EditorPreview /> :
-            project.image ? <figure className="project-preview"><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></figure>
+            project.image ? <figure className="project-preview"><a href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></a></figure>
             : <div className="project-preview project-placeholder">{project.placeholder ?? "Screenshot to come"}</div>}
           <div className="project-featured-copy">
             <Status project={project} />
@@ -45,7 +45,7 @@ export default function Projects() {
         {inProgress.map((project, i) => (
           <article className="project-card project-reveal" id={project.slug} key={project.slug} style={{ "--i": i } as CSSProperties} aria-labelledby={`${project.slug}-title`}>
             {project.image
-              ? <img className="project-card-image" src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" />
+              ? <a className="project-card-image" href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox><img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} loading="lazy" /></a>
               : <div className="project-card-image project-placeholder">{project.placeholder}</div>}
             <div className="project-card-copy">
               <Status project={project} />

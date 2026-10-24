@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import LightboxHost from "./components/Lightbox";
 import Landscape from "./components/Landscape";
 import CottageHome from "./components/CottageHome";
 import ExperienceJournal from "./components/ExperienceJournal";
@@ -159,6 +160,7 @@ export default function App() {
       <div key={isJournalPath(route.path) ? "journal" : route.key} className={`world-view world-current ${route.path === "/" ? "at-home" : ""}`}><Page route={route} /></div>
     </div>
     <Footer />
+    <LightboxHost />
     <span className="world-announcement" role="status" aria-live="polite">{previous ? "" : `${worldRoutes.find(item => item.path === route.path)?.label ?? (route.path.startsWith("/projects/") ? "Project details" : "Experience details")} page`}</span>
   </>;
 }

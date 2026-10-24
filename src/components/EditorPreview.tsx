@@ -12,7 +12,9 @@ export default function EditorPreview() {
       </div>
     </div>
     <div className="editor-preview-canvas">
-      <img src={`/assets/images/projects/image-editor/${after ? "after" : "before"}.png`} alt={after ? "Image Editor with an apple isolated on a transparent background" : "Image Editor with the original apple photo on a green background"} loading="lazy" width="1920" height="960" />
+      <a href={`/assets/images/projects/image-editor/${after ? "after" : "before"}.png`} target="_blank" rel="noreferrer" data-lightbox>
+        <img src={`/assets/images/projects/image-editor/${after ? "after" : "before"}.png`} alt={after ? "Image Editor with an apple isolated on a transparent background" : "Image Editor with the original apple photo on a green background"} loading="lazy" width="1920" height="960" />
+      </a>
     </div>
   </figure>;
 }

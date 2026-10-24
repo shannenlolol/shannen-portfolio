@@ -48,7 +48,9 @@ export default function ProjectPage({ slug }: { slug: string }) {
         {project.slug === "image-editor" ? (
           <EditorPreview />
         ) : project.image ? (
-          <img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} />
+          <a href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox>
+            <img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} />
+          </a>
         ) : (
           <div className="project-placeholder">{project.placeholder ?? "Screenshot to come"}</div>
         )}
