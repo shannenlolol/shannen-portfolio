@@ -1,17 +1,18 @@
 import { useRef } from "react";
-import type { CSSProperties } from "react";
+// import type { CSSProperties } from "react"; (for the hidden highlights below)
 import { projects } from "../data/projects";
 import useReveal from "../hooks/useReveal";
 import EditorPreview from "./EditorPreview";
-import Polaroid from "./Polaroid";
-import type { Photo } from "./Polaroid";
+// Hidden until there are real highlights and screenshots (see below).
+// import Polaroid from "./Polaroid";
+// import type { Photo } from "./Polaroid";
 import { Links, Status, Technologies } from "./ProjectBits";
 import "../cottage/projects.css";
 
-const galleryPlaceholders: Photo[] = [
-  { placeholder: "Screenshot to come", caption: "[caption]", deco: "tape", tilt: -2, width: 260 },
-  { placeholder: "Screenshot to come", caption: "[caption]", deco: "pin", tilt: 2, width: 260 },
-];
+// const galleryPlaceholders: Photo[] = [
+//   { placeholder: "Screenshot to come", caption: "[caption]", deco: "tape", tilt: -2, width: 260 },
+//   { placeholder: "Screenshot to come", caption: "[caption]", deco: "pin", tilt: 2, width: 260 },
+// ];
 
 export default function ProjectPage({ slug }: { slug: string }) {
   const page = useRef<HTMLElement>(null);
@@ -29,7 +30,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
       </main>
     );
   const next = projects[(index + 1) % projects.length];
-  const highlights = project.highlights ?? [];
+  // const highlights = project.highlights ?? [];
 
   return (
     <main id="main-content" className="project-page" ref={page}>
@@ -90,6 +91,8 @@ export default function ProjectPage({ slug }: { slug: string }) {
               <p>{project.detail}</p>
             </section>
           )}
+          {/* Hidden until each project has real highlights and screenshots: the "What I’m proud of" list and a
+              gallery of screenshots.
           {highlights.length > 0 && (
             <section className="pp-section project-reveal">
               <h2 className="pp-label">What I’m proud of</h2>
@@ -108,6 +111,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
               <Polaroid photo={photo} key={i} />
             ))}
           </div>
+          */}
         </div>
       </div>
 
