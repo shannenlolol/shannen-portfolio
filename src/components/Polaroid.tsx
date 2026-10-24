@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { displaySrc } from "../displayImage";
 import "../cottage/polaroid.css";
 
 /** Scrapbook fasteners drawn in CSS: washi tape, push pin, wooden button, clothes peg, two corner tapes, a paper sticker. */
@@ -22,11 +23,11 @@ export default function Polaroid({ photo }: { photo: Photo }) {
       <span className={`deco deco-${photo.deco}`} aria-hidden="true" />
       {photo.src && photo.loop ? (
         <a href={photo.loop} target="_blank" rel="noreferrer" aria-label={`View full video: ${photo.alt}`} data-lightbox="video">
-          <video src={photo.loop} poster={photo.src} autoPlay={!still} muted loop playsInline preload="metadata" />
+          <video src={photo.loop} poster={displaySrc(photo.src)} autoPlay={!still} muted loop playsInline preload="metadata" />
         </a>
       ) : photo.src ? (
         <a href={photo.src} target="_blank" rel="noreferrer" aria-label={`View full photo: ${photo.alt}`} data-lightbox>
-          <img src={photo.src} alt={photo.alt} loading="lazy" />
+          <img src={displaySrc(photo.src)} alt={photo.alt} loading="lazy" />
         </a>
       ) : (
         <div className="polaroid-placeholder">{photo.placeholder}</div>

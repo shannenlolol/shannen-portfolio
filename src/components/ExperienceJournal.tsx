@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, ReactNode, TouchEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { CSSProperties, ReactNode, RefObject, TouchEvent } from "react";
 import { experiences } from "../data/experiences";
 import type { JournalBlock, Keepsake, Sticker } from "../data/experiences";
 import { navigate } from "../cottage/navigate";
+import { displaySrc } from "../displayImage";
 import Polaroid from "./Polaroid";
 import type { Photo } from "./Polaroid";
-import { DecoStrip, JournalTitle, NumberMark, PressedFlower, SewnButton, Star } from "./JournalBits";
+import { DecoStrip, JournalTitle, NumberMark, PressedFlower, Star } from "./JournalBits";
 import "../cottage/journal.css";
 
 type Job = (typeof experiences)[number];
@@ -17,7 +18,8 @@ type Job = (typeof experiences)[number];
 type Leaf = { key: string; owner: string; render: (still: boolean) => ReactNode; tone?: "lined" };
 
 const shortPeriod = (period: string) => period.replace(" - Present", " – now").replace(" - ", " – ");
-const SINGLE_PAGE = "(max-width: 860px)";
+// Phones held sideways are too short for a spread, so they get the one-page phone book too (see journal.css).
+const SINGLE_PAGE = "(max-width: 860px), (orientation: landscape) and (max-height: 500px)";
 const TURN_MS = 780;
 /**
  * Set when the book has closed and the site is travelling on to Projects. During the journey App draws a fresh
@@ -77,16 +79,15 @@ function InsideCover() {
     <div className="j-cover-page">
       <span className="j-lace" aria-hidden="true" />
       {/* The front cover already carries the title, so the inside cover is just a note. */}
+      {/* The stars are stuck on the note's corners, so they move with it whatever the page's size. */}
       <div className="j-snippet">
         <p>Four roles, from my first internship in 2022 to the job I have now. Pick a tab, or turn the page.</p>
+        <Star className="j-star-a" />
+        <Star className="j-star-b star-small" />
       </div>
       <div className="j-cover-deco" aria-hidden="true">
         <PressedFlower variant="lavender" className="j-flower-a" />
         <PressedFlower variant="daisy" className="j-flower-b" />
-        <SewnButton className="sewn-sage j-button-a" />
-        <SewnButton className="sewn-rose j-button-b" />
-        <Star className="j-star-a" />
-        <Star className="j-star-b star-small" />
       </div>
     </div>
   );
@@ -321,7 +322,7 @@ function RolePage({ job, blocks, page, still }: { job: Job; blocks: JournalBlock
             );
         }
       })}
-      {!hasKeepsake && <DecoStrip flower={FLOWERS[job.color]} button={page % 2 ? "role" : undefined} star={page % 2 === 0} />}
+      {!hasKeepsake && <DecoStrip flower={FLOWERS[job.color]} star={page % 2 === 0} />}
     </div>
   );
 }
@@ -361,10 +362,96 @@ function buildPages(single: boolean) {
 }
 const LAYOUTS = { spread: buildPages(false), single: buildPages(true) };
 
+// Below this, text gets too small to read, so a page that would need shrinking further scrolls inside the book
+// instead (in practice, only on phones held sideways).
+const MIN_FIT = 0.6;
+
+/**
+ * Phones: the book is as tall as the screen, so a page longer than the book shrinks its contents until they fit,
+ * rather than scrolling inside it. The contents are laid out wider (by 1/scale) and scaled down to the page's width
+ * with a transform, so text rewraps onto fewer lines; the height therefore doesn't shrink in proportion, and it
+ * searches for the largest scale that fits. (CSS `zoom` would rewrap the same way, but iOS Safari zooms the LinkedIn
+ * post's frame differently and measures a zoomed page's height without its bottom padding.) It is worked out again
+ * whenever the page or its contents change size (a turned phone, a photo loading).
+ */
+function useFitPage(sheet: RefObject<HTMLElement | null>) {
+  useLayoutEffect(() => {
+    const page = sheet.current;
+    const content = page?.firstElementChild as HTMLElement | null;
+    // Only phones' one-page book; spreads keep their own layout. This includes the copies on turning leaves and on
+    // the closing back cover, so a page looks the same as it swings away.
+    if (!page || !content || !page.closest('.journal[data-single="true"]')) return;
+    const reset = () => {
+      page.classList.remove("is-fitted");
+      for (const property of ["flex", "width", "height", "transform", "transform-origin", "--fit"]) content.style.removeProperty(property);
+    };
+    const fit = () => {
+      reset();
+      page.scrollTop = 0;
+      const style = getComputedStyle(page);
+      const top = parseFloat(style.paddingTop);
+      const room = page.clientHeight - top - parseFloat(style.paddingBottom);
+      const width = page.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const start = page.getBoundingClientRect().top + page.clientTop + top;
+      // How far down the lowest thing on the page reaches, as drawn (so tilted photos and their tape count).
+      const reach = () => {
+        let lowest = start;
+        for (const element of content.querySelectorAll("*")) {
+          const box = element.getBoundingClientRect();
+          if (box.width && box.height) lowest = Math.max(lowest, box.bottom);
+        }
+        return lowest - start;
+      };
+      const apply = (scale: number) => {
+        if (scale === 1) return reset();
+        content.style.flex = "none";
+        content.style.width = `${width / scale}px`;
+        content.style.transform = `scale(${scale})`;
+        content.style.transformOrigin = "0 0";
+        content.style.setProperty("--fit", String(scale));
+      };
+      const fits = (scale: number) => {
+        apply(scale);
+        return reach() <= room + 1;
+      };
+      if (fits(1)) return;
+      if (!fits(MIN_FIT)) return reset();
+      // Halving the gap 7 times pins the scale to within 1%.
+      let low = MIN_FIT;
+      let high = 1;
+      for (let pass = 0; pass < 7; pass++) {
+        const middle = (low + high) / 2;
+        if (fits(middle)) low = middle;
+        else high = middle;
+      }
+      apply(low);
+      // The unscaled box would still be as tall as before; it takes exactly the page's room once scaled.
+      content.style.height = `${room / low}px`;
+      page.classList.add("is-fitted");
+    };
+    fit();
+    // The page changes size when the phone turns; its blocks do as they settle (the LinkedIn post sizes itself to
+    // its space after the first pass). Each pass ends with the same sizes it found, so this doesn't loop.
+    const observer = new ResizeObserver(fit);
+    observer.observe(page);
+    [...content.children].forEach((block) => observer.observe(block));
+    // Photos and fonts load after the first pass and change the contents' height.
+    content.querySelectorAll("img").forEach((image) => image.addEventListener("load", fit));
+    document.fonts.ready.then(() => sheet.current === page && fit());
+    return () => {
+      observer.disconnect();
+      content.querySelectorAll("img").forEach((image) => image.removeEventListener("load", fit));
+      reset();
+    };
+  }, [sheet]);
+}
+
 function PageSheet({ page, side, still = false }: { page?: Leaf; side: "left" | "right" | "single"; still?: boolean }) {
   const job = experiences.find((item) => item.slug === page?.owner);
+  const sheet = useRef<HTMLElement>(null);
+  useFitPage(sheet);
   return (
-    <section className={`j-page j-${side} ${page?.tone === "lined" ? "j-lined" : ""}`} data-color={job?.color}>
+    <section ref={sheet} className={`j-page j-${side} ${page?.tone === "lined" ? "j-lined" : ""}`} data-color={job?.color}>
       {page?.render(still)}
     </section>
   );
@@ -408,19 +495,28 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   const book = useRef<HTMLDivElement>(null);
   const pending = useRef<number | null>(null);
   const swipe = useRef<{ x: number; y: number } | null>(null);
-  // On phones every page is as tall as the tallest, so the book keeps one height as pages turn. All pages are laid
-  // out once, hidden, and measured again whenever any of them changes size (e.g. as photos load).
-  const measure = useRef<HTMLDivElement>(null);
-  const [pageHeight, setPageHeight] = useState<number>();
-  useEffect(() => {
-    const box = measure.current;
-    if (!single || !box) return;
-    const sheets = [...box.children] as HTMLElement[];
-    const observer = new ResizeObserver(() => setPageHeight(Math.max(...sheets.map((sheet) => sheet.offsetHeight))));
-    sheets.forEach((sheet) => observer.observe(sheet));
-    return () => observer.disconnect();
-  }, [single]);
+  // On phones the book fits the screen and a long page scrolls inside it. The copy of the page that a turning leaf
+  // (or the closing back cover) carries away starts at the top, so it is scrolled to where the reader was.
+  const readFrom = useRef(0);
+  function noteScroll() {
+    readFrom.current = book.current?.querySelector(".j-spread > .j-page")?.scrollTop ?? 0;
+  }
+  useLayoutEffect(() => {
+    if (!single) return;
+    const carried = book.current?.querySelector<HTMLElement>(".j-leaf-forward .j-front .j-page, .j-board-back.is-moving .j-front .j-page");
+    if (carried) carried.scrollTop = readFrom.current;
+  }, [single, turn, board]);
   const job = experiences.find((item) => item.slug === slug);
+  // Photos only load as their page turns into view, so fetch all of the journal's (the small copies, a few hundred
+  // KB in all) in the background just after it opens; each page's photos are then already there when it turns.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      for (const block of experiences.flatMap((item) => item.pages.flat())) {
+        if (block.kind === "photo") new Image().src = displaySrc(image(block.src));
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   function openBook() {
     if (board?.moving) return;
@@ -431,7 +527,10 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   }
   function closeBook() {
     if (reduced) navigate("/projects");
-    else setBoard({ kind: "back", moving: true });
+    else {
+      noteScroll();
+      setBoard({ kind: "back", moving: true });
+    }
   }
 
   function turnTo(target: number, syncRoute = true) {
@@ -456,7 +555,10 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
     const top = book.current?.getBoundingClientRect().top ?? 0;
     if (top < 0) window.scrollBy({ top: top - 130, behavior: reduced ? "instant" : "smooth" });
     // Wide screens only turn a leaf when moving to another spread; phones turn one for every page.
-    if (single) setTurn(reduced ? null : { from: page, to });
+    if (single) {
+      noteScroll();
+      setTurn(reduced ? null : { from: page, to });
+    }
     else if (unit(to) !== unit(page)) setTurn(reduced ? null : { from: unit(page), to: unit(to) });
     setPage(to);
     const owner = pages[to].owner;
@@ -545,7 +647,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   return (
     <main id="main-content" className="journal-page">
       <h1 className="visually-hidden">{job ? `Experience: ${job.company}, ${job.role}` : "Experiences"}</h1>
-      <div className="journal" ref={book} data-single={single} data-board={board?.kind} data-closed={closed} style={{ "--cover": `${board?.kind === "back" ? CLOSE_MS : OPEN_MS}ms`, "--page-h": pageHeight ? `${pageHeight}px` : undefined } as CSSProperties}>
+      <div className="journal" ref={book} data-single={single} data-board={board?.kind} data-closed={closed} style={{ "--cover": `${board?.kind === "back" ? CLOSE_MS : OPEN_MS}ms` } as CSSProperties}>
         <nav className="j-tabs" aria-label="Journal sections">
           {/* Already the open address while the book is shut, so this tab opens the book itself. */}
           <a className="j-tab j-tab-index" href="/experiences" aria-current={owner === "" ? "page" : undefined} onClick={() => closed === "front" && openBook()}>
@@ -570,13 +672,6 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
                 </button>
               )}
               <div className="j-spread">
-                {single && (
-                  <div className="j-measure" ref={measure} aria-hidden="true" inert>
-                    {pages.map((item) => (
-                      <PageSheet page={item} side="single" still key={item.key} />
-                    ))}
-                  </div>
-                )}
                 {single ? (
                   // The page underneath: the new one while the old swings away, or the old one until the previous
                   // page has been laid back over it.

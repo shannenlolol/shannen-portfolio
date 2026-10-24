@@ -147,6 +147,24 @@
 @keyframes j-turn-forward{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
 @keyframes j-turn-back{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
 @keyframes j-shade{0%,100%{opacity:0}50%{opacity:1}}
+/* iOS Safari ignores backface-visibility for parts of a face it draws as layers of their own (the tilted letter, its
+   clipped slot and pocket), so they showed through mirrored on the back cover once it had swung shut. Each face also
+   switches itself off as it turns away: with the turns' easing, a leaf or cover passes edge-on (90°) 41.6% of the
+   way through. A face that starts turned away (laying a page back down, shutting the front cover) switches on then.
+   The switch is an opacity step rather than visibility: Safari runs opacity on the compositor alongside the swing
+   itself, so the two stay in step, whereas a visibility change waits on the main thread and can land a few frames
+   off when the page is busy (e.g. as React renders the closing book). */
+@keyframes j-face-out{0%,41.6%{opacity:1}41.7%,100%{opacity:0}}
+@keyframes j-face-in{0%,41.6%{opacity:0}41.7%,100%{opacity:1}}
+.j-leaf>.j-front{animation:j-face-out var(--turn) linear both}
+.j-leaf>.j-back{animation:j-face-in var(--turn) linear both}
+.journal[data-single="true"] .j-leaf-back>.j-front{animation-name:j-face-in}
+.journal[data-single="true"] .j-leaf-back>.j-back{animation-name:j-face-out}
+.j-board.is-moving>.j-front{animation:j-face-out var(--cover) linear both}
+.j-board.is-moving>.j-back{animation:j-face-in var(--cover) linear both}
+.j-board.is-shutting.is-moving>.j-front{animation-name:j-face-in}
+.j-board.is-shutting.is-moving>.j-back{animation-name:j-face-out}
+.j-board-front:not(.is-moving)>.j-back,.j-board-back:not(.is-moving)>.j-front{visibility:hidden}
 
 /* Shared journal type. */
 .j-page h2,.j-page h3,.j-page h4{letter-spacing:0;color:var(--j-ink)}
@@ -200,21 +218,10 @@
 
 /* Decorations: star stickers, sewing buttons, pressed flowers, lace. All ignore the pointer. */
 /* Star stickers (see Star). The drop shadows lift the sticker off the page and outline its white edge. */
-.star{--star-hi:#fff3c4;--star-mid:#e9b949;--star-lo:#c48a20;position:relative;display:inline-grid;flex:none;place-items:center;width:46px;height:46px;filter:drop-shadow(0 1.5px 1px #3b2a1240) drop-shadow(0 0 .6px #3b2a1266);pointer-events:none}
+.star{--star-fill:#f8e6a0;--star-edge:#ecd383;position:relative;display:inline-grid;flex:none;place-items:center;width:46px;height:46px;filter:drop-shadow(0 1.5px 1px #3b2a1240) drop-shadow(0 0 .6px #3b2a1266);pointer-events:none}
 .star svg{position:absolute;inset:0;width:100%;height:100%}
 .star-label{position:relative;padding-top:5px;color:#5b3d0a;font:700 15px/1 var(--sans);text-shadow:0 1px 0 #ffffff8c}
 .star-small{width:26px;height:26px}
-.star-rose{--star-hi:#ffe1dc;--star-mid:#e59a90;--star-lo:#bf665a}
-.star-rose .star-label{color:#5a2019}
-.star-sage{--star-hi:#eef6dd;--star-mid:#a9c086;--star-lo:#7d985a}
-.star-sage .star-label{color:#2c3d17}
-.sewn-button{position:relative;display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 62% 38%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 38% 62%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 62% 62%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle,transparent 0 10px,#00000020 10.5px 11.5px,transparent 12px),var(--button-colour,#9fb38a);box-shadow:0 2px 3px #0003,inset 0 -2px 2px #0002;pointer-events:none}
-.sewn-button::before,.sewn-button::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:2px;border-radius:1px;background:#fbf4e0;transform:translate(-50%,-50%) rotate(45deg)}
-.sewn-button::after{transform:translate(-50%,-50%) rotate(-45deg)}
-.sewn-sage{--button-colour:#9fb38a}
-.sewn-rose{--button-colour:#e3a5a0}
-.sewn-butter{--button-colour:#efd27a}
-.sewn-role{--button-colour:var(--wt-a)}
 .pressed-flower{position:relative;display:block;width:64px;height:128px;opacity:.95;pointer-events:none}
 .pressed-flower svg{display:block;width:100%;height:100%}
 .pressed-tape{position:absolute;left:6px;right:6px;bottom:28%;height:16px;background:repeating-linear-gradient(90deg,#f7f1df00 0 6px,#ffffff66 6px 9px),#e6dcc2d9;transform:rotate(-9deg);box-shadow:0 1px 2px #0001}
@@ -225,20 +232,20 @@
     radial-gradient(circle at 11px 14px,#fffefa 0 10px,transparent 10.6px) 0 0/22px 26px repeat-x,
     linear-gradient(#fffefa,#fffefa) 0 0/100% 13px no-repeat}
 .j-cover-deco{position:absolute;inset:0;pointer-events:none}
-.j-cover-deco .pressed-flower,.j-cover-deco .sewn-button,.j-cover-deco .star{position:absolute}
+.j-cover-deco .pressed-flower{position:absolute}
 .deco-strip{display:flex;align-items:flex-end;justify-content:flex-end;gap:16px;margin-top:auto;padding:28px 4px 0}
 .deco-strip .pressed-flower{transform:rotate(12deg)}
 .deco-strip .star{margin-bottom:46px;transform:rotate(-10deg)}
-.deco-strip .sewn-button{margin-bottom:22px}
 .j-right .deco-strip,.j-single .deco-strip{padding-right:36px}
 .j-flower-a{right:34px;bottom:48px;transform:rotate(16deg)}
 .j-flower-b{right:94px;bottom:34px;width:54px;height:108px;transform:rotate(-14deg)}
-.j-button-a{left:44px;bottom:64px}
-.j-button-b{left:84px;bottom:50px;width:24px;height:24px}
-.j-star-a{top:80px;right:48px;transform:rotate(12deg)}
-.j-star-b{top:132px;right:96px}
+/* Stickers on the inside cover note's corners: the large star overlapping its top-right corner, the small one its
+   bottom-left. The note is turned slightly, which makes it their containing block. */
+.j-cover-page .j-snippet .star{position:absolute;z-index:1}
+.j-star-a{top:-26px;right:-14px;transform:rotate(12deg)}
+.j-star-b{bottom:-14px;left:-10px}
 
-/* Inside cover. Bottom padding keeps the text clear of the flowers and buttons. */
+/* Inside cover. Bottom padding keeps the text clear of the flowers. */
 /* The inside cover's heading and note sit in the middle of the page, clear of the keepsakes at its foot. */
 .j-cover-page{justify-content:center;padding-bottom:150px}
 .j-cover-page .j-snippet{max-width:380px}
@@ -314,22 +321,22 @@
 .j-envelope{position:absolute;left:2%;right:2%;bottom:0;height:150px;border-radius:4px;background:#d8bf92;box-shadow:0 8px 18px #00000026,inset 0 2px 6px #0000001f}
 .j-letter-slot{position:relative;z-index:1;flex:none;height:200px;clip-path:inset(-100vh -60px 0 -60px)}
 .j-letter-paper{--inset:7%;position:absolute;top:0;left:var(--inset);right:var(--inset);padding:20px 24px 60px;background:repeating-linear-gradient(to bottom,transparent 0 31px,#8fb1cb33 31px 32px),#fffdf8;box-shadow:0 4px 12px #00000024;transition:transform .8s cubic-bezier(.22,.9,.3,1)}
-/* Lifted until the paper's bottom sits 144px into the slot, just inside the pocket. */
-.j-letter:hover .j-letter-paper,.j-letter:focus-within .j-letter-paper{transform:translateY(calc(144px - 100%)) rotate(-1.5deg)}
-/* On spreads the letter takes the rest of the page, envelope at the foot, and rises no higher than the top of that
-   space (the slot is 200px; 100cqh is the space), so it never covers the text above. */
+/* On spreads the letter takes the rest of the page, envelope at the foot. */
 .journal[data-single="false"] .j-letter{flex:1 0 0;min-height:220px;container-type:size}
-.journal[data-single="false"] .j-letter:is(:hover,:focus-within) .j-letter-paper{transform:translateY(max(calc(144px - 100%),calc(200px - 100cqh))) rotate(-1.5deg)}
+/* Only where the pointer can really hover. A touch leaves iOS Safari's :hover stuck on whatever was touched, and these
+   selectors outrank the touch rules below, so swiping across the letter to turn the page would slide it up over the
+   text, and it would snap back on the copy the turning page or closing cover carries: a flicker. */
+@media(hover:hover){
+  /* Lifted until the paper's bottom sits 144px into the slot, just inside the pocket. */
+  .j-letter:hover .j-letter-paper,.j-letter:focus-within .j-letter-paper{transform:translateY(calc(144px - 100%)) rotate(-1.5deg)}
+  /* On spreads it rises no higher than the top of its space (the slot is 200px; 100cqh is the space), so it never
+     covers the text above. */
+  .journal[data-single="false"] .j-letter:is(:hover,:focus-within) .j-letter-paper{transform:translateY(max(calc(144px - 100%),calc(200px - 100cqh))) rotate(-1.5deg)}
+}
 @media(hover:none){
   .j-letter-slot{height:auto;padding-bottom:56px}
   .j-letter-paper{position:relative;left:auto;right:auto;margin:0 var(--inset);transform:rotate(-1.5deg)}
 }
-/* On a turning leaf or cover (a still copy of the page), Safari draws the tilted paper and the clipped slot as layers
-   of their own that ignore the face's hidden back, so the letter flickers through as it swings (most visibly when the
-   back cover closes over the last page on phones). The copy never lifts, so it needs no clip; the paper hides its
-   own back too. */
-.j-face .j-letter-slot{clip-path:none}
-.j-face .j-letter-paper{transition:none;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 /* Front pocket with a V-shaped mouth and its two side folds. */
 .j-pocket{position:absolute;z-index:2;left:2%;right:2%;bottom:0;height:112px;border-radius:0 0 4px 4px;background:linear-gradient(to top right,#ead6b1 49.5%,#dcc398 50%) left/50% 100% no-repeat,linear-gradient(to top left,#ead6b1 49.5%,#dcc398 50%) right/50% 100% no-repeat;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
 .j-letter-kicker{margin:0 0 8px;font:600 13px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--j-accent)}
@@ -370,7 +377,7 @@
    Phones instead keep every page whole, at the height of the tallest (see below). */
 .journal-page{--header:110px}
 @media(max-width:1100px){.journal-page{--header:150px}}
-@media(max-width:820px){.journal-page{--header:92px}}
+@media(max-width:820px),(orientation:landscape) and (max-height:500px){.journal-page{--header:92px}}
 .journal[data-single="false"] .j-spread{height:max(540px,calc(100svh - var(--header) - 20px - 28px - 30px - 20px))}
 .journal[data-single="false"] .j-page{min-height:0;padding:36px 44px 40px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#cdbf9c transparent}
 .journal[data-single="false"] .j-right{padding-bottom:52px}
@@ -408,7 +415,10 @@
 .journal[data-single="true"] .j-tab{flex:0 1 auto;min-width:0;min-height:0;padding:9px 7px 22px;writing-mode:horizontal-tb;border-radius:12px 12px 0 0;font-size:12px;transform:translateY(10px)}
 .journal[data-single="true"] .j-tab:not(.j-tab-index){overflow:hidden}
 .journal[data-single="true"] .j-tab span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.journal[data-single="true"] .j-tab-index{flex:none}
+/* Its star is a little smaller and higher than on wide screens, so the raised tab (46px) fits the tab strip, which
+   clips anything taller. */
+.journal[data-single="true"] .j-tab-index{flex:none;padding-top:7px}
+.journal[data-single="true"] .j-tab-index .star{width:17px;height:17px}
 .journal[data-single="true"] .j-tab:hover,.journal[data-single="true"] .j-tab[aria-current="page"]{transform:translateY(0)}
 .journal[data-single="true"] .j-tab-index>span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* The open book's spine is at the left edge: the right-hand page meets the left-hand one there, with no leather
@@ -455,14 +465,22 @@
 .journal[data-single="true"][data-board="back"] .j-verso::before{inset:4px 0 4px 4px;border:2px dashed #ecd6acc4;border-right:0;border-radius:12px 0 0 12px}
 .journal[data-single="true"] .j-outer-back{border-radius:16px 6px 6px 16px}
 
-/* On phones the post's space follows the page width, in the embed's own proportions. */
-.journal[data-single="true"] .j-embed{aspect-ratio:504/399;max-height:399px}
-/* Phones keep every page whole (nothing scrolls inside the book), and every page is as tall as the tallest, so the
-   book keeps one height as pages turn. The pages are laid out once, hidden, to measure (see ExperienceJournal). */
-.journal[data-single="true"] .j-page{min-height:var(--page-h,500px);padding:26px 20px 48px}
-/* Phone sizes. Each role fits on two pages and the book is as tall as its tallest page, so every page is kept
-   compact: the logo card and date stamp share one row, and type, chips, photos, the video and the letter are all
-   scaled down. */
+/* On phones the post takes the rest of the page below the text, as on spreads, and grows to fill it (up to its usual
+   size), centred. A fixed shape with a height cap would also cap its width in Safari, leaving a small post at the
+   left. If the page has less than 200px left, the page shrinks to fit (see useFitPage). The padding below keeps the
+   post clear of the curled page corner. */
+.journal[data-single="true"] .j-embed{flex:1 1 0;min-height:200px;align-items:center;padding-bottom:12px}
+/* Phones: the whole book fits the screen, so the tabs, page corner and dots are always in reach, and a page longer
+   than the book scrolls inside it. The book's height is the screen less the site header (--header), the gap above
+   the book (6px), the tabs (32px), the cover's border (18px) and the dots below (30px), with 12px to spare. A copy
+   on a turning leaf or cover is scrolled to match instead (see ExperienceJournal). */
+.journal[data-single="true"] .j-spread{height:max(150px,calc(100svh - var(--header) - 98px));grid-template-rows:minmax(0,1fr)}
+.journal[data-single="true"] .j-page{height:100%;min-height:0;padding:26px 20px 48px;overflow-y:auto;overscroll-behavior:contain}
+.journal[data-single="true"] .j-face .j-page{overflow-y:hidden}
+/* A page shrunk to fit (see useFitPage) never scrolls. */
+.journal[data-single="true"] .j-page.is-fitted{overflow:hidden}
+/* Phone sizes. Each role fits on two pages, kept compact so as little as possible scrolls inside the book: the logo
+   card and date stamp share one row, and type, chips, photos, the video and the letter are all scaled down. */
 .journal[data-single="true"] .j-title-top{flex-wrap:nowrap;align-items:center;gap:12px}
 .journal[data-single="true"] .j-logo{height:50px;min-width:0;padding:8px 12px}
 .journal[data-single="true"] .j-logo img{height:30px;max-width:130px}
@@ -483,13 +501,14 @@
 .journal[data-single="true"] .j-notes p{font-size:14.5px;line-height:1.45}
 .journal[data-single="true"] .mark{width:34px;height:34px;font-size:22px}
 .journal[data-single="true"] .j-prints{padding:8px 4px}
-.journal[data-single="true"] .j-prints .polaroid{width:min(220px,72%)}
-.journal[data-single="true"] .j-prints-wide .polaroid{width:min(300px,92%)}
-.journal[data-single="true"] .j-prints-pair .polaroid:first-child{width:66%}
-.journal[data-single="true"] .j-prints-pair .polaroid:last-child{width:58%;margin-top:-14px}
-.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:first-child{width:84%}
-.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:last-child{width:74%}
-.journal[data-single="true"] .j-embed{max-height:210px}
+/* A page shrunk to fit the screen (see useFitPage) is laid out wider by 1/scale, so shares of its width would come
+   out as wide as ever once scaled down; --fit (the scale) keeps the photos in proportion with the text. */
+.journal[data-single="true"] .j-prints .polaroid{width:min(220px,calc(72% * var(--fit,1)))}
+.journal[data-single="true"] .j-prints-wide .polaroid{width:min(300px,calc(92% * var(--fit,1)))}
+.journal[data-single="true"] .j-prints-pair .polaroid:first-child{width:calc(66% * var(--fit,1))}
+.journal[data-single="true"] .j-prints-pair .polaroid:last-child{width:calc(58% * var(--fit,1));margin-top:-14px}
+.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:first-child{width:calc(84% * var(--fit,1))}
+.journal[data-single="true"] .j-prints-wide.j-prints-pair .polaroid:last-child{width:calc(74% * var(--fit,1))}
 .journal[data-single="true"] .j-letter-paper{padding:16px 16px 52px}
 .journal[data-single="true"] .j-letter blockquote p{font-size:16px}
 .journal[data-single="true"] .j-envelope{height:120px}
@@ -501,14 +520,12 @@
 .journal[data-single="true"] .j-toc-name .j-toc-period{font-size:13px}
 .journal[data-single="true"] .deco-strip{padding-top:16px}
 .journal[data-single="true"] .deco-strip .pressed-flower{width:48px;height:96px}
-/* Measures the phone pages at one page's width. */
-.j-measure{position:absolute;top:0;left:0;right:0;height:0;visibility:hidden;pointer-events:none}
-.journal[data-single="true"] .j-measure .j-page{min-height:0}
 /* Keeps the star clear of the name label and the cut-out title on narrow pages. */
-.journal[data-single="true"] .j-star-a{top:auto;bottom:190px;right:44px}
-.journal[data-single="true"] .j-star-b{top:auto;bottom:250px;right:110px}
+/* On phones the lace is sewn along the page's top edge (across the padding around the inside cover), rather than
+   floating a little below it. */
+.journal[data-single="true"] .j-lace{top:-26px;left:-20px;right:-20px}
 .journal[data-single="true"] + .j-dots{padding-right:0}
-@media(max-width:860px){
+@media(max-width:860px),(orientation:landscape) and (max-height:500px){
   /* The left gutter matches the sliver of the left page (--verso), so it reaches the screen's edge. */
   .world-view>.journal-page{width:calc(100% - 38px);margin:6px 16px 110px 22px}
   .j-title{font-size:clamp(30px,9vw,40px)}
@@ -516,6 +533,10 @@
   .j-snippet p{padding:22px 18px;font-size:17px}
   .j-letter-paper{--inset:2%;padding:24px 20px 64px}
   .j-letter blockquote p{font-size:18px}
+}
+/* Sideways, a page as wide as the screen would run its lines far too long: the book keeps a phone's width, centred. */
+@media(orientation:landscape) and (max-height:500px){
+  .world-view>.journal-page{width:min(560px,calc(100% - 38px));margin:6px auto 110px}
 }
 @media(prefers-reduced-motion:reduce){
   .j-tab,.j-toc a,.j-corner,.j-dots>span{transition:none}

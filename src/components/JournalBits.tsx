@@ -1,4 +1,3 @@
-import { useId } from "react";
 
 /** A journal heading, typed onto a strip of paper with torn ends and held down with washi tape. */
 export function JournalTitle({ text }: { text: string }) {
@@ -27,56 +26,25 @@ export function NumberMark({ n }: { n: number }) {
 const STAR_PATH = "M50 9L61.2 37.6 91.9 39.4 68.1 58.9 75.9 88.6 50 72 24.1 88.6 31.9 58.9 8.1 39.4 38.8 37.6Z";
 
 /**
- * A glittery star sticker, optionally with a number printed on it. Drawn as SVG so it can have
- * what makes a real sticker read as one: a white die-cut margin with rounded points, a foil
- * gradient, glitter flecks and a gloss highlight. Colours come from --star-hi/--star-mid/--star-lo.
+ * A matte star sticker, optionally with a number printed on it: flat pastel yellow (--star-fill) on a white die-cut
+ * margin with rounded points, which is what makes it read as a sticker.
  */
 export function Star({ label, className = "" }: { label?: string; className?: string }) {
-  // Gradient and filter ids must be unique per sticker; useId's punctuation isn't valid in url(#…).
-  const id = `star${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
     <span className={`star ${className}`} aria-hidden="true">
       <svg viewBox="0 0 100 100" focusable="false">
-        <defs>
-          <radialGradient id={`${id}-foil`} cx="38%" cy="32%" r="70%">
-            <stop offset="0" style={{ stopColor: "var(--star-hi)" }} />
-            <stop offset=".55" style={{ stopColor: "var(--star-mid)" }} />
-            <stop offset="1" style={{ stopColor: "var(--star-lo)" }} />
-          </radialGradient>
-          {/* Glitter: fine noise thresholded into sparse bright flecks, kept inside the star. */}
-          <filter id={`${id}-glitter`} x="0" y="0" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="4" result="noise" />
-            <feColorMatrix in="noise" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 .95  0 0 0 7 -4" result="flecks" />
-            <feComposite in="flecks" in2="SourceGraphic" operator="in" result="glitter" />
-            <feMerge>
-              <feMergeNode in="SourceGraphic" />
-              <feMergeNode in="glitter" />
-            </feMerge>
-          </filter>
-          <clipPath id={`${id}-clip`}>
-            <path d={STAR_PATH} />
-          </clipPath>
-        </defs>
         {/* The white backing paper, cut a little wider than the print. */}
         <path d={STAR_PATH} fill="#fffdf7" stroke="#fffdf7" strokeWidth="9" strokeLinejoin="round" />
-        <path d={STAR_PATH} fill={`url(#${id}-foil)`} stroke={`url(#${id}-foil)`} strokeWidth="2" strokeLinejoin="round" filter={`url(#${id}-glitter)`} />
-        <ellipse cx="38" cy="30" rx="22" ry="11" fill="#fff" opacity=".35" transform="rotate(-24 38 30)" clipPath={`url(#${id}-clip)`} />
+        <path d={STAR_PATH} style={{ fill: "var(--star-fill)", stroke: "var(--star-edge)" }} strokeWidth="2" strokeLinejoin="round" />
       </svg>
       {label && <span className="star-label">{label}</span>}
     </span>
   );
 }
 
-/** A sewing button in one of the journal's colours (`sewn-role` takes the page's role colour). */
-export function SewnButton({ className = "" }: { className?: string }) {
-  return <span className={`sewn-button ${className}`} aria-hidden="true" />;
-}
-
-/** A row of keepsake bits that settles at the foot of a page, filling the space under shorter content. */
-export function DecoStrip({ flower, button, star }: { flower: "lavender" | "daisy" | "fern"; button?: "sage" | "rose" | "butter" | "role"; star?: boolean }) {
+export function DecoStrip({ flower, star }: { flower: "lavender" | "daisy" | "fern"; star?: boolean }) {
   return (
     <div className="deco-strip" aria-hidden="true">
-      {button && <SewnButton className={`sewn-${button}`} />}
       {star && <Star className="star-small" />}
       <PressedFlower variant={flower} />
     </div>
