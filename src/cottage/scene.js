@@ -35,11 +35,11 @@ export function initializeScene(){
     st.setProperty('--cloud',mix(sh(mix('#FFFFFF',f.bot,.3)),f.bot,f.n*.5));
     st.setProperty('--eye',mix('#BDE9C0','#E9FFC9',f.g));
     var p=clamp(s/.78,0,1.05);
-    sun.setAttribute('transform',mq.matches?'translate('+(mobileLeft+mobileWidth*.58)+' '+(mobileSkyY-48)+') scale(.65)':'translate('+(800+p*540).toFixed(1)+' '+(600-Math.sin(Math.PI*Math.min(p,1))*235).toFixed(1)+')');
+    sun.setAttribute('transform',mq.matches?'translate('+mobileOrb.x+' '+mobileOrb.y+') scale(.65)':'translate('+(800+p*540).toFixed(1)+' '+(600-Math.sin(Math.PI*Math.min(p,1))*235).toFixed(1)+')');
     sun.setAttribute('opacity',(1-clamp((s-.62)/.16)).toFixed(3));
     for(var i=0;i<sunCircles.length;i++)sunCircles[i].setAttribute('fill',f.sun);
     var mo=clamp((s-.7)/.14), u=clamp((s-.7)/.3);
-    moon.setAttribute('transform',mq.matches?'translate('+(mobileLeft+mobileWidth*.58)+' '+(mobileSkyY-48)+') scale(.8)':'translate(985 '+(425-u*65).toFixed(1)+')');
+    moon.setAttribute('transform',mq.matches?'translate('+mobileOrb.x+' '+mobileOrb.y+') scale(.8)':'translate(985 '+(425-u*65).toFixed(1)+')');
     moon.setAttribute('opacity',mo.toFixed(3));
     stars.setAttribute('opacity',f.st.toFixed(3));
     var glass=mix('#9DB7C4','#FFD98A',f.g);
@@ -89,7 +89,7 @@ export function initializeScene(){
   });
 
   var pars=Array.prototype.map.call(scene.querySelectorAll('.par'),function(e){return {el:e,a:parseFloat(e.getAttribute('data-a'))}});
-  var mq=window.matchMedia('(max-width: 820px)'), mobileWidth=880, mobileLeft=560, mobileSkyY=470;
+  var mq=window.matchMedia('(max-width: 820px)'), mobileWidth=880, mobileLeft=560, mobileSkyY=470, mobileOrb={x:1060,y:422};
   var signPlanks=Array.from(document.querySelectorAll('#signpost .plankA')).map(function(link){
     var polygon=link.querySelector('polygon'), label=link.querySelector('text');
     return {polygon:polygon,label:label,points:polygon.getAttribute('points')};
@@ -100,6 +100,21 @@ export function initializeScene(){
     mobileWidth=900*bounds.width/bounds.height;mobileLeft=1000-mobileWidth/2;
     var invitation=document.querySelector('.home-content .garden-invitation');
     if(invitation)mobileSkyY=Math.max(470,(invitation.getBoundingClientRect().bottom+window.scrollY-bounds.top+48)/bounds.height*900);
+    mobileOrb={x:mobileLeft+mobileWidth*.58,y:mobileSkyY-48};
+    // Phones: hang the sun or moon in the empty sky to the right of the heading. The heading block spans the full
+    // width, so a range measures where its text actually ends. If the heading leaves too little room (a very narrow
+    // screen), it keeps the fallback spot above the hills.
+    var heading=document.querySelector('.home-content .copy h1');
+    if(heading){
+      var range=document.createRange();range.selectNodeContents(heading);
+      var text=range.getBoundingClientRect(), room=bounds.right-text.right;
+      if(room>=64){
+        mobileOrb={
+          x:mobileLeft+((text.right+bounds.right)/2-bounds.left)/bounds.width*mobileWidth,
+          y:(text.top+text.height/2+window.scrollY-bounds.top)/bounds.height*900
+        };
+      }
+    }
     // Leave clear ground beneath the full signpost and robot/pot footprints.
     // Padding also covers their different parallax amplitudes.
     var clearGround=compact?[[mobileLeft+mobileWidth*.02,mobileLeft+mobileWidth*.57],[mobileLeft+mobileWidth*.59,mobileLeft+mobileWidth*.90]]:[[180,680],[800,1045]];
