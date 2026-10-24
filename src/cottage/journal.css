@@ -443,6 +443,8 @@
 .journal[data-single="true"] .j-book{clip-path:inset(-60px 0 -60px calc(-1 * var(--verso)))}
 .journal[data-single="true"][data-board] .j-cover{clip-path:none}
 .journal[data-single="true"] .j-spread{grid-template-columns:1fr}
+/* While turning back, the previous page waits under the current one in the same place (see ExperienceJournal). */
+.journal[data-single="true"] .j-spread>.j-page{grid-area:1/1}
 .journal[data-single="true"] .j-spread::after{display:none}
 .journal[data-single="true"] .j-corner{--edge:9px}
 /* Turning leaves and covers hinge on the left edge and cover the whole page. */

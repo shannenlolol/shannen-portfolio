@@ -121,6 +121,17 @@ function Contents() {
 
 const image = (path: string) => `/assets/images/${path}`;
 
+// The journal's photos, fetched and decoded in the background (see ExperienceJournal). Holding on to them keeps the
+// decoded images in memory for the whole visit, so a page rebuilt as it turns can draw its photos at once.
+const heldPhotos = new Map<string, HTMLImageElement>();
+function holdPhoto(src: string) {
+  if (heldPhotos.has(src)) return;
+  const photo = new Image();
+  photo.src = src;
+  photo.decode().catch(() => {});
+  heldPhotos.set(src, photo);
+}
+
 type PhotoBlock = Extract<Keepsake, { kind: "photo" }>;
 type Run = Exclude<JournalBlock, PhotoBlock> | { kind: "photos"; items: PhotoBlock[] };
 
@@ -227,12 +238,13 @@ function Photos({ items, still }: { items: PhotoBlock[]; still: boolean }) {
           src: image(item.src),
           alt: item.alt,
           uncropped: item.uncropped,
+          ratio: item.ratio,
           loop: item.loop && !still ? image(item.loop) : undefined,
           deco: fastener === "tape" || fastener === "tape-corners" ? fastener : sticker ? "sticker" : pick(key, FASTENERS, 7, i),
           tilt: pick(key, PRINT_TILTS, 3, i),
           className: `${pick(key, WASHI, 11, i)} ${pick(key, WASHI_PRINTS, 5, i)} ${sticker ?? pick(key, STICKERS, 13, i)}`,
         };
-        return <Polaroid key={item.src} photo={photo} />;
+        return <Polaroid key={item.src} photo={photo} eager />;
       })}
     </div>
   );
@@ -522,7 +534,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
     const timer = setTimeout(() => {
       for (const block of experiences.flatMap((item) => item.pages.flat())) {
         const still = block.kind === "photo" ? block.src : block.kind === "embed" ? block.poster : undefined;
-        if (still) new Image().src = displaySrc(image(still));
+        if (still) holdPhoto(displaySrc(image(still)));
       }
     }, 300);
     return () => {
@@ -686,9 +698,11 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
               )}
               <div className="j-spread">
                 {single ? (
-                  // The page underneath: the new one while the old swings away, or the old one until the previous
-                  // page has been laid back over it.
-                  <PageSheet page={pages[turn && !forward ? turn.from : page]} side="single" key={pages[turn && !forward ? turn.from : page].key} />
+                  // The page underneath: the new one while the old swings away. Turning back, the previous page is
+                  // laid down over the old one; the real previous page is already there beneath it (drawn first,
+                  // so it sits under the old one), fitted and with its photos drawn, so nothing is rebuilt (and no
+                  // photo blinks) when the turn ends and the old page goes.
+                  (turn && !forward ? [pages[page], pages[turn.from]] : [pages[page]]).map((sheet) => <PageSheet page={sheet} side="single" key={sheet.key} />)
                 ) : (
                   <>
                     <PageSheet page={pages[leftIndex]} side="left" key={pages[leftIndex].key} />
