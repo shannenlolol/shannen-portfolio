@@ -1,11 +1,13 @@
 /**
  * A keepsake stuck into the journal: a photo (or looping clip), an embedded post, or a letter. A photo's
  * `fastener` (washi tape, corner tapes, or a flower, daisy, tulip or star sticker) overrides the one the journal would pick.
+ * An `uncropped` photo keeps its own shape, given as `ratio` (width ÷ height) so its frame has that shape before the
+ * image arrives and the page doesn't shift when it does.
  */
 export type Sticker = "flower" | "daisy" | "tulip" | "star";
 export type Keepsake =
-  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | Sticker }
-  | { kind: "embed"; src: string; title: string }
+  | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; ratio?: number; loop?: string; fastener?: "tape" | "tape-corners" | Sticker }
+  | { kind: "embed"; src: string; title: string; poster?: string }
   | { kind: "letter"; href: string; quote: string; from: string; title: string };
 
 /**
@@ -88,12 +90,14 @@ export const experiences: Experience[] = [
           src: "experience/st-engineering/cny-dinner-2026.jpg",
           alt: "Shannen with colleagues dressed in red at a Chinese New Year dinner",
           uncropped: true,
+          ratio: 2.07,
         },
         {
           kind: "photo",
           src: "experience/st-engineering/mss-40th-anniversary.jpg",
           alt: "Mission Software & Services team photo in front of the 40th anniversary screen",
           uncropped: true,
+          ratio: 2.03,
           fastener: "tape",
         },
       ],
@@ -139,6 +143,8 @@ export const experiences: Experience[] = [
           kind: "embed",
           src: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7275813594418528256?compact=1",
           title: "LinkedIn post: DSO video featuring Shannen as an intern in the Information Division",
+          // A still of the post as LinkedIn first draws it, shown while the post loads.
+          poster: "experience/dso/linkedin-post.jpg",
         },
       ],
     ],

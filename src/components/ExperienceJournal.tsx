@@ -121,6 +121,17 @@ function Contents() {
 
 const image = (path: string) => `/assets/images/${path}`;
 
+// The journal's photos, fetched and decoded in the background (see ExperienceJournal). Holding on to them keeps the
+// decoded images in memory for the whole visit, so a page rebuilt as it turns can draw its photos at once.
+const heldPhotos = new Map<string, HTMLImageElement>();
+function holdPhoto(src: string) {
+  if (heldPhotos.has(src)) return;
+  const photo = new Image();
+  photo.src = src;
+  photo.decode().catch(() => {});
+  heldPhotos.set(src, photo);
+}
+
 type PhotoBlock = Extract<Keepsake, { kind: "photo" }>;
 type Run = Exclude<JournalBlock, PhotoBlock> | { kind: "photos"; items: PhotoBlock[] };
 
@@ -227,12 +238,13 @@ function Photos({ items, still }: { items: PhotoBlock[]; still: boolean }) {
           src: image(item.src),
           alt: item.alt,
           uncropped: item.uncropped,
+          ratio: item.ratio,
           loop: item.loop && !still ? image(item.loop) : undefined,
           deco: fastener === "tape" || fastener === "tape-corners" ? fastener : sticker ? "sticker" : pick(key, FASTENERS, 7, i),
           tilt: pick(key, PRINT_TILTS, 3, i),
           className: `${pick(key, WASHI, 11, i)} ${pick(key, WASHI_PRINTS, 5, i)} ${sticker ?? pick(key, STICKERS, 13, i)}`,
         };
-        return <Polaroid key={item.src} photo={photo} />;
+        return <Polaroid key={item.src} photo={photo} eager />;
       })}
     </div>
   );
@@ -246,10 +258,13 @@ const EMBED_MAX_SCALE = 0.74;
 /**
  * The embedded post, scaled down as a whole so all of it fits the space on its page without scrolling.
  * The iframe keeps LinkedIn's own size and is shrunk with a transform; the card is sized to match.
+ * LinkedIn's frame takes a moment to load, so a still of the post (`poster`) shows at once and the live post fades
+ * in over it once loaded. Copies on turning pages only show the still.
  */
-function FittedEmbed({ src, title, still }: { src: string; title: string; still: boolean }) {
+function FittedEmbed({ src, title, poster, still }: { src: string; title: string; poster?: string; still: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const element = box.current;
     if (!element) return;
@@ -266,7 +281,8 @@ function FittedEmbed({ src, title, still }: { src: string; title: string; still:
       <div className="j-embed-card wt-a wt-stripe" style={size}>
         <span className="deco deco-tape-corners" aria-hidden="true" />
         <div className="j-embed-frame">
-          {still ? <div className="j-embed-still">LinkedIn post</div> : <iframe src={src} title={title} width={EMBED.width} height={EMBED.height} style={{ transform: `scale(${scale})` }} scrolling="no" loading="lazy" allowFullScreen />}
+          {poster ? <img className="j-embed-poster" src={displaySrc(image(poster))} alt="" /> : still && <div className="j-embed-still">LinkedIn post</div>}
+          {!still && <iframe className={loaded ? "is-loaded" : undefined} src={src} title={title} width={EMBED.width} height={EMBED.height} style={{ transform: `scale(${scale})` }} scrolling="no" allowFullScreen onLoad={() => setLoaded(true)} />}
         </div>
       </div>
     </div>
@@ -293,7 +309,7 @@ function RolePage({ job, blocks, page, still }: { job: Job; blocks: JournalBlock
           case "photos":
             return <Photos items={run.items} still={still} key={i} />;
           case "embed":
-            return <FittedEmbed src={run.src} title={run.title} still={still} key={i} />;
+            return <FittedEmbed src={run.src} title={run.title} poster={run.poster} still={still} key={i} />;
           case "letter":
             return (
               // The letter sits between the envelope's back and its front pocket, and slides up out of it on hover.
@@ -446,12 +462,12 @@ function useFitPage(sheet: RefObject<HTMLElement | null>) {
   }, [sheet]);
 }
 
-function PageSheet({ page, side, still = false }: { page?: Leaf; side: "left" | "right" | "single"; still?: boolean }) {
+function PageSheet({ page, side, still = false, className = "", inert }: { page?: Leaf; side: "left" | "right" | "single"; still?: boolean; className?: string; inert?: boolean }) {
   const job = experiences.find((item) => item.slug === page?.owner);
   const sheet = useRef<HTMLElement>(null);
   useFitPage(sheet);
   return (
-    <section ref={sheet} className={`j-page j-${side} ${page?.tone === "lined" ? "j-lined" : ""}`} data-color={job?.color}>
+    <section ref={sheet} className={`j-page j-${side} ${page?.tone === "lined" ? "j-lined" : ""} ${className}`} data-color={job?.color} inert={inert}>
       {page?.render(still)}
     </section>
   );
@@ -495,27 +511,36 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   const book = useRef<HTMLDivElement>(null);
   const pending = useRef<number | null>(null);
   const swipe = useRef<{ x: number; y: number } | null>(null);
-  // On phones the book fits the screen and a long page scrolls inside it. The copy of the page that a turning leaf
-  // (or the closing back cover) carries away starts at the top, so it is scrolled to where the reader was.
+  // On phones a page that can't shrink to fit scrolls inside the book. The copy of it that the closing back cover
+  // carries away starts at the top, so it is scrolled to where the reader was.
   const readFrom = useRef(0);
   function noteScroll() {
-    readFrom.current = book.current?.querySelector(".j-spread > .j-page")?.scrollTop ?? 0;
+    readFrom.current = book.current?.querySelector(".j-spread > .j-page.is-current")?.scrollTop ?? 0;
   }
   useLayoutEffect(() => {
     if (!single) return;
-    const carried = book.current?.querySelector<HTMLElement>(".j-leaf-forward .j-front .j-page, .j-board-back.is-moving .j-front .j-page");
+    const carried = book.current?.querySelector<HTMLElement>(".j-board-back.is-moving .j-front .j-page");
     if (carried) carried.scrollTop = readFrom.current;
-  }, [single, turn, board]);
+  }, [single, board]);
   const job = experiences.find((item) => item.slug === slug);
   // Photos only load as their page turns into view, so fetch all of the journal's (the small copies, a few hundred
-  // KB in all) in the background just after it opens; each page's photos are then already there when it turns.
+  // KB in all) and the LinkedIn post's still in the background just after it opens; each page's photos are then
+  // already there when it turns. The connection to LinkedIn is opened early too, so the live post loads sooner.
   useEffect(() => {
+    const links = ["https://www.linkedin.com", "https://static.licdn.com"].map((href) => {
+      const link = Object.assign(document.createElement("link"), { rel: "preconnect", href, crossOrigin: "" });
+      return document.head.appendChild(link);
+    });
     const timer = setTimeout(() => {
       for (const block of experiences.flatMap((item) => item.pages.flat())) {
-        if (block.kind === "photo") new Image().src = displaySrc(image(block.src));
+        const still = block.kind === "photo" ? block.src : block.kind === "embed" ? block.poster : undefined;
+        if (still) holdPhoto(displaySrc(image(still)));
       }
     }, 300);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      links.forEach((link) => link.remove());
+    };
   }, []);
 
   function openBook() {
@@ -555,10 +580,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
     const top = book.current?.getBoundingClientRect().top ?? 0;
     if (top < 0) window.scrollBy({ top: top - 130, behavior: reduced ? "instant" : "smooth" });
     // Wide screens only turn a leaf when moving to another spread; phones turn one for every page.
-    if (single) {
-      noteScroll();
-      setTurn(reduced ? null : { from: page, to });
-    }
+    if (single) setTurn(reduced ? null : { from: page, to });
     else if (unit(to) !== unit(page)) setTurn(reduced ? null : { from: unit(page), to: unit(to) });
     setPage(to);
     const owner = pages[to].owner;
@@ -647,7 +669,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   return (
     <main id="main-content" className="journal-page">
       <h1 className="visually-hidden">{job ? `Experience: ${job.company}, ${job.role}` : "Experiences"}</h1>
-      <div className="journal" ref={book} data-single={single} data-board={board?.kind} data-closed={closed} style={{ "--cover": `${board?.kind === "back" ? CLOSE_MS : OPEN_MS}ms` } as CSSProperties}>
+      <div className="journal" ref={book} data-single={single} data-board={board?.kind} data-closed={closed} style={{ "--cover": `${board?.kind === "back" ? CLOSE_MS : OPEN_MS}ms`, "--turn": `${TURN_MS}ms` } as CSSProperties}>
         <nav className="j-tabs" aria-label="Journal sections">
           {/* Already the open address while the book is shut, so this tab opens the book itself. */}
           <a className="j-tab j-tab-index" href="/experiences" aria-current={owner === "" ? "page" : undefined} onClick={() => closed === "front" && openBook()}>
@@ -673,33 +695,26 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
               )}
               <div className="j-spread">
                 {single ? (
-                  // The page underneath: the new one while the old swings away, or the old one until the previous
-                  // page has been laid back over it.
-                  <PageSheet page={pages[turn && !forward ? turn.from : page]} side="single" key={pages[turn && !forward ? turn.from : page].key} />
+                  // Phones: every page stays built, stacked in one place with the open one on top, and a turn swings
+                  // the real page rather than a copy of it. iOS Safari takes a moment to draw the photos of a page
+                  // that has just been built, so building pages (or copies of them) as they turned made photos blink
+                  // out and back. Turning on, the old page swings away off the new one; turning back, the previous
+                  // page swings in over the old one.
+                  pages.map((sheet, index) => {
+                    const role = index === page ? (turn && !forward ? "is-current is-arriving" : "is-current") : turn && index === turn.from ? (forward ? "is-leaving" : "is-under") : "";
+                    return <PageSheet page={sheet} side="single" className={role} inert={index !== page} key={sheet.key} />;
+                  })
                 ) : (
                   <>
                     <PageSheet page={pages[leftIndex]} side="left" key={pages[leftIndex].key} />
                     <PageSheet page={pages[rightIndex]} side="right" key={pages[rightIndex]?.key ?? "blank"} />
                   </>
                 )}
-                {turn && (
-                  <div className={`j-leaf ${forward ? "j-leaf-forward" : "j-leaf-back"}`} style={{ "--turn": `${TURN_MS}ms` } as CSSProperties} aria-hidden="true" inert key={`${turn.from}-${turn.to}`}>
-                    {single ? (
-                      <>
-                        {/* The page carried away (or back); its reverse is only glimpsed past the edge, so it is blank. */}
-                        <div className="j-face j-front">
-                          <PageSheet page={pages[forward ? turn.from : turn.to]} side="single" still />
-                        </div>
-                        <div className="j-face j-back">
-                          <PageSheet side="single" />
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="j-face j-front">{forward ? <PageSheet page={pages[turn.from + 1]} side="right" still /> : <PageSheet page={pages[turn.from]} side="left" still />}</div>
-                        <div className="j-face j-back">{forward ? <PageSheet page={pages[turn.to]} side="left" still /> : <PageSheet page={pages[turn.to + 1]} side="right" still />}</div>
-                      </>
-                    )}
+                {/* Wide screens turn a leaf carrying copies of the pages on its two sides. */}
+                {turn && !single && (
+                  <div className={`j-leaf ${forward ? "j-leaf-forward" : "j-leaf-back"}`} aria-hidden="true" inert key={`${turn.from}-${turn.to}`}>
+                    <div className="j-face j-front">{forward ? <PageSheet page={pages[turn.from + 1]} side="right" still /> : <PageSheet page={pages[turn.from]} side="left" still />}</div>
+                    <div className="j-face j-back">{forward ? <PageSheet page={pages[turn.to]} side="left" still /> : <PageSheet page={pages[turn.to + 1]} side="right" still />}</div>
                   </div>
                 )}
               </div>
