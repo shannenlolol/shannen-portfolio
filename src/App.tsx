@@ -20,6 +20,9 @@ import "./index.css";
 import "./cottage/pages.css";
 import "./cottage/world.css";
 
+// The live site's address (shannen-lee.com redirects here).
+const SITE = "https://www.shannen-lee.com";
+
 type Location = { path: string; search: string; key: number };
 const readLocation = (): Location => ({ path: window.location.pathname.replace(/\/$/, "") || "/", search: window.location.search, key: Date.now() });
 function Page({ route }: { route: Location }) {
@@ -148,6 +151,11 @@ export default function App() {
   useEffect(() => {
     const title = worldRoutes.find(item => item.path === route.path)?.label ?? experiences.find(job => route.path === `/experiences/${job.slug}`)?.company ?? projects.find(project => route.path === `/projects/${project.slug}`)?.name ?? "Page not found";
     document.title = route.path === "/" ? "Shannen Lee - Software Engineer" : `${title} - Shannen Lee`;
+    // Each page names its own address on the live domain, so search engines don't treat every page as a copy of
+    // Home (or the site's other addresses, like the vercel.app one, as copies of it).
+    const address = `${SITE}${route.path === "/" ? "/" : route.path}`;
+    document.querySelector('link[rel="canonical"]')?.setAttribute("href", address);
+    document.querySelector('meta[property="og:url"]')?.setAttribute("content", address);
     if (outgoing.current) outgoing.current.inert = true;
   }, [route]);
 

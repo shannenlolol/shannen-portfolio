@@ -2,7 +2,7 @@
 
 A responsive portfolio built with React, TypeScript, and Vite, with custom CSS, persistent light/dark themes, and reduced-motion support.
 
-[View the live portfolio](https://shannen-portfolio-sandy.vercel.app/)
+[View the live portfolio](https://www.shannen-lee.com/)
 
 ## Local development
 
