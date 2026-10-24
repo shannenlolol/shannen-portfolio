@@ -5,7 +5,7 @@
 export type Sticker = "flower" | "daisy" | "tulip" | "star";
 export type Keepsake =
   | { kind: "photo"; src: string; alt: string; caption?: string; uncropped?: boolean; loop?: string; fastener?: "tape" | "tape-corners" | Sticker }
-  | { kind: "embed"; src: string; title: string }
+  | { kind: "embed"; src: string; title: string; poster?: string }
   | { kind: "letter"; href: string; quote: string; from: string; title: string };
 
 /**
@@ -139,6 +139,8 @@ export const experiences: Experience[] = [
           kind: "embed",
           src: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7275813594418528256?compact=1",
           title: "LinkedIn post: DSO video featuring Shannen as an intern in the Information Division",
+          // A still of the post as LinkedIn first draws it, shown while the post loads.
+          poster: "experience/dso/linkedin-post.jpg",
         },
       ],
     ],

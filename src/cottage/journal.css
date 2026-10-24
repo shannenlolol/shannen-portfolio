@@ -301,8 +301,11 @@
 /* The LinkedIn post (see FittedEmbed): the card takes the scaled size; the iframe inside keeps LinkedIn's. */
 .j-embed{position:relative;display:flex;justify-content:center;align-items:flex-start;padding-top:8px}
 .j-embed-card{position:relative;flex:none}
-.j-embed-frame{width:100%;height:100%;overflow:hidden;border-radius:8px;background:#fff;box-shadow:0 8px 18px #10202022}
-.j-embed-frame iframe{display:block;border:0;transform-origin:0 0}
+.j-embed-frame{position:relative;width:100%;height:100%;overflow:hidden;border-radius:8px;background:#fff;box-shadow:0 8px 18px #10202022}
+.j-embed-frame iframe{position:relative;display:block;border:0;transform-origin:0 0;opacity:0;transition:opacity .3s ease}
+.j-embed-frame iframe.is-loaded{opacity:1}
+/* The still of the post, under the frame until it has loaded. */
+.j-embed-poster{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
 .j-embed-still{display:grid;place-items:center;height:100%;color:#6b604c}
 /* Solid paper tape across two corners, laid over the card. Washi's see-through blend sinks behind LinkedIn's player. */
 .j-embed .deco-tape-corners{z-index:3}

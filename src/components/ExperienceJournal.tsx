@@ -246,10 +246,13 @@ const EMBED_MAX_SCALE = 0.74;
 /**
  * The embedded post, scaled down as a whole so all of it fits the space on its page without scrolling.
  * The iframe keeps LinkedIn's own size and is shrunk with a transform; the card is sized to match.
+ * LinkedIn's frame takes a moment to load, so a still of the post (`poster`) shows at once and the live post fades
+ * in over it once loaded. Copies on turning pages only show the still.
  */
-function FittedEmbed({ src, title, still }: { src: string; title: string; still: boolean }) {
+function FittedEmbed({ src, title, poster, still }: { src: string; title: string; poster?: string; still: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const element = box.current;
     if (!element) return;
@@ -266,7 +269,8 @@ function FittedEmbed({ src, title, still }: { src: string; title: string; still:
       <div className="j-embed-card wt-a wt-stripe" style={size}>
         <span className="deco deco-tape-corners" aria-hidden="true" />
         <div className="j-embed-frame">
-          {still ? <div className="j-embed-still">LinkedIn post</div> : <iframe src={src} title={title} width={EMBED.width} height={EMBED.height} style={{ transform: `scale(${scale})` }} scrolling="no" loading="lazy" allowFullScreen />}
+          {poster ? <img className="j-embed-poster" src={displaySrc(image(poster))} alt="" /> : still && <div className="j-embed-still">LinkedIn post</div>}
+          {!still && <iframe className={loaded ? "is-loaded" : undefined} src={src} title={title} width={EMBED.width} height={EMBED.height} style={{ transform: `scale(${scale})` }} scrolling="no" allowFullScreen onLoad={() => setLoaded(true)} />}
         </div>
       </div>
     </div>
@@ -293,7 +297,7 @@ function RolePage({ job, blocks, page, still }: { job: Job; blocks: JournalBlock
           case "photos":
             return <Photos items={run.items} still={still} key={i} />;
           case "embed":
-            return <FittedEmbed src={run.src} title={run.title} still={still} key={i} />;
+            return <FittedEmbed src={run.src} title={run.title} poster={run.poster} still={still} key={i} />;
           case "letter":
             return (
               // The letter sits between the envelope's back and its front pocket, and slides up out of it on hover.
@@ -508,14 +512,23 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   }, [single, turn, board]);
   const job = experiences.find((item) => item.slug === slug);
   // Photos only load as their page turns into view, so fetch all of the journal's (the small copies, a few hundred
-  // KB in all) in the background just after it opens; each page's photos are then already there when it turns.
+  // KB in all) and the LinkedIn post's still in the background just after it opens; each page's photos are then
+  // already there when it turns. The connection to LinkedIn is opened early too, so the live post loads sooner.
   useEffect(() => {
+    const links = ["https://www.linkedin.com", "https://static.licdn.com"].map((href) => {
+      const link = Object.assign(document.createElement("link"), { rel: "preconnect", href, crossOrigin: "" });
+      return document.head.appendChild(link);
+    });
     const timer = setTimeout(() => {
       for (const block of experiences.flatMap((item) => item.pages.flat())) {
-        if (block.kind === "photo") new Image().src = displaySrc(image(block.src));
+        const still = block.kind === "photo" ? block.src : block.kind === "embed" ? block.poster : undefined;
+        if (still) new Image().src = displaySrc(image(still));
       }
     }, 300);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      links.forEach((link) => link.remove());
+    };
   }, []);
 
   function openBook() {
