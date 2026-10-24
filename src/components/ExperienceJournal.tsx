@@ -5,7 +5,7 @@ import type { JournalBlock, Keepsake, Sticker } from "../data/experiences";
 import { navigate } from "../cottage/navigate";
 import Polaroid from "./Polaroid";
 import type { Photo } from "./Polaroid";
-import { DecoStrip, JournalTitle, NumberMark, PressedFlower, SewnButton, Star } from "./JournalBits";
+import { DecoStrip, JournalTitle, NumberMark, PressedFlower, Star } from "./JournalBits";
 import "../cottage/journal.css";
 
 type Job = (typeof experiences)[number];
@@ -87,8 +87,6 @@ function InsideCover() {
       <div className="j-cover-deco" aria-hidden="true">
         <PressedFlower variant="lavender" className="j-flower-a" />
         <PressedFlower variant="daisy" className="j-flower-b" />
-        <SewnButton className="sewn-sage j-button-a" />
-        <SewnButton className="sewn-rose j-button-b" />
       </div>
     </div>
   );
@@ -323,7 +321,7 @@ function RolePage({ job, blocks, page, still }: { job: Job; blocks: JournalBlock
             );
         }
       })}
-      {!hasKeepsake && <DecoStrip flower={FLOWERS[job.color]} button={page % 2 ? "role" : undefined} star={page % 2 === 0} />}
+      {!hasKeepsake && <DecoStrip flower={FLOWERS[job.color]} star={page % 2 === 0} />}
     </div>
   );
 }

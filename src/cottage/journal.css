@@ -218,21 +218,10 @@
 
 /* Decorations: star stickers, sewing buttons, pressed flowers, lace. All ignore the pointer. */
 /* Star stickers (see Star). The drop shadows lift the sticker off the page and outline its white edge. */
-.star{--star-hi:#fff3c4;--star-mid:#e9b949;--star-lo:#c48a20;position:relative;display:inline-grid;flex:none;place-items:center;width:46px;height:46px;filter:drop-shadow(0 1.5px 1px #3b2a1240) drop-shadow(0 0 .6px #3b2a1266);pointer-events:none}
+.star{--star-fill:#f8e6a0;--star-edge:#ecd383;position:relative;display:inline-grid;flex:none;place-items:center;width:46px;height:46px;filter:drop-shadow(0 1.5px 1px #3b2a1240) drop-shadow(0 0 .6px #3b2a1266);pointer-events:none}
 .star svg{position:absolute;inset:0;width:100%;height:100%}
 .star-label{position:relative;padding-top:5px;color:#5b3d0a;font:700 15px/1 var(--sans);text-shadow:0 1px 0 #ffffff8c}
 .star-small{width:26px;height:26px}
-.star-rose{--star-hi:#ffe1dc;--star-mid:#e59a90;--star-lo:#bf665a}
-.star-rose .star-label{color:#5a2019}
-.star-sage{--star-hi:#eef6dd;--star-mid:#a9c086;--star-lo:#7d985a}
-.star-sage .star-label{color:#2c3d17}
-.sewn-button{position:relative;display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 62% 38%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 38% 62%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle at 62% 62%,#0000004d 0 2px,transparent 2.6px),radial-gradient(circle,transparent 0 10px,#00000020 10.5px 11.5px,transparent 12px),var(--button-colour,#9fb38a);box-shadow:0 2px 3px #0003,inset 0 -2px 2px #0002;pointer-events:none}
-.sewn-button::before,.sewn-button::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:2px;border-radius:1px;background:#fbf4e0;transform:translate(-50%,-50%) rotate(45deg)}
-.sewn-button::after{transform:translate(-50%,-50%) rotate(-45deg)}
-.sewn-sage{--button-colour:#9fb38a}
-.sewn-rose{--button-colour:#e3a5a0}
-.sewn-butter{--button-colour:#efd27a}
-.sewn-role{--button-colour:var(--wt-a)}
 .pressed-flower{position:relative;display:block;width:64px;height:128px;opacity:.95;pointer-events:none}
 .pressed-flower svg{display:block;width:100%;height:100%}
 .pressed-tape{position:absolute;left:6px;right:6px;bottom:28%;height:16px;background:repeating-linear-gradient(90deg,#f7f1df00 0 6px,#ffffff66 6px 9px),#e6dcc2d9;transform:rotate(-9deg);box-shadow:0 1px 2px #0001}
@@ -243,23 +232,20 @@
     radial-gradient(circle at 11px 14px,#fffefa 0 10px,transparent 10.6px) 0 0/22px 26px repeat-x,
     linear-gradient(#fffefa,#fffefa) 0 0/100% 13px no-repeat}
 .j-cover-deco{position:absolute;inset:0;pointer-events:none}
-.j-cover-deco .pressed-flower,.j-cover-deco .sewn-button{position:absolute}
+.j-cover-deco .pressed-flower{position:absolute}
 .deco-strip{display:flex;align-items:flex-end;justify-content:flex-end;gap:16px;margin-top:auto;padding:28px 4px 0}
 .deco-strip .pressed-flower{transform:rotate(12deg)}
 .deco-strip .star{margin-bottom:46px;transform:rotate(-10deg)}
-.deco-strip .sewn-button{margin-bottom:22px}
 .j-right .deco-strip,.j-single .deco-strip{padding-right:36px}
 .j-flower-a{right:34px;bottom:48px;transform:rotate(16deg)}
 .j-flower-b{right:94px;bottom:34px;width:54px;height:108px;transform:rotate(-14deg)}
-.j-button-a{left:44px;bottom:64px}
-.j-button-b{left:84px;bottom:50px;width:24px;height:24px}
 /* Stickers on the inside cover note's corners: the large star overlapping its top-right corner, the small one its
    bottom-left. The note is turned slightly, which makes it their containing block. */
 .j-cover-page .j-snippet .star{position:absolute;z-index:1}
 .j-star-a{top:-26px;right:-14px;transform:rotate(12deg)}
 .j-star-b{bottom:-14px;left:-10px}
 
-/* Inside cover. Bottom padding keeps the text clear of the flowers and buttons. */
+/* Inside cover. Bottom padding keeps the text clear of the flowers. */
 /* The inside cover's heading and note sit in the middle of the page, clear of the keepsakes at its foot. */
 .j-cover-page{justify-content:center;padding-bottom:150px}
 .j-cover-page .j-snippet{max-width:380px}
