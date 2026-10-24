@@ -17,7 +17,8 @@ type Job = (typeof experiences)[number];
 type Leaf = { key: string; owner: string; render: (still: boolean) => ReactNode; tone?: "lined" };
 
 const shortPeriod = (period: string) => period.replace(" - Present", " – now").replace(" - ", " – ");
-const SINGLE_PAGE = "(max-width: 860px)";
+// Phones held sideways are too short for a spread, so they get the one-page phone book too (see journal.css).
+const SINGLE_PAGE = "(max-width: 860px), (orientation: landscape) and (max-height: 500px)";
 const TURN_MS = 780;
 /**
  * Set when the book has closed and the site is travelling on to Projects. During the journey App draws a fresh

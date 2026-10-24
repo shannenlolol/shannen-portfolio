@@ -35,11 +35,11 @@ export function initializeScene(){
     st.setProperty('--cloud',mix(sh(mix('#FFFFFF',f.bot,.3)),f.bot,f.n*.5));
     st.setProperty('--eye',mix('#BDE9C0','#E9FFC9',f.g));
     var p=clamp(s/.78,0,1.05);
-    sun.setAttribute('transform',mq.matches?'translate('+mobileOrb.x+' '+mobileOrb.y+') scale(.65)':'translate('+(800+p*540).toFixed(1)+' '+(600-Math.sin(Math.PI*Math.min(p,1))*235).toFixed(1)+')');
+    sun.setAttribute('transform',upright()?'translate('+mobileOrb.x+' '+mobileOrb.y+') scale(.65)':'translate('+(800+p*540).toFixed(1)+' '+(600-Math.sin(Math.PI*Math.min(p,1))*235).toFixed(1)+')');
     sun.setAttribute('opacity',(1-clamp((s-.62)/.16)).toFixed(3));
     for(var i=0;i<sunCircles.length;i++)sunCircles[i].setAttribute('fill',f.sun);
     var mo=clamp((s-.7)/.14), u=clamp((s-.7)/.3);
-    moon.setAttribute('transform',mq.matches?'translate('+mobileOrb.x+' '+mobileOrb.y+') scale(.8)':'translate(985 '+(425-u*65).toFixed(1)+')');
+    moon.setAttribute('transform',upright()?'translate('+mobileOrb.x+' '+mobileOrb.y+') scale(.8)':'translate(985 '+(425-u*65).toFixed(1)+')');
     moon.setAttribute('opacity',mo.toFixed(3));
     stars.setAttribute('opacity',f.st.toFixed(3));
     var glass=mix('#9DB7C4','#FFD98A',f.g);
@@ -89,13 +89,18 @@ export function initializeScene(){
   });
 
   var pars=Array.prototype.map.call(scene.querySelectorAll('.par'),function(e){return {el:e,a:parseFloat(e.getAttribute('data-a'))}});
+  // Phones held sideways keep the wide scene, with the garden moved into the right half beside the introduction.
+  // Safari leaves room for the notch beside the page, so a sideways phone can also be 820px wide or less: only an
+  // upright phone gets the narrow scene.
+  var sidewaysMq=window.matchMedia('(orientation: landscape) and (max-height: 500px)');
+  function upright(){return mq.matches&&!sidewaysMq.matches}
   var mq=window.matchMedia('(max-width: 820px)'), mobileWidth=880, mobileLeft=560, mobileSkyY=470, mobileOrb={x:1060,y:422};
   var signPlanks=Array.from(document.querySelectorAll('#signpost .plankA')).map(function(link){
     var polygon=link.querySelector('polygon'), label=link.querySelector('text');
     return {polygon:polygon,label:label,points:polygon.getAttribute('points')};
   });
   function layout(){
-    var compact=mq.matches;
+    var sideways=sidewaysMq.matches, compact=upright();
     var bounds=hero.getBoundingClientRect();
     mobileWidth=900*bounds.width/bounds.height;mobileLeft=1000-mobileWidth/2;
     var invitation=document.querySelector('.home-content .garden-invitation');
@@ -117,7 +122,7 @@ export function initializeScene(){
     }
     // Leave clear ground beneath the full signpost and robot/pot footprints.
     // Padding also covers their different parallax amplitudes.
-    var clearGround=compact?[[mobileLeft+mobileWidth*.02,mobileLeft+mobileWidth*.57],[mobileLeft+mobileWidth*.59,mobileLeft+mobileWidth*.90]]:[[180,680],[800,1045]];
+    var clearGround=compact?[[mobileLeft+mobileWidth*.02,mobileLeft+mobileWidth*.57],[mobileLeft+mobileWidth*.59,mobileLeft+mobileWidth*.90]]:sideways?[[570,1070],[1170,1415]]:[[180,680],[800,1045]];
     fl.forEach(function(flower){
       flower.element.style.display=clearGround.some(function(zone){return flower.x>=zone[0]&&flower.x<=zone[1]})?'none':'';
     });
@@ -143,10 +148,10 @@ export function initializeScene(){
     document.getElementById('cottage').setAttribute('transform',compact?'translate('+(mobileLeft+mobileWidth*.81)+' 620) scale(.85)':'translate(1120 610)');
     document.getElementById('signpost').setAttribute('transform',compact
       ?'translate('+(mobileLeft+mobileWidth*.30)+' 810) scale('+(mobileWidth*.52/300)+') translate(-210 -824)'
-      :'translate(430 840) scale(1.08) translate(-210 -824)');
+      :'translate('+(sideways?820:430)+' 840) scale(1.08) translate(-210 -824)');
     document.getElementById('robot').setAttribute('transform',compact
       ?'translate('+(mobileLeft+mobileWidth*.68)+' 810) scale('+(mobileWidth/880*1.55)+')'
-      :'translate(880 812) scale(1.15)');
+      :'translate('+(sideways?1290:880)+' 812) scale(1.15)');
   }
   layout();
   window.addEventListener('resize',function(){layout();update(getTimeOfDay())},{signal:events.signal});
@@ -156,7 +161,7 @@ export function initializeScene(){
   function size(){
     var b=hero.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1), ow=W, oh=H;
     W=b.width;H=b.height;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
-    if(!flies.length){for(var q=0;q<(mq.matches?12:24);q++)flies.push({x:Math.random()*W,y:H*(.4+Math.random()*.55),vx:0,vy:0,p:Math.random()*6.28,sp:.6+Math.random()*1.2})}
+    if(!flies.length){for(var q=0;q<(upright()?12:24);q++)flies.push({x:Math.random()*W,y:H*(.4+Math.random()*.55),vx:0,vy:0,p:Math.random()*6.28,sp:.6+Math.random()*1.2})}
     else if(ow&&oh){flies.forEach(function(f){f.x*=W/ow;f.y*=H/oh})}
     if(RM)drawFlies(0,0);
   }
