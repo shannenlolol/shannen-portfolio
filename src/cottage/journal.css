@@ -158,8 +158,6 @@
 @keyframes j-face-in{0%,41.6%{opacity:0}41.7%,100%{opacity:1}}
 .j-leaf>.j-front{animation:j-face-out var(--turn) linear both}
 .j-leaf>.j-back{animation:j-face-in var(--turn) linear both}
-.journal[data-single="true"] .j-leaf-back>.j-front{animation-name:j-face-in}
-.journal[data-single="true"] .j-leaf-back>.j-back{animation-name:j-face-out}
 .j-board.is-moving>.j-front{animation:j-face-out var(--cover) linear both}
 .j-board.is-moving>.j-back{animation:j-face-in var(--cover) linear both}
 .j-board.is-shutting.is-moving>.j-front{animation-name:j-face-in}
@@ -443,13 +441,18 @@
 .journal[data-single="true"] .j-book{clip-path:inset(-60px 0 -60px calc(-1 * var(--verso)))}
 .journal[data-single="true"][data-board] .j-cover{clip-path:none}
 .journal[data-single="true"] .j-spread{grid-template-columns:1fr}
-/* While turning back, the previous page waits under the current one in the same place (see ExperienceJournal). */
-.journal[data-single="true"] .j-spread>.j-page{grid-area:1/1}
+/* Every page stays built, stacked in one place with the open one on top (see ExperienceJournal). A turn swings the
+   real page about the left edge: turning on, the old page lifts away off the new one beneath; turning back, the
+   previous page swings in over the old one. Each switches itself off as it passes edge-on, as the leaves do. */
+.journal[data-single="true"] .j-spread>.j-page{grid-area:1/1;z-index:0}
+.journal[data-single="true"] .j-spread>:is(.is-current,.is-under){z-index:2}
+.journal[data-single="true"] .j-spread>:is(.is-leaving,.is-arriving){z-index:3;transform-origin:left center}
+.journal[data-single="true"] .j-spread>.is-leaving{animation:j-turn-forward var(--turn) cubic-bezier(.45,.05,.35,1) both,j-face-out var(--turn) linear both}
+.journal[data-single="true"] .j-spread>.is-arriving{animation:j-turn-in var(--turn) cubic-bezier(.45,.05,.35,1) both,j-face-in var(--turn) linear both}
 .journal[data-single="true"] .j-spread::after{display:none}
 .journal[data-single="true"] .j-corner{--edge:9px}
 /* Turning leaves and covers hinge on the left edge and cover the whole page. */
-.journal[data-single="true"] :is(.j-leaf,.j-board){left:0;width:100%;transform-origin:left center}
-.journal[data-single="true"] .j-leaf-back{animation-name:j-turn-in}
+.journal[data-single="true"] .j-board{left:0;width:100%;transform-origin:left center}
 .journal[data-single="true"][data-closed="front"] .j-board{width:calc(100% - 9px)}
 @keyframes j-turn-in{from{transform:rotateY(-180deg)}to{transform:rotateY(0)}}
 .journal[data-single="true"] .j-half-left{padding:9px 0 9px 9px;border-radius:16px 0 0 16px}
