@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "resume:preview": "swift scripts/render-resume-preview.swift \"public/assets/Shannen Lee Resume.pdf\" public/assets/resume-preview.png 1400"
   },
   "dependencies": {
     "react": "^19.1.0",
