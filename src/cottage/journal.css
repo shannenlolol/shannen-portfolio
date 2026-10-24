@@ -147,6 +147,24 @@
 @keyframes j-turn-forward{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
 @keyframes j-turn-back{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
 @keyframes j-shade{0%,100%{opacity:0}50%{opacity:1}}
+/* iOS Safari ignores backface-visibility for parts of a face it draws as layers of their own (the tilted letter, its
+   clipped slot and pocket), so they showed through mirrored on the back cover once it had swung shut. Each face also
+   switches itself off as it turns away: with the turns' easing, a leaf or cover passes edge-on (90°) 41.6% of the
+   way through. A face that starts turned away (laying a page back down, shutting the front cover) switches on then.
+   The switch is an opacity step rather than visibility: Safari runs opacity on the compositor alongside the swing
+   itself, so the two stay in step, whereas a visibility change waits on the main thread and can land a few frames
+   off when the page is busy (e.g. as React renders the closing book). */
+@keyframes j-face-out{0%,41.6%{opacity:1}41.7%,100%{opacity:0}}
+@keyframes j-face-in{0%,41.6%{opacity:0}41.7%,100%{opacity:1}}
+.j-leaf>.j-front{animation:j-face-out var(--turn) linear both}
+.j-leaf>.j-back{animation:j-face-in var(--turn) linear both}
+.journal[data-single="true"] .j-leaf-back>.j-front{animation-name:j-face-in}
+.journal[data-single="true"] .j-leaf-back>.j-back{animation-name:j-face-out}
+.j-board.is-moving>.j-front{animation:j-face-out var(--cover) linear both}
+.j-board.is-moving>.j-back{animation:j-face-in var(--cover) linear both}
+.j-board.is-shutting.is-moving>.j-front{animation-name:j-face-in}
+.j-board.is-shutting.is-moving>.j-back{animation-name:j-face-out}
+.j-board-front:not(.is-moving)>.j-back,.j-board-back:not(.is-moving)>.j-front{visibility:hidden}
 
 /* Shared journal type. */
 .j-page h2,.j-page h3,.j-page h4{letter-spacing:0;color:var(--j-ink)}
@@ -330,12 +348,6 @@
   .j-letter-slot{height:auto;padding-bottom:56px}
   .j-letter-paper{position:relative;left:auto;right:auto;margin:0 var(--inset);transform:rotate(-1.5deg)}
 }
-/* On a turning leaf or cover (a still copy of the page), Safari draws the tilted paper and the clipped slot as layers
-   of their own that ignore the face's hidden back, so the letter flickers through as it swings (most visibly when the
-   back cover closes over the last page on phones). The copy never lifts, so it needs no clip; the paper hides its
-   own back too. */
-.j-face .j-letter-slot{clip-path:none}
-.j-face .j-letter-paper{transition:none;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 /* Front pocket with a V-shaped mouth and its two side folds. */
 .j-pocket{position:absolute;z-index:2;left:2%;right:2%;bottom:0;height:112px;border-radius:0 0 4px 4px;background:linear-gradient(to top right,#ead6b1 49.5%,#dcc398 50%) left/50% 100% no-repeat,linear-gradient(to top left,#ead6b1 49.5%,#dcc398 50%) right/50% 100% no-repeat;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
 .j-letter-kicker{margin:0 0 8px;font:600 13px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--j-accent)}
