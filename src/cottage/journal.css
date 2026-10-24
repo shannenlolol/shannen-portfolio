@@ -436,8 +436,18 @@
 .journal[data-single="true"] .j-half::before{top:4px;bottom:4px}
 .journal[data-single="true"] .j-half-left::before{left:4px}
 .journal[data-single="true"] .j-half-right::before{right:4px}
-/* With the back cover open, its plain leather inside shows in place of the pages. */
+/* Closing at the end: the back cover swings over the spine carrying the last page, while the book slides right by
+   its own width so the shut book ends up where the page was. The open book's right side is now the cover itself,
+   so the leather and pages beneath are hidden; the sliver of the left page widens into the whole left half the
+   cover lands on, and nothing is clipped at the screen's edge any more. */
+.journal[data-single="true"][data-closed="back"]{translate:100% 0}
+.journal[data-single="true"][data-board="back"] .j-book{clip-path:none}
+.journal[data-single="true"][data-board="back"] .j-cover{background:none;box-shadow:none}
+.journal[data-single="true"][data-board="back"] .j-cover::before{display:none}
 .journal[data-single="true"][data-board="back"] .j-spread{visibility:hidden}
+.journal[data-single="true"][data-board="back"] .j-verso{width:100%;padding:9px 0 9px 9px;border-radius:16px 0 0 16px}
+.journal[data-single="true"][data-board="back"] .j-verso::before{inset:4px 0 4px 4px;border:2px dashed #ecd6acc4;border-right:0;border-radius:12px 0 0 12px}
+.journal[data-single="true"] .j-outer-back{border-radius:16px 6px 6px 16px}
 
 /* On phones the post's space follows the page width, in the embed's own proportions. */
 .journal[data-single="true"] .j-embed{aspect-ratio:504/399;max-height:399px}

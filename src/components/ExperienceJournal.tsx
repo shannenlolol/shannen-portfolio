@@ -624,13 +624,12 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
                   </>
                 ) : (
                   <>
-                    {/* Phones close by turning their last page away, uncovering the inside of the back cover. */}
+                    {/* On phones the back cover swings over the spine carrying the last page, as it does on wide screens. */}
                     <div className="j-face j-front" aria-hidden="true" inert>
                       <HalfBook page={pages[single ? page : current + 1]} side="right" />
                     </div>
-                    {/* On phones the last page lands on the left, beside the open back cover. */}
                     <div className="j-face j-back" aria-hidden="true" inert>
-                      {single ? <HalfBook side="left" /> : <BackCover />}
+                      <BackCover />
                     </div>
                   </>
                 )}
