@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+# Small copies of the photos, made before dev and build (scripts/make-display-images.mjs)
+public/assets/display
 dist
 dist-ssr
 *.local

@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { projects } from "../data/projects";
 import useReveal from "../hooks/useReveal";
 import EditorPreview from "./EditorPreview";
+import { displaySrc } from "../displayImage";
 // Hidden until there are real highlights and screenshots (see below).
 // import Polaroid from "./Polaroid";
 // import type { Photo } from "./Polaroid";
@@ -50,7 +51,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
           <EditorPreview />
         ) : project.image ? (
           <a href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox>
-            <img src={`/assets/images/${project.image}`} alt={`${project.name} screenshot`} />
+            <img src={displaySrc(`/assets/images/${project.image}`)} alt={`${project.name} screenshot`} />
           </a>
         ) : (
           <div className="project-placeholder">{project.placeholder ?? "Screenshot to come"}</div>

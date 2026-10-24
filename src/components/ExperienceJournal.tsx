@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode, RefObject, TouchEvent } from "react";
 import { experiences } from "../data/experiences";
 import type { JournalBlock, Keepsake, Sticker } from "../data/experiences";
 import { navigate } from "../cottage/navigate";
+import { displaySrc } from "../displayImage";
 import Polaroid from "./Polaroid";
 import type { Photo } from "./Polaroid";
 import { DecoStrip, JournalTitle, NumberMark, PressedFlower, Star } from "./JournalBits";
@@ -506,6 +507,16 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
     if (carried) carried.scrollTop = readFrom.current;
   }, [single, turn, board]);
   const job = experiences.find((item) => item.slug === slug);
+  // Photos only load as their page turns into view, so fetch all of the journal's (the small copies, a few hundred
+  // KB in all) in the background just after it opens; each page's photos are then already there when it turns.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      for (const block of experiences.flatMap((item) => item.pages.flat())) {
+        if (block.kind === "photo") new Image().src = displaySrc(image(block.src));
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   function openBook() {
     if (board?.moving) return;
