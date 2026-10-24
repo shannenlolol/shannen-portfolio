@@ -324,6 +324,12 @@
   .j-letter-slot{height:auto;padding-bottom:56px}
   .j-letter-paper{position:relative;left:auto;right:auto;margin:0 var(--inset);transform:rotate(-1.5deg)}
 }
+/* On a turning leaf or cover (a still copy of the page), Safari draws the tilted paper and the clipped slot as layers
+   of their own that ignore the face's hidden back, so the letter flickers through as it swings (most visibly when the
+   back cover closes over the last page on phones). The copy never lifts, so it needs no clip; the paper hides its
+   own back too. */
+.j-face .j-letter-slot{clip-path:none}
+.j-face .j-letter-paper{transition:none;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 /* Front pocket with a V-shaped mouth and its two side folds. */
 .j-pocket{position:absolute;z-index:2;left:2%;right:2%;bottom:0;height:112px;border-radius:0 0 4px 4px;background:linear-gradient(to top right,#ead6b1 49.5%,#dcc398 50%) left/50% 100% no-repeat,linear-gradient(to top left,#ead6b1 49.5%,#dcc398 50%) right/50% 100% no-repeat;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
 .j-letter-kicker{margin:0 0 8px;font:600 13px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--j-accent)}
