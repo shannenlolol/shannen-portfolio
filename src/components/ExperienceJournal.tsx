@@ -383,7 +383,7 @@ const LAYOUTS = { spread: buildPages(false), single: buildPages(true) };
 const MIN_FIT = 0.6;
 
 /**
- * Phones: the book is as tall as the screen, so a page longer than the book shrinks its contents until they fit,
+ * The book is as tall as the window, so a page longer than the book shrinks its contents until they fit,
  * rather than scrolling inside it. The contents are laid out wider (by 1/scale) and scaled down to the page's width
  * with a transform, so text rewraps onto fewer lines; the height therefore doesn't shrink in proportion, and it
  * searches for the largest scale that fits. (CSS `zoom` would rewrap the same way, but iOS Safari zooms the LinkedIn
@@ -394,9 +394,11 @@ function useFitPage(sheet: RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
     const page = sheet.current;
     const content = page?.firstElementChild as HTMLElement | null;
-    // Only phones' one-page book; spreads keep their own layout. This includes the copies on turning leaves and on
-    // the closing back cover, so a page looks the same as it swings away.
-    if (!page || !content || !page.closest('.journal[data-single="true"]')) return;
+    // Every page of phones' one-page book, but only the role pages of spreads: the inside cover and contents are laid
+    // out for the spread's minimum height (their contents list lines up with the tabs, which don't scale). This
+    // includes the copies on turning leaves and on the closing back cover, so a page looks the same as it swings away.
+    if (!page || !content) return;
+    if (!page.closest('.journal[data-single="true"]') && !content.classList.contains("j-role-page")) return;
     const reset = () => {
       page.classList.remove("is-fitted");
       for (const property of ["flex", "width", "height", "transform", "transform-origin", "--fit"]) content.style.removeProperty(property);
@@ -408,7 +410,10 @@ function useFitPage(sheet: RefObject<HTMLElement | null>) {
       const top = parseFloat(style.paddingTop);
       const room = page.clientHeight - top - parseFloat(style.paddingBottom);
       const width = page.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-      const start = page.getBoundingClientRect().top + page.clientTop + top;
+      // A spread on a short window is drawn smaller as a whole (see useFitBook). Positions on screen are then scaled
+      // by `book`, while the page's own sizes aren't, so on-screen distances are divided by it to compare them.
+      const book = parseFloat(style.getPropertyValue("--book-scale")) || 1;
+      const start = page.getBoundingClientRect().top + (page.clientTop + top) * book;
       // How far down the lowest thing on the page reaches, as drawn (so tilted photos and their tape count).
       const reach = () => {
         let lowest = start;
@@ -416,7 +421,7 @@ function useFitPage(sheet: RefObject<HTMLElement | null>) {
           const box = element.getBoundingClientRect();
           if (box.width && box.height) lowest = Math.max(lowest, box.bottom);
         }
-        return lowest - start;
+        return (lowest - start) / book;
       };
       const apply = (scale: number) => {
         if (scale === 1) return reset();
@@ -462,6 +467,44 @@ function useFitPage(sheet: RefObject<HTMLElement | null>) {
   }, [sheet]);
 }
 
+// Room kept below the book on spreads for the page dots (30px) and a margin above the window's bottom edge (20px).
+const BELOW_BOOK = 50;
+
+/**
+ * Spreads: the book is never shorter than 580px, where the contents list still lines up with the tabs (see
+ * journal.css). On windows too short for that, the whole book (tabs and dots included) is drawn smaller with a
+ * transform, so it still fits between the site header and the bottom of the window. The space it gives up below is
+ * taken back with a smaller bottom margin, so the footer follows straight on.
+ */
+function useFitBook(main: RefObject<HTMLElement | null>, active: boolean) {
+  useLayoutEffect(() => {
+    const element = main.current;
+    const book = element?.querySelector<HTMLElement>(".journal");
+    if (!element || !book || !active) return;
+    const reset = () => {
+      for (const property of ["transform", "transform-origin", "margin-bottom", "--book-scale"]) element.style.removeProperty(property);
+    };
+    const fit = () => {
+      reset();
+      // Measured at full size: offsetHeight ignores transforms, and the book is scaled from its top edge, so its top
+      // stays put. The book's own height is used (not the page's) because the dots below come and go between roles.
+      const top = element.getBoundingClientRect().top + window.scrollY;
+      const scale = Math.min(1, (window.innerHeight - top - BELOW_BOOK) / book.offsetHeight);
+      if (scale >= 1) return;
+      element.style.transform = `scale(${scale})`;
+      element.style.transformOrigin = "50% 0";
+      element.style.marginBottom = `calc(${getComputedStyle(element).marginBottom} - ${(1 - scale) * element.offsetHeight}px)`;
+      element.style.setProperty("--book-scale", String(scale));
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => {
+      window.removeEventListener("resize", fit);
+      reset();
+    };
+  }, [main, active]);
+}
+
 function PageSheet({ page, side, still = false, className = "", inert }: { page?: Leaf; side: "left" | "right" | "single"; still?: boolean; className?: string; inert?: boolean }) {
   const job = experiences.find((item) => item.slug === page?.owner);
   const sheet = useRef<HTMLElement>(null);
@@ -477,6 +520,8 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   const single = useMedia(SINGLE_PAGE);
   const reduced = useMedia("(prefers-reduced-motion: reduce)");
   const { pages, firstPage } = single ? LAYOUTS.single : LAYOUTS.spread;
+  const main = useRef<HTMLElement>(null);
+  useFitBook(main, !single);
   /**
    * Wide screens turn a spread at a time (`unit` is a page's spread). Phones show one page and turn it like a
    * notepad: every turn lifts the page off the spine at the left edge and swings it away, revealing the next one
@@ -667,7 +712,7 @@ export default function ExperienceJournal({ slug }: { slug: string }) {
   }
 
   return (
-    <main id="main-content" className="journal-page">
+    <main id="main-content" className="journal-page" ref={main}>
       <h1 className="visually-hidden">{job ? `Experience: ${job.company}, ${job.role}` : "Experiences"}</h1>
       <div className="journal" ref={book} data-single={single} data-board={board?.kind} data-closed={closed} style={{ "--cover": `${board?.kind === "back" ? CLOSE_MS : OPEN_MS}ms`, "--turn": `${TURN_MS}ms` } as CSSProperties}>
         <nav className="j-tabs" aria-label="Journal sections">

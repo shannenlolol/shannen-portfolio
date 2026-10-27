@@ -374,12 +374,13 @@
 
 /* Two-page spreads fit the window: the book's height is the viewport less the site header (see .world-view),
    the gap above the book, the cover's border and the controls below. Keepsakes then take whatever height
-   their page has left (sized with container queries), and a page only scrolls inside itself on very short windows.
-   Phones instead keep every page whole, at the height of the tallest (see below). */
+   their page has left (sized with container queries), down to a minimum; a role page that still runs over shrinks
+   its contents to fit (see useFitPage), and only scrolls inside itself if that would make its text too small.
+   The book is never shorter than 580px, where the contents list (which ends 580px down the page) still fits. */
 .journal-page{--header:110px}
 @media(max-width:1100px){.journal-page{--header:150px}}
 @media(max-width:820px),(orientation:landscape) and (max-height:500px){.journal-page{--header:92px}}
-.journal[data-single="false"] .j-spread{height:max(540px,calc(100svh - var(--header) - 20px - 28px - 30px - 20px))}
+.journal[data-single="false"] .j-spread{height:max(580px,calc(100svh - var(--header) - 20px - 28px - 30px - 20px))}
 .journal[data-single="false"] .j-page{min-height:0;padding:36px 44px 40px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#cdbf9c transparent}
 .journal[data-single="false"] .j-right{padding-bottom:52px}
 .j-page>div>*{flex-shrink:0}
@@ -486,7 +487,7 @@
 .journal[data-single="true"] .j-page{height:100%;min-height:0;padding:26px 20px 48px;overflow-y:auto;overscroll-behavior:contain}
 .journal[data-single="true"] .j-face .j-page{overflow-y:hidden}
 /* A page shrunk to fit (see useFitPage) never scrolls. */
-.journal[data-single="true"] .j-page.is-fitted{overflow:hidden}
+.journal .j-page.is-fitted{overflow:hidden}
 /* Phone sizes. Each role fits on two pages, kept compact so as little as possible scrolls inside the book: the logo
    card and date stamp share one row, and type, chips, photos, the video and the letter are all scaled down. */
 .journal[data-single="true"] .j-title-top{flex-wrap:nowrap;align-items:center;gap:12px}
