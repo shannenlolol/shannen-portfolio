@@ -74,7 +74,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
           )}
           <section>
             <h2 className="pp-label">Status</h2>
-            <p>{project.status === "live" ? "Live and in use" : project.status === "polishing" ? "Being polished" : "Earlier project"}</p>
+            <p>{project.status === "live" ? "Live and in use" : project.status === "polishing" ? "Being polished" : project.status === "done" ? "Done and in use" : "Earlier project"}</p>
           </section>
         </aside>
 

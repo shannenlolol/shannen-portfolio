@@ -1,6 +1,6 @@
 import type { Project } from "../data/projects";
 
-const statusLabel: Record<Project["status"], string> = { live: "Live", polishing: "Polishing", earlier: "Earlier" };
+const statusLabel: Record<Project["status"], string> = { live: "Live", polishing: "Polishing", done: "Done", earlier: "Earlier" };
 
 export function Status({ project }: { project: Project }) {
   return <p className="project-meta">

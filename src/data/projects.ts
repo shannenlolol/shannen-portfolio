@@ -1,4 +1,4 @@
-export type ProjectStatus = "live" | "polishing" | "earlier";
+export type ProjectStatus = "live" | "polishing" | "done" | "earlier";
 
 export type Project = {
   name: string;
@@ -62,7 +62,7 @@ export const projects: Project[] = [
     name: "Health Tracker",
     slug: "health-tracker",
     kind: "Telegram bot · self-hosted",
-    status: "polishing",
+    status: "done",
     technologies: [],
     description: "Send a meal photo on Telegram; it estimates the nutrition, saves it and charts your progress.",
     why: "After I took my family for a body composition scan, my parents wanted to cut down on body fat. I built this so they could log meals with just a photo and get a clearer picture of what they’re eating.",
