@@ -2,7 +2,7 @@ import { useRef } from "react";
 // import type { CSSProperties } from "react"; (for the hidden highlights below)
 import { projects } from "../data/projects";
 import useReveal from "../hooks/useReveal";
-import EditorPreview from "./EditorPreview";
+import TrailerPreview from "./TrailerPreview";
 import { displaySrc } from "../displayImage";
 // Hidden until there are real highlights and screenshots (see below).
 // import Polaroid from "./Polaroid";
@@ -47,8 +47,8 @@ export default function ProjectPage({ slug }: { slug: string }) {
       </header>
 
       <div className="pp-preview project-reveal">
-        {project.slug === "image-editor" ? (
-          <EditorPreview />
+        {project.trailer ? (
+          <TrailerPreview project={project} />
         ) : project.image ? (
           <a href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox>
             <img src={displaySrc(`/assets/images/${project.image}`)} alt={`${project.name} screenshot`} />

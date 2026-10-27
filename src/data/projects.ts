@@ -19,6 +19,11 @@ export type Project = {
   category: string;
   /** Screenshot under /assets/images. Without one, the card shows `placeholder`. */
   image?: string;
+  /**
+   * Folder under /assets/images holding trailer.mp4, a short muted trailer-loop.mp4 and trailer-poster.jpg.
+   * When set, the loop is shown in place of `image`.
+   */
+  trailer?: string;
   placeholder?: string;
 };
 
@@ -51,6 +56,7 @@ export const projects: Project[] = [
     links: [{ label: "Try the editor", href: "https://shannenlolol.pythonanywhere.com/" }, { label: "Source code", href: "https://github.com/shannenlolol/image-editor-web-app" }],
     category: "Python · Flask · Image processing",
     image: "projects/image-editor/after.png",
+    trailer: "projects/image-editor",
   },
   {
     name: "Health Tracker",
@@ -64,6 +70,6 @@ export const projects: Project[] = [
     highlights: ["Access approvals handled inside Telegram", "[Another thing you’re proud of]"],
     links: [],
     category: "Telegram bot",
-    placeholder: "Chat GIF to come: photo → estimate → save → chart",
+    trailer: "projects/health-tracker",
   },
 ];
