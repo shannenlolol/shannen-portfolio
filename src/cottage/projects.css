@@ -1,4 +1,4 @@
-/* Projects: one featured live project, in-progress cards, then a compact list of earlier work. */
+/* Projects: live, in-progress and done projects as large side-by-side cards, then a compact list of earlier work. */
 .projects-heading{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px}
 .projects-heading > .text-link{flex-shrink:0;display:inline-flex;align-items:center;gap:8px}
 .projects-github{width:18px;height:18px;fill:currentColor}
@@ -8,9 +8,11 @@
 .project-status > span{width:8px;height:8px;border-radius:50%;background:currentColor}
 .project-status.is-live{background:#dfe9cf;color:#34502a}
 .project-status.is-polishing{background:#f6e2c6;color:#6e4416}
+.project-status.is-done{background:#dbe7f1;color:#244a66}
 .project-status.is-earlier{background:var(--surface);color:var(--muted)}
 [data-theme="dark"] .project-status.is-live{background:#2b3f2c;color:#b7d9a0}
 [data-theme="dark"] .project-status.is-polishing{background:#443527;color:#e7ca88}
+[data-theme="dark"] .project-status.is-done{background:#253847;color:#a9cbe6}
 /* A slow pulse on "Polishing" hints that work is ongoing. */
 .project-status.is-polishing > span{animation:project-pulse 1.8s ease-in-out infinite}
 @keyframes project-pulse{50%{opacity:.35}}
@@ -21,9 +23,8 @@
 .project-links{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px}
 .project-links .button,.project-links .text-link{font-size:17px;padding:9px 20px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
 
-/* Featured project: preview and story side by side in one large card. */
+/* Project card: preview and story side by side. */
 .project-featured{display:flex;flex-wrap:wrap;overflow:hidden;border-radius:28px;background:var(--surface);border:1px solid var(--line)}
-/* Featured projects stack with the same gap as the grid below. */
 .project-featured + .project-featured{margin-top:28px}
 .project-featured > .project-preview{flex:1 1 520px;min-width:0;margin:0;border-right:1px solid var(--line)}
 .project-featured-copy{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:14px;padding:36px 34px}
@@ -35,20 +36,14 @@
 /* The preview is as tall as the card's copy, so the whole video is centred in it, with the preview's own colour
    above and below rather than one gap underneath. 16:9 is its smallest shape, used when it stacks above the copy
    on phones. */
-.editor-preview{display:flex;flex-direction:column}
-.editor-preview-canvas{position:relative;flex:1;overflow:hidden;aspect-ratio:16/9}
-.editor-preview-canvas > a{position:absolute;inset:0}
-.editor-preview-canvas video{display:block;width:100%;height:100%;object-fit:contain}
+.trailer-preview{display:flex;flex-direction:column;margin:0}
+.trailer-preview-canvas{position:relative;flex:1;overflow:hidden;aspect-ratio:16/9}
+.trailer-preview-canvas > a{position:absolute;inset:0}
+.trailer-preview-canvas video{display:block;width:100%;height:100%;object-fit:contain}
+/* The Health Tracker trailer is portrait, so the sides take the video's own background and the phone sits centred. */
+.trailer-health-tracker .trailer-preview-canvas{background:#F4F2EE}
 
-/* In-progress projects. */
-.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:28px;margin-top:28px}
-.project-card{display:flex;flex-direction:column;overflow:hidden;border-radius:24px;background:var(--surface);border:1px solid var(--line);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
-.project-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px #10202020}
-.project-card-image{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
-.project-card-image img{display:block;width:100%;height:100%;object-fit:cover}
 .project-placeholder{display:grid;place-items:center;padding:16px;box-sizing:border-box;text-align:center;font-size:15px;color:var(--muted);background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--accent) 6%,var(--surface)) 0 12px,color-mix(in srgb,var(--accent) 12%,var(--surface)) 12px 24px)}
-.project-card-copy{display:flex;flex-direction:column;gap:12px;padding:24px 26px 28px}
-.project-card-copy h2{margin:0;font-size:clamp(26px,2.6vw,30px);line-height:1.2}
 
 /* Earlier work: a quiet list rather than cards. */
 .project-earlier{margin-top:56px;padding-top:24px;border-top:1px dashed color-mix(in srgb,var(--accent) 45%,transparent)}
@@ -108,7 +103,6 @@
   .projects-heading{margin-bottom:32px}
   .project-featured > .project-preview{border-right:0;border-bottom:1px solid var(--line)}
   .project-featured-copy{padding:24px 20px 28px}
-  .project-card-copy{padding:20px 20px 24px}
   .pp-hero{margin:28px 0 32px}
   .pp-lead{font-size:20px}
   .pp-aside{max-width:none}
@@ -116,7 +110,7 @@
 }
 @media(prefers-reduced-motion:reduce){
   .project-status.is-polishing > span{animation:none}
-  .project-card,.project-story-link,.pp-next-arrow{transition:none}
-  .project-card:hover,.project-story-link:hover,.pp-next:hover .pp-next-arrow{transform:none}
+  .project-story-link,.pp-next-arrow{transition:none}
+  .project-story-link:hover,.pp-next:hover .pp-next-arrow{transform:none}
   .reveal-ready .project-reveal{opacity:1;translate:none;transition:none}
 }

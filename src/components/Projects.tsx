@@ -1,8 +1,7 @@
 import { useRef } from "react";
-import type { CSSProperties } from "react";
 import { projects } from "../data/projects";
 import useReveal from "../hooks/useReveal";
-import EditorPreview from "./EditorPreview";
+import TrailerPreview from "./TrailerPreview";
 import { Links, Status, Technologies } from "./ProjectBits";
 import { socialIcons } from "../data/socialIcons";
 import { displaySrc } from "../displayImage";
@@ -11,8 +10,8 @@ import "../cottage/projects.css";
 export default function Projects() {
   const page = useRef<HTMLElement>(null);
   useReveal(page, ".project-reveal");
-  const featured = projects.filter(p => p.status === "live");
-  const inProgress = projects.filter(p => p.status === "polishing");
+  // Live and in-progress projects share one layout; the status pill tells them apart.
+  const featured = projects.filter(p => p.status !== "earlier");
   const earlier = projects.filter(p => p.status === "earlier");
   return (
     <main className="projects-page" id="main-content" ref={page}>
@@ -28,7 +27,7 @@ export default function Projects() {
 
       {featured.map(project => (
         <article className="project-featured project-reveal" id={project.slug} key={project.slug} aria-labelledby={`${project.slug}-title`}>
-          {project.slug === "image-editor" ? <EditorPreview /> :
+          {project.trailer ? <TrailerPreview project={project} /> :
             project.image ? <figure className="project-preview"><a href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox><img src={displaySrc(`/assets/images/${project.image}`)} alt={`${project.name} screenshot`} loading="lazy" /></a></figure>
             : <div className="project-preview project-placeholder">{project.placeholder ?? "Screenshot to come"}</div>}
           <div className="project-featured-copy">
@@ -41,24 +40,6 @@ export default function Projects() {
           </div>
         </article>
       ))}
-
-      <div className="project-grid">
-        {inProgress.map((project, i) => (
-          <article className="project-card project-reveal" id={project.slug} key={project.slug} style={{ "--i": i } as CSSProperties} aria-labelledby={`${project.slug}-title`}>
-            {project.image
-              ? <a className="project-card-image" href={`/assets/images/${project.image}`} target="_blank" rel="noreferrer" data-lightbox><img src={displaySrc(`/assets/images/${project.image}`)} alt={`${project.name} screenshot`} loading="lazy" /></a>
-              : <div className="project-card-image project-placeholder">{project.placeholder}</div>}
-            <div className="project-card-copy">
-              <Status project={project} />
-              <h2 id={`${project.slug}-title`}>{project.name}</h2>
-              <p className="project-description">{project.description}</p>
-              <Technologies project={project} />
-              <Links project={project} />
-              <a className="project-story-link" href={`/projects/${project.slug}`}>Read the story →</a>
-            </div>
-          </article>
-        ))}
-      </div>
 
       {earlier.length > 0 && (
         <section className="project-earlier project-reveal" aria-labelledby="earlier-title">
