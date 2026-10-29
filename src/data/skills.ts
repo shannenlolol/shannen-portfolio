@@ -1,7 +1,8 @@
 import {
   siApachekafka, siArgo, siC, siCplusplus, siCss, siDart, siDjango, siDocker, siFastapi, siFirebase, siFlask,
-  siFlutter, siGit, siGnubash, siHelm, siHtml5, siJavascript, siKubernetes, siLinux, siMariadb, siOpenjdk,
-  siPlotly, siPostgresql, siPython, siPytorch, siReact, siRedhatopenshift, siRos, siTensorflow,
+  siFlutter, siGit, siGnubash, siHelm, siHtml5, siJavascript, siKubernetes, siLinux, siMaplibre, siMariadb,
+  siNextdotjs, siOpenjdk, siPlotly, siPostgresql, siPython, siPytorch, siReact, siRedhatopenshift, siRos,
+  siSupabase, siTensorflow, siTypescript,
 } from "simple-icons";
 
 export type Skill = {
@@ -18,6 +19,7 @@ export const skillGroups: { title: string; skills: Skill[] }[] = [
     skills: [
       { name: "Python", icon: siPython },
       { name: "JavaScript", icon: siJavascript },
+      { name: "TypeScript", icon: siTypescript },
       { name: "SQL", icon: siPostgresql },
       { name: "Java", icon: siOpenjdk },
       { name: "Dart", icon: siDart },
@@ -32,11 +34,13 @@ export const skillGroups: { title: string; skills: Skill[] }[] = [
     title: "Web & product",
     skills: [
       { name: "React", icon: siReact },
+      { name: "Next.js", icon: siNextdotjs },
       { name: "FastAPI", icon: siFastapi },
       { name: "Flask", icon: siFlask },
       { name: "Dash", icon: siPlotly },
       { name: "Django", icon: siDjango },
       { name: "Flutter", icon: siFlutter },
+      { name: "MapLibre", icon: siMaplibre },
     ],
   },
   {
@@ -54,6 +58,7 @@ export const skillGroups: { title: string; skills: Skill[] }[] = [
       { name: "Kafka", icon: siApachekafka },
       { name: "MariaDB", icon: siMariadb },
       { name: "Firebase", icon: siFirebase },
+      { name: "Supabase", icon: siSupabase },
     ],
   },
   {
